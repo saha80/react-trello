@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import {CardWrapper, MovableCardWrapper} from './Base'
+import styled from 'styled-components';
+import { CardWrapper, MovableCardWrapper } from './Base';
 
 export const DeleteWrapper = styled.div`
   text-align: center;
@@ -7,7 +7,7 @@ export const DeleteWrapper = styled.div`
   top: -1px;
   right: 2px;
   cursor: pointer;
-`
+`;
 
 export const GenDelButton = styled.button`
   transition: all 0.5s ease;
@@ -21,7 +21,7 @@ export const GenDelButton = styled.button`
   width: 15px;
   background: inherit;
   cursor: pointer;
-`
+`;
 
 export const DelButton = styled.button`
   transition: all 0.5s ease;
@@ -40,7 +40,7 @@ export const DelButton = styled.button`
   ${MovableCardWrapper}:hover & {
     opacity: 1;
   }
-`
+`;
 
 export const MenuButton = styled.button`
   transition: all 0.5s ease;
@@ -57,49 +57,49 @@ export const MenuButton = styled.button`
   width: 15px;
   background: inherit;
   cursor: pointer;
-`
+`;
 
 export const LaneMenuHeader = styled.div`
-    position: relative;
-    margin-bottom: 4px;
-    text-align: center;
-`
+  position: relative;
+  margin-bottom: 4px;
+  text-align: center;
+`;
 
 export const LaneMenuContent = styled.div`
-    overflow-x: hidden;
-    overflow-y: auto;
-    padding: 0 12px 12px;
-`
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0 12px 12px;
+`;
 
 export const LaneMenuItem = styled.div`
-    cursor: pointer;
-    display: block;
-    font-weight: 700;
-    padding: 6px 12px;
-    position: relative;
-    margin: 0 -12px;
-    text-decoration: none;
+  cursor: pointer;
+  display: block;
+  font-weight: 700;
+  padding: 6px 12px;
+  position: relative;
+  margin: 0 -12px;
+  text-decoration: none;
 
-    &:hover {
-      background-color: #3179BA;
-      color: #fff;
-    }
-`
+  &:hover {
+    background-color: #3179ba;
+    color: #fff;
+  }
+`;
 
 export const LaneMenuTitle = styled.span`
-    box-sizing: border-box;
-    color: #6b808c;
-    display: block;
-    line-height: 30px;
-    border-bottom: 1px solid rgba(9,45,66,.13);
-    margin: 0 6px;
-    overflow: hidden;
-    padding: 0 32px;
-    position: relative;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    z-index: 1;
-`
+  box-sizing: border-box;
+  color: #6b808c;
+  display: block;
+  line-height: 30px;
+  border-bottom: 1px solid rgba(9, 45, 66, 0.13);
+  margin: 0 6px;
+  overflow: hidden;
+  padding: 0 32px;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  z-index: 1;
+`;
 
 export const DeleteIcon = styled.span`
   position: relative;
@@ -147,7 +147,7 @@ export const DeleteIcon = styled.span`
     -o-transform: rotate(-45deg);
     transform: rotate(-45deg);
   }
-`
+`;
 
 export const ExpandCollapseBase = styled.span`
   width: 36px;
@@ -155,7 +155,7 @@ export const ExpandCollapseBase = styled.span`
   font-size: 14px;
   position: relative;
   cursor: pointer;
-`
+`;
 
 export const CollapseBtn = styled(ExpandCollapseBase)`
   &:before {
@@ -177,7 +177,7 @@ export const CollapseBtn = styled(ExpandCollapseBase)`
     border-left: 3px solid transparent;
     border-right: 3px solid transparent;
   }
-`
+`;
 
 export const ExpandBtn = styled(ExpandCollapseBase)`
   &:before {
@@ -199,7 +199,7 @@ export const ExpandBtn = styled(ExpandCollapseBase)`
     border-left: 3px solid transparent;
     border-right: 3px solid transparent;
   }
-`
+`;
 
 export const AddButton = styled.button`
   background: #5aac44;
@@ -215,7 +215,7 @@ export const AddButton = styled.button`
   font-size: 14px;
   cursor: pointer;
   margin-bottom: 0;
-`
+`;
 
 export const CancelButton = styled.button`
   background: #999999;
@@ -230,7 +230,7 @@ export const CancelButton = styled.button`
   font-size: 14px;
   cursor: pointer;
   margin-bottom: 0;
-`
+`;
 export const AddLaneLink = styled.button`
   background: #2b6aa3;
   border: none;
@@ -245,4 +245,4 @@ export const AddLaneLink = styled.button`
   font-size: 13px;
   cursor: pointer;
   margin-bottom: 0;
-`
+`;

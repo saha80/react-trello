@@ -1,35 +1,35 @@
-import Lh from 'rt/helpers/LaneHelper'
+import Lh from 'rt/helpers/LaneHelper';
 
-const boardReducer = (state = {lanes: []}, action) => {
-  const {payload, type} = action
+const boardReducer = (state = { lanes: [] }, action) => {
+  const { payload, type } = action;
   switch (type) {
     case 'LOAD_BOARD':
-      return Lh.initialiseLanes(state, payload)
+      return Lh.initialiseLanes(state, payload);
     case 'ADD_CARD':
-      return Lh.appendCardToLane(state, payload)
+      return Lh.appendCardToLane(state, payload);
     case 'REMOVE_CARD':
-      return Lh.removeCardFromLane(state, payload)
+      return Lh.removeCardFromLane(state, payload);
     case 'MOVE_CARD':
-      return Lh.moveCardAcrossLanes(state, payload)
+      return Lh.moveCardAcrossLanes(state, payload);
     case 'UPDATE_CARDS':
-      return Lh.updateCardsForLane(state, payload)
+      return Lh.updateCardsForLane(state, payload);
     case 'UPDATE_CARD':
-      return Lh.updateCardForLane(state, payload)
+      return Lh.updateCardForLane(state, payload);
     case 'UPDATE_LANES':
-      return Lh.updateLanes(state, payload)
+      return Lh.updateLanes(state, payload);
     case 'UPDATE_LANE':
-      return Lh.updateLane(state, payload)
+      return Lh.updateLane(state, payload);
     case 'PAGINATE_LANE':
-      return Lh.paginateLane(state, payload)
+      return Lh.paginateLane(state, payload);
     case 'MOVE_LANE':
-      return Lh.moveLane(state, payload)
+      return Lh.moveLane(state, payload);
     case 'REMOVE_LANE':
-      return Lh.removeLane(state, payload)
+      return Lh.removeLane(state, payload);
     case 'ADD_LANE':
-      return Lh.addLane(state, payload)
+      return Lh.addLane(state, payload);
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default boardReducer
+export default boardReducer;

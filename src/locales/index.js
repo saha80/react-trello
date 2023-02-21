@@ -2,9 +2,9 @@
 
 export default {
   en: {
-    translation: require('./en/translation.json')
+    translation: require('./en/translation.json'),
   },
   ru: {
-    translation: require('./ru/translation.json')
-  }
-}
+    translation: require('./ru/translation.json'),
+  },
+};

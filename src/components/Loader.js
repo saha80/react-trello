@@ -1,5 +1,5 @@
-import React from 'react'
-import {LoaderDiv, LoadingBar} from 'rt/styles/Loader'
+import React from 'react';
+import { LoaderDiv, LoadingBar } from 'rt/styles/Loader';
 
 const Loader = () => (
   <LoaderDiv>
@@ -8,6 +8,6 @@ const Loader = () => (
     <LoadingBar />
     <LoadingBar />
   </LoaderDiv>
-)
+);
 
-export default Loader
+export default Loader;
