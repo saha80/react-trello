@@ -1,12 +1,12 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "rules": {
     "strict": 1,
     "no-undef": 1,
     "no-fallthrough": 1,
     "react/prop-types": 2
   },
-  "extends": ["standard", "standard-react", "plugin:prettier/recommended"],
+  "extends": ["standard", "standard-react", "plugin:react/recommended", "plugin:prettier/recommended"],
   "env": {
     "browser": true,
     "node": true
