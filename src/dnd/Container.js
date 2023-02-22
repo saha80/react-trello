@@ -10,12 +10,10 @@ class Container extends Component {
     super(props);
     this.getContainerOptions = this.getContainerOptions.bind(this);
     this.setRef = this.setRef.bind(this);
-    this.prevContainer = null;
   }
 
   componentDidMount() {
     if (this.containerDiv) {
-      this.prevContainer = this.containerDiv;
       this.smoothDnD = SmoothDnD(this.containerDiv, this.getContainerOptions()); // unused props could be referenced in SmoothDnD
     }
   }
@@ -25,13 +23,13 @@ class Container extends Component {
     this.smoothDnD = null;
   }
 
-  componentDidUpdate() {
-    if (this.containerDiv && this.prevContainer && this.prevContainer !== this.containerDiv) {
-      this.smoothDnD?.dispose();
-      this.smoothDnD = SmoothDnD(this.containerDiv, this.getContainerOptions()); // unused props could be referenced in SmoothDnD
-      this.prevContainer = this.containerDiv;
-    }
-  }
+  // componentDidUpdate() {
+  //   if (this.containerDiv && this.prevContainer && this.prevContainer !== this.containerDiv) {
+  //     this.smoothDnD?.dispose();
+  //     this.smoothDnD = SmoothDnD(this.containerDiv, this.getContainerOptions()); // unused props could be referenced in SmoothDnD
+  //     this.prevContainer = this.containerDiv;
+  //   }
+  // }
 
   render() {
     if (this.props.render) {
@@ -46,7 +44,10 @@ class Container extends Component {
   }
 
   setRef(element) {
-    this.containerDiv = element;
+    if (element) {
+      this.containerDiv = element;
+      this.smoothDnD = SmoothDnD(element, this.getContainerOptions()); // unused props could be referenced in SmoothDnD
+    }
   }
 
   getContainerOptions() {
