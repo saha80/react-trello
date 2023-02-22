@@ -1,5 +1,4 @@
 const REPLACE_TABLE = {
-  addCardLink: 'components.Card',
   customLaneHeader: 'components.LaneHeader',
   newLaneTemplate: 'components.NewLaneSection',
   newCardTemplate: 'components.NewCardForm',
@@ -18,7 +17,7 @@ const warn = (prop) => {
 
 export default (props) => {
   Object.keys(REPLACE_TABLE).forEach((key) => {
-    if (props.hasOwnProperty(key)) {
+    if (Object.hasOwn(props, key)) {
       warn(key);
     }
   });

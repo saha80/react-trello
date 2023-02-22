@@ -4,11 +4,14 @@ import { InlineInput } from 'rt/styles/Base';
 import autosize from 'autosize';
 
 class InlineInputController extends React.Component {
-  onFocus = (e) => e.target.select();
+  // apply patch
+  onFocus = (e) => {
+    e.target.select();
+  };
 
   // This is the way to select all text if mouse clicked
   onMouseDown = (e) => {
-    if (document.activeElement != e.target) {
+    if (document.activeElement !== e.target) {
       e.preventDefault();
       this.refInput.focus();
     }
@@ -19,17 +22,17 @@ class InlineInputController extends React.Component {
   };
 
   onKeyDown = (e) => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       this.refInput.blur();
       e.preventDefault();
     }
-    if (e.keyCode == 27) {
+    if (e.keyCode === 27) {
       this.setValue(this.props.value);
       this.refInput.blur();
       e.preventDefault();
     }
-    if (e.keyCode == 9) {
-      if (this.getValue().length == 0) {
+    if (e.keyCode === 9) {
+      if (this.getValue().length === 0) {
         this.props.onCancel();
       }
       this.refInput.blur();
@@ -38,27 +41,29 @@ class InlineInputController extends React.Component {
   };
 
   getValue = () => this.refInput.value;
+
   setValue = (value) => (this.refInput.value = value);
 
   updateValue = () => {
-    if (this.getValue() != this.props.value) {
+    if (this.getValue() !== this.props.value) {
       this.props.onSave(this.getValue());
     }
   };
 
   setRef = (ref) => {
     this.refInput = ref;
-    if (this.props.resize != 'none') {
+    if (this.props.resize !== 'none') {
       autosize(this.refInput);
     }
   };
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setValue(nextProps.value);
+  // apply patch
+  componentDidUpdate() {
+    this.setValue(this.props.value);
   }
 
   render() {
-    const { autoFocus, border, value, placeholder } = this.props;
+    const { autoFocus, border, value, placeholder, className } = this.props;
 
     return (
       <InlineInput
@@ -68,7 +73,8 @@ class InlineInputController extends React.Component {
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         onKeyDown={this.onKeyDown}
-        placeholder={value.length == 0 ? undefined : placeholder}
+        placeholder={placeholder} // apply patch
+        className={className} // apply patch
         defaultValue={value}
         autoComplete="off"
         autoCorrect="off"
@@ -84,7 +90,9 @@ class InlineInputController extends React.Component {
 
 InlineInputController.propTypes = {
   onSave: PropTypes.func,
+  onCancel: PropTypes.func,
   border: PropTypes.bool,
+  className: PropTypes.string,
   placeholder: PropTypes.string,
   value: PropTypes.string,
   autoFocus: PropTypes.bool,

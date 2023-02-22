@@ -5,8 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
-import pick from 'lodash/pick';
-import uuidv1 from 'uuid/v1';
+import { v1 as uuidv1 } from 'uuid';
 
 import Container from 'rt/dnd/Container';
 import Draggable from 'rt/dnd/Draggable';
@@ -45,11 +44,13 @@ class Lane extends Component {
   };
 
   sortCards(cards, sortFunction) {
-    if (!cards) return [];
-    if (!sortFunction) return cards;
-    return cards.concat().sort(function (card1, card2) {
-      return sortFunction(card1, card2);
-    });
+    if (!cards) {
+      return [];
+    }
+    if (!sortFunction) {
+      return cards;
+    }
+    return cards.concat().sort((card1, card2) => sortFunction(card1, card2));
   }
 
   laneDidMount = (node) => {
@@ -58,10 +59,11 @@ class Lane extends Component {
     }
   };
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props.cards, nextProps.cards)) {
+  // apply patch
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps.cards, this.props.cards)) {
       this.setState({
-        currentPage: nextProps.currentPage,
+        currentPage: this.props.currentPage,
       });
     }
   }
@@ -106,9 +108,8 @@ class Lane extends Component {
     handleDragStart && handleDragStart(payload.id, payload.laneId);
   };
 
-  shouldAcceptDrop = (sourceContainerOptions) => {
-    return this.props.droppable && sourceContainerOptions.groupName === this.groupName;
-  };
+  shouldAcceptDrop = (sourceContainerOptions) =>
+    this.props.droppable && sourceContainerOptions.groupName === this.groupName;
 
   get groupName() {
     const { boardId } = this.props;
@@ -126,7 +127,7 @@ class Lane extends Component {
     if (addedIndex != null) {
       const newCard = { ...cloneDeep(payload), laneId };
       const response = handleDragEnd ? handleDragEnd(payload.id, payload.laneId, laneId, addedIndex, newCard) : true;
-      if (response === undefined || !!response) {
+      if (response === undefined || Boolean(response)) {
         this.props.actions.moveCardAcrossLanes({
           fromLaneId: payload.laneId,
           toLaneId: laneId,
@@ -182,7 +183,7 @@ class Lane extends Component {
           {...card}
         />
       );
-      return cardDraggable && (!card.hasOwnProperty('draggable') || card.draggable) ? (
+      return cardDraggable && (!Object.hasOwn(card, 'draggable') || card.draggable) ? (
         <Draggable key={card.id}>{cardToRender}</Draggable>
       ) : (
         <span key={card.id}>{cardToRender}</span>
@@ -296,6 +297,12 @@ Lane.propTypes = {
   draggable: PropTypes.bool,
   collapsibleLanes: PropTypes.bool,
   droppable: PropTypes.bool,
+  components: PropTypes.object,
+  className: PropTypes.string,
+  getCardDetails: PropTypes.func,
+  handleDragEnd: PropTypes.func,
+  handleDragStart: PropTypes.func,
+  hideCardDeleteIcon: PropTypes.bool,
   onCardMoveAcrossLanes: PropTypes.func,
   onCardClick: PropTypes.func,
   onBeforeCardDelete: PropTypes.func,

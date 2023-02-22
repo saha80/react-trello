@@ -3,37 +3,44 @@ import PropTypes from 'prop-types';
 
 import { Popover } from 'react-popopo';
 
-import { CustomPopoverContent, CustomPopoverContainer } from 'rt/styles/Base';
+import { CustomPopoverContainer, CustomPopoverContent } from 'rt/styles/Base';
 
 import {
-  LaneMenuTitle,
-  LaneMenuHeader,
-  LaneMenuContent,
   DeleteWrapper,
-  LaneMenuItem,
   GenDelButton,
+  LaneMenuContent,
+  LaneMenuHeader,
+  LaneMenuItem,
+  LaneMenuTitle,
   MenuButton,
 } from 'rt/styles/Elements';
 
-const TEST = PropTypes.elementType;
+function LaneMenu({ t, onDelete }) {
+  return (
+    <Popover
+      PopoverContainer={CustomPopoverContainer}
+      PopoverContent={CustomPopoverContent}
+      position="bottom"
+      trigger={<MenuButton>⋮</MenuButton>}
+    >
+      <LaneMenuHeader>
+        <LaneMenuTitle>{t('Lane actions')}</LaneMenuTitle>
 
-const LaneMenu = ({ t, onDelete }) => (
-  <Popover
-    position="bottom"
-    PopoverContainer={CustomPopoverContainer}
-    PopoverContent={CustomPopoverContent}
-    trigger={<MenuButton>⋮</MenuButton>}
-  >
-    <LaneMenuHeader>
-      <LaneMenuTitle>{t('Lane actions')}</LaneMenuTitle>
-      <DeleteWrapper>
-        <GenDelButton>&#10006;</GenDelButton>
-      </DeleteWrapper>
-    </LaneMenuHeader>
-    <LaneMenuContent>
-      <LaneMenuItem onClick={onDelete}>{t('Delete lane')}</LaneMenuItem>
-    </LaneMenuContent>
-  </Popover>
-);
+        <DeleteWrapper>
+          <GenDelButton>&#10006;</GenDelButton>
+        </DeleteWrapper>
+      </LaneMenuHeader>
+
+      <LaneMenuContent>
+        <LaneMenuItem onClick={onDelete}>{t('Delete lane')}</LaneMenuItem>
+      </LaneMenuContent>
+    </Popover>
+  );
+}
+
+LaneMenu.propTypes = {
+  onDelete: PropTypes.func,
+  t: PropTypes.func,
+};
 
 export default LaneMenu;

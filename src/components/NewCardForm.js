@@ -21,23 +21,27 @@ class NewCardForm extends Component {
           <CardHeader>
             <CardTitle>
               <EditableLabel
-                placeholder={t('placeholder.title')}
-                onChange={(val) => this.updateField('title', val)}
                 autoFocus
+                onChange={(val) => this.updateField('title', val)}
+                placeholder={t('placeholder.title')}
               />
             </CardTitle>
+
             <CardRightContent>
-              <EditableLabel placeholder={t('placeholder.label')} onChange={(val) => this.updateField('label', val)} />
+              <EditableLabel onChange={(val) => this.updateField('label', val)} placeholder={t('placeholder.label')} />
             </CardRightContent>
           </CardHeader>
+
           <Detail>
             <EditableLabel
-              placeholder={t('placeholder.description')}
               onChange={(val) => this.updateField('description', val)}
+              placeholder={t('placeholder.description')}
             />
           </Detail>
         </CardWrapper>
+
         <AddButton onClick={this.handleAdd}>{t('button.Add card')}</AddButton>
+
         <CancelButton onClick={onCancel}>{t('button.Cancel')}</CancelButton>
       </CardForm>
     );
@@ -45,8 +49,8 @@ class NewCardForm extends Component {
 }
 
 NewCardForm.propTypes = {
-  onCancel: PropTypes.func.isRequired,
   onAdd: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
 };
 

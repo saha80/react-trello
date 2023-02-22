@@ -148,7 +148,7 @@ export const Title = styled.span`
   font-weight: bold;
   font-size: 15px;
   line-height: 18px;
-  cursor: ${(props) => (props.draggable ? 'grab' : `auto`)};
+  cursor: ${(props) => (props.draggable ? 'grab' : 'auto')};
   width: 70%;
 `;
 

@@ -25,15 +25,15 @@ class BoardContainer extends Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    // nextProps.data changes when external Board input props change and nextProps.reducerData changes due to event bus or UI changes
-    const { data, reducerData, onDataChange } = this.props;
-    if (nextProps.reducerData && !isEqual(reducerData, nextProps.reducerData)) {
-      onDataChange(nextProps.reducerData);
+  // apply patch
+  componentDidUpdate(prevProps) {
+    const { data, reducerData, onDataChange } = prevProps;
+    if (this.props.reducerData && !isEqual(reducerData, this.props.reducerData)) {
+      onDataChange(this.props.reducerData);
     }
-    if (nextProps.data && !isEqual(nextProps.data, data)) {
-      this.props.actions.loadBoard(nextProps.data);
-      onDataChange(nextProps.data);
+    if (this.props.data && !isEqual(this.props.data, data)) {
+      this.props.actions.loadBoard(this.props.data);
+      onDataChange(this.props.data);
     }
   }
 
@@ -50,13 +50,10 @@ class BoardContainer extends Component {
     }
   };
 
-  getCardDetails = (laneId, cardIndex) => {
-    return this.props.reducerData.lanes.find((lane) => lane.id === laneId).cards[cardIndex];
-  };
+  getCardDetails = (laneId, cardIndex) =>
+    this.props.reducerData.lanes.find((lane) => lane.id === laneId).cards[cardIndex];
 
-  getLaneDetails = (index) => {
-    return this.props.reducerData.lanes[index];
-  };
+  getLaneDetails = (index) => this.props.reducerData.lanes[index];
 
   wireEventBus = () => {
     const { actions, eventBusHandle } = this.props;
@@ -80,8 +77,6 @@ class BoardContainer extends Component {
             });
           case 'UPDATE_CARDS':
             return actions.updateCards({ laneId: event.laneId, cards: event.cards });
-          case 'UPDATE_CARD':
-            return actions.updateCard({ laneId: event.laneId, updatedCard: event.card });
           case 'UPDATE_LANES':
             return actions.updateLanes(event.lanes);
           case 'UPDATE_LANE':
@@ -249,6 +244,8 @@ BoardContainer.propTypes = {
   handleLaneDragEnd: PropTypes.func,
   style: PropTypes.object,
   tagStyle: PropTypes.object,
+  cardStyle: PropTypes.object,
+  laneStyle: PropTypes.object,
   laneDraggable: PropTypes.bool,
   cardDraggable: PropTypes.bool,
   cardDragClass: PropTypes.string,
@@ -282,9 +279,7 @@ BoardContainer.defaultProps = {
   laneDropClass: '',
 };
 
-const mapStateToProps = (state) => {
-  return state.lanes ? { reducerData: state } : {};
-};
+const mapStateToProps = (state) => (state.lanes ? { reducerData: state } : {});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({ ...boardActions, ...laneActions }, dispatch),

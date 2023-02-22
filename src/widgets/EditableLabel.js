@@ -7,9 +7,7 @@ class EditableLabel extends React.Component {
     this.state = { value };
   }
 
-  getText = (el) => {
-    return el.innerText;
-  };
+  getText = (el) => el.innerText;
 
   onTextChange = (ev) => {
     const value = this.getText(ev.target);
@@ -73,7 +71,7 @@ EditableLabel.propTypes = {
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
   autoFocus: PropTypes.bool,
-  inline: PropTypes.bool,
+  inline: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   value: PropTypes.string,
 };
 

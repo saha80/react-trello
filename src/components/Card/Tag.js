@@ -15,10 +15,10 @@ class Tag extends Component {
 }
 
 Tag.propTypes = {
-  title: PropTypes.string.isRequired,
-  color: PropTypes.string,
   bgcolor: PropTypes.string,
+  color: PropTypes.string,
   tagStyle: PropTypes.object,
+  title: PropTypes.string.isRequired,
 };
 
 export default Tag;
