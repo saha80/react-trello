@@ -23,13 +23,12 @@ class Container extends Component {
     this.smoothDnD = null;
   }
 
-  // componentDidUpdate() {
-  //   if (this.containerDiv && this.prevContainer && this.prevContainer !== this.containerDiv) {
-  //     this.smoothDnD?.dispose();
-  //     this.smoothDnD = SmoothDnD(this.containerDiv, this.getContainerOptions()); // unused props could be referenced in SmoothDnD
-  //     this.prevContainer = this.containerDiv;
-  //   }
-  // }
+  componentDidUpdate() {
+    if (this.containerDiv) {
+      this.smoothDnD?.dispose();
+      this.smoothDnD = SmoothDnD(this.containerDiv, this.getContainerOptions()); // unused props could be referenced in SmoothDnD
+    }
+  }
 
   render() {
     if (this.props.render) {
@@ -44,10 +43,7 @@ class Container extends Component {
   }
 
   setRef(element) {
-    if (element) {
-      this.containerDiv = element;
-      this.smoothDnD = SmoothDnD(element, this.getContainerOptions()); // unused props could be referenced in SmoothDnD
-    }
+    this.containerDiv = element;
   }
 
   getContainerOptions() {

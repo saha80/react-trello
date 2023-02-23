@@ -27,6 +27,7 @@ class BoardContainer extends Component {
 
   // apply patch
   componentDidUpdate(prevProps) {
+    // this.props.data changes when external Board input props change and this.props.reducerData changes due to event bus or UI changes
     const { data, reducerData, onDataChange } = prevProps;
     if (this.props.reducerData && !isEqual(reducerData, this.props.reducerData)) {
       onDataChange(this.props.reducerData);
