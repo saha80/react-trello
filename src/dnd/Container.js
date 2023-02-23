@@ -13,7 +13,7 @@ class Container extends Component {
   }
 
   componentDidMount() {
-    if (this.containerDiv) {
+    if (this.containerDiv && !this.container) {
       this.container = SmoothDnD(this.containerDiv, this.getContainerOptions());
     }
   }
