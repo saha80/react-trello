@@ -4,11 +4,7 @@ const LaneHelper = {
   initialiseLanes: (state, { lanes }) => {
     const newLanes = lanes.map((lane) => {
       lane.currentPage = 1;
-
-      if (Array.isArray(lane.cards)) {
-        lane.cards.forEach((card) => (card.laneId = lane.id));
-      }
-
+      lane.cards?.forEach((card) => (card.laneId = lane.id));
       return lane;
     });
     return update(state, { lanes: { $set: newLanes } });
