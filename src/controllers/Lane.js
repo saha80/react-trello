@@ -94,14 +94,14 @@ class Lane extends Component {
     this.setState({ addCardMode: false });
   };
 
-  addNewCard = (params) => {
-    const laneId = this.props.id;
-    const id = uuidv1();
-    this.hideEditableCard();
-    const card = { id, ...params };
-    this.props.actions.addCard({ laneId, card });
-    this.props.onCardAdd(card, laneId);
-  };
+  // addNewCard = (params) => {
+  //   const laneId = this.props.id;
+  //   const id = uuidv1();
+  //   this.hideEditableCard();
+  //   const card = { id, ...params };
+  //   this.props.actions.addCard({ laneId, card });
+  //   this.props.onCardAdd(card, laneId);
+  // };
 
   onDragStart = ({ payload }) => {
     const { handleDragStart } = this.props;
@@ -208,7 +208,19 @@ class Lane extends Component {
         </Container>
         {editable && !addCardMode && <components.AddCardLink onClick={this.showEditableCard} t={t} laneId={id} />}
         {addCardMode && (
-          <components.NewCardForm onCancel={this.hideEditableCard} t={t} laneId={id} onAdd={this.addNewCard} />
+          <components.NewCardForm
+            onCancel={this.hideEditableCard}
+            t={t}
+            laneId={id}
+            onAdd={(params) => {
+              const laneId = this.props.id;
+              const id = uuidv1();
+              this.hideEditableCard();
+              const card = { id, ...params };
+              this.props.actions.addCard({ laneId, card });
+              this.props.onCardAdd(card, laneId);
+            }}
+          />
         )}
       </components.ScrollableLane>
     );
