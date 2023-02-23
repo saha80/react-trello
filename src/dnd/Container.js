@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import SmoothDnD, { dropHandlers } from 'trello-smooth-dnd';
 
@@ -15,21 +14,21 @@ class Container extends Component {
   }
 
   componentDidMount() {
-    this.containerDiv = this.containerDiv || ReactDOM.findDOMNode(this);
-    this.prevContainer = this.containerDiv;
-    this.container = SmoothDnD(this.containerDiv, this.getContainerOptions());
+    if (this.containerDiv) {
+      this.prevContainer = this.containerDiv;
+      this.container = SmoothDnD(this.containerDiv, this.getContainerOptions());
+    }
   }
 
   componentWillUnmount() {
-    this.container.dispose();
+    this.container?.dispose();
     this.container = null;
   }
 
   componentDidUpdate() {
-    this.containerDiv = this.containerDiv || ReactDOM.findDOMNode(this);
     if (this.containerDiv) {
       if (this.prevContainer && this.prevContainer !== this.containerDiv) {
-        this.container.dispose();
+        this.container?.dispose();
         this.container = SmoothDnD(this.containerDiv, this.getContainerOptions());
         this.prevContainer = this.containerDiv;
       }
