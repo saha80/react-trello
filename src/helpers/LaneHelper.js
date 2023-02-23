@@ -20,18 +20,16 @@ const LaneHelper = {
     const lane = state.lanes.find((lane) => lane.id === laneId);
     newCards = newCards
       .map((c) => update(c, { laneId: { $set: laneId } }))
-      .filter((c) => lane.cards.find((card) => card.id === c.id) == null);
+      .filter((c) => lane.cards.find((card) => card.id === c.id) === undefined);
     return state.lanes.map((lane) => {
       if (lane.id === laneId) {
         if (index !== undefined) {
           return update(lane, { cards: { $splice: [[index, 0, ...newCards]] } });
-        } else {
-          const cardsToUpdate = [...lane.cards, ...newCards];
-          return update(lane, { cards: { $set: cardsToUpdate } });
         }
-      } else {
-        return lane;
+        const cardsToUpdate = [...lane.cards, ...newCards];
+        return update(lane, { cards: { $set: cardsToUpdate } });
       }
+      return lane;
     });
   },
 
