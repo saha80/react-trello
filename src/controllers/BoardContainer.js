@@ -25,11 +25,6 @@ class BoardContainer extends Component {
     }
   }
 
-  componentWillUnmount() {
-    const { actions, data } = this.props;
-    actions.unloadBoard(data);
-  }
-
   // apply patch
   componentDidUpdate(prevProps) {
     // this.props.data changes when external Board input props change and this.props.reducerData changes due to event bus or UI changes

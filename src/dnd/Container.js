@@ -10,12 +10,10 @@ class Container extends Component {
     super(props);
     this.getContainerOptions = this.getContainerOptions.bind(this);
     this.setRef = this.setRef.bind(this);
-    this.prevContainer = null;
   }
 
   componentDidMount() {
     if (this.containerDiv) {
-      this.prevContainer = this.containerDiv;
       this.container = SmoothDnD(this.containerDiv, this.getContainerOptions());
     }
   }
@@ -25,15 +23,12 @@ class Container extends Component {
     this.container = null;
   }
 
-  componentDidUpdate() {
-    if (this.containerDiv) {
-      if (this.prevContainer && this.prevContainer !== this.containerDiv) {
-        this.container?.dispose();
-        this.container = SmoothDnD(this.containerDiv, this.getContainerOptions());
-        this.prevContainer = this.containerDiv;
-      }
-    }
-  }
+  // componentDidUpdate() {
+  //   if (this.containerDiv) {
+  //     this.container?.dispose();
+  //     this.container = SmoothDnD(this.containerDiv, this.getContainerOptions());
+  //   }
+  // }
 
   render() {
     if (this.props.render) {
