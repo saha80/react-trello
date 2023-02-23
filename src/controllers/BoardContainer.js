@@ -18,11 +18,16 @@ class BoardContainer extends Component {
   };
 
   componentDidMount() {
-    const { actions, eventBusHandle } = this.props;
-    actions.loadBoard(this.props.data);
+    const { actions, eventBusHandle, data } = this.props;
+    actions.loadBoard(data);
     if (eventBusHandle) {
       this.wireEventBus();
     }
+  }
+
+  componentWillUnmount() {
+    const { actions, data } = this.props;
+    actions.unloadBoard(data);
   }
 
   // apply patch
