@@ -328,6 +328,7 @@ Lane.defaultProps = {
   labelStyle: {},
   label: undefined,
   editable: false,
+  onCardAdd: () => {},
   onLaneUpdate: () => {},
   onCardUpdate: () => {},
 };
