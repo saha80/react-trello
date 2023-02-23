@@ -18,8 +18,8 @@ class BoardContainer extends Component {
   };
 
   componentDidMount() {
-    const { actions, eventBusHandle, data } = this.props;
-    actions.loadBoard(data);
+    const { actions, eventBusHandle } = this.props;
+    actions.loadBoard(this.props.data);
     if (eventBusHandle) {
       this.wireEventBus();
     }
