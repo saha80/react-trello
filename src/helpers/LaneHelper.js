@@ -20,7 +20,7 @@ const LaneHelper = {
     const lane = state.lanes.find((lane) => lane.id === laneId);
     newCards = newCards
       .map((c) => update(c, { laneId: { $set: laneId } }))
-      .filter((c) => lane.cards.find((card) => card.id === c.id) === null);
+      .filter((c) => lane.cards.find((card) => card.id === c.id) === undefined);
     return state.lanes.map((lane) => {
       if (lane.id === laneId) {
         if (index !== undefined) {
