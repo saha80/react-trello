@@ -165,14 +165,13 @@ class Lane extends Component {
     const showableCards = collapsed ? [] : cards;
 
     const cardList = this.sortCards(showableCards, laneSortFunction).map((card, idx) => {
-      const onDeleteCard = () => this.removeCard(card.id);
       const cardToRender = (
         <components.Card
           key={card.id}
           index={idx}
           style={card.style || cardStyle}
           className="react-trello-card"
-          onDelete={onDeleteCard}
+          onDelete={() => this.removeCard(card.id)}
           onClick={(e) => this.handleCardClick(e, card)}
           onChange={(updatedCard) => this.updateCard(updatedCard)}
           showDeleteButton={!hideCardDeleteIcon}
