@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SmoothDnD, { dropHandlers, constants } from 'trello-smooth-dnd';
+import SmoothDnD, { dropHandlers } from 'trello-smooth-dnd';
 
 SmoothDnD.dropHandler = dropHandlers.reactDropHandler().handler;
 SmoothDnD.wrapChild = (p) => p; // dont wrap children they will already be wrapped
@@ -22,9 +22,6 @@ class Container extends Component {
     if (this.container) {
       this.container.dispose();
       this.container = null;
-      if (this.containerDiv) {
-        delete this.containerDiv[constants.containerInstance];
-      }
     }
   }
 

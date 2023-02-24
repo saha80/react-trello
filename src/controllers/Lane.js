@@ -206,10 +206,10 @@ class Lane extends Component {
         >
           {cardList}
         </Container>
-        {editable && !addCardMode && <components.AddCardLink onClick={this.showEditableCard} t={t} laneId={id} />}
-        {addCardMode && (
+        {editable && !addCardMode ? <components.AddCardLink onClick={this.showEditableCard} t={t} laneId={id} /> : null}
+        {addCardMode ? (
           <components.NewCardForm onCancel={this.hideEditableCard} t={t} laneId={id} onAdd={this.addNewCard} />
-        )}
+        ) : null}
       </components.ScrollableLane>
     );
   };
@@ -272,8 +272,8 @@ class Lane extends Component {
       >
         {this.renderHeader({ id, cards, ...otherProps })}
         {this.renderDragContainer(isDraggingOver)}
-        {loading && <components.Loader />}
-        {showFooter && <components.LaneFooter onClick={this.toggleLaneCollapsed} collapsed={collapsed} />}
+        {loading ? <components.Loader /> : null}
+        {showFooter ? <components.LaneFooter onClick={this.toggleLaneCollapsed} collapsed={collapsed} /> : null}
       </components.Section>
     );
   }

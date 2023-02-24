@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { TagSpan } from 'rt/styles/Base';
 
-class Tag extends Component {
-  render() {
-    const { title, color, bgcolor, tagStyle, ...otherProps } = this.props;
-    const style = { color: color || 'white', backgroundColor: bgcolor || 'orange', ...tagStyle };
-    return (
-      <TagSpan style={style} {...otherProps}>
-        {title}
-      </TagSpan>
-    );
-  }
-}
+const Tag = (props) => {
+  const { title, color, bgcolor, tagStyle, ...otherProps } = props;
+  const style = { color: color || 'white', backgroundColor: bgcolor || 'orange', ...tagStyle };
+  return (
+    <TagSpan style={style} {...otherProps}>
+      {title}
+    </TagSpan>
+  );
+};
 
 Tag.propTypes = {
   bgcolor: PropTypes.string,

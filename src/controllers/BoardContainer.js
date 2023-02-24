@@ -38,6 +38,10 @@ class BoardContainer extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
+  }
+
   onDragStart = ({ payload }) => {
     const { handleLaneDragStart } = this.props;
     handleLaneDragStart(payload.id);
@@ -192,7 +196,7 @@ class BoardContainer extends Component {
                   style={laneStyle || lane.style || {}}
                   labelStyle={lane.labelStyle || {}}
                   cardStyle={this.props.cardStyle || lane.cardStyle}
-                  editable={editable && !lane.disallowAddingCard}
+                  editable={Boolean(editable && !lane.disallowAddingCard)}
                   {...otherProps}
                   {...passthroughProps}
                 />
@@ -201,7 +205,7 @@ class BoardContainer extends Component {
             })}
           </Container>
         </PopoverWrapper>
-        {canAddLanes && (
+        {canAddLanes ? (
           <Container orientation="horizontal">
             {editable && !addLaneMode ? (
               <components.NewLaneSection t={t} onClick={this.showEditableLane} />
@@ -209,7 +213,7 @@ class BoardContainer extends Component {
               addLaneMode && <components.NewLaneForm onCancel={this.hideEditableLane} onAdd={this.addNewLane} t={t} />
             )}
           </Container>
-        )}
+        ) : null}
       </components.BoardWrapper>
     );
   }
