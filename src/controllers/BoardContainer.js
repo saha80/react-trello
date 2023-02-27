@@ -39,7 +39,7 @@ class BoardContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
+    return !(isEqual(this.props, nextProps) && isEqual(this.state, nextState));
   }
 
   onDragStart = ({ payload }) => {
