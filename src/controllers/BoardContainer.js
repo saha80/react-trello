@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import pick from 'lodash/pick'
 import isEqual from 'lodash/isEqual'
 import Lane from './Lane'
-import { PopoverWrapper } from 'react-popopo'
+import {PopoverWrapper} from 'react-popopo'
 
 import * as boardActions from 'rt/actions/BoardActions'
 import * as laneActions from 'rt/actions/LaneActions'
@@ -25,15 +25,16 @@ class BoardContainer extends Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    // nextProps.data changes when external Board input props change and nextProps.reducerData changes due to event bus or UI changes
-    const {data, reducerData, onDataChange} = this.props
-    if (nextProps.reducerData && !isEqual(reducerData, nextProps.reducerData)) {
-      onDataChange(nextProps.reducerData)
+  // apply patch
+  componentDidUpdate(prevProps) {
+    // this.props.data changes when external Board input props change and this.props.reducerData changes due to event bus or UI changes
+    const {data, reducerData, onDataChange} = prevProps
+    if (this.props.reducerData && !isEqual(reducerData, this.props.reducerData)) {
+      onDataChange(this.props.reducerData)
     }
-    if (nextProps.data && !isEqual(nextProps.data, data)) {
-      this.props.actions.loadBoard(nextProps.data)
-      onDataChange(nextProps.data)
+    if (this.props.data && !isEqual(this.props.data, data)) {
+      this.props.actions.loadBoard(this.props.data)
+      onDataChange(this.props.data)
     }
   }
 
@@ -204,8 +205,10 @@ class BoardContainer extends Component {
         </PopoverWrapper>
         {canAddLanes && (
           <Container orientation="horizontal">
-            {editable && !addLaneMode ? <components.NewLaneSection t={t} onClick={this.showEditableLane} /> : (
-              addLaneMode && <components.NewLaneForm onCancel={this.hideEditableLane} onAdd={this.addNewLane} t={t}/>
+            {editable && !addLaneMode ? (
+              <components.NewLaneSection t={t} onClick={this.showEditableLane} />
+            ) : (
+              addLaneMode && <components.NewLaneForm onCancel={this.hideEditableLane} onAdd={this.addNewLane} t={t} />
             )}
           </Container>
         )}
@@ -250,11 +253,11 @@ BoardContainer.propTypes = {
   laneDragClass: PropTypes.string,
   laneDropClass: PropTypes.string,
   onCardMoveAcrossLanes: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired
 }
 
 BoardContainer.defaultProps = {
-  t: v=>v,
+  t: v => v,
   onDataChange: () => {},
   handleDragStart: () => {},
   handleDragEnd: () => {},
@@ -281,9 +284,8 @@ const mapStateToProps = state => {
   return state.lanes ? {reducerData: state} : {}
 }
 
-const mapDispatchToProps = dispatch => ({actions: bindActionCreators({...boardActions, ...laneActions}, dispatch)})
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({...boardActions, ...laneActions}, dispatch)
+})
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BoardContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer)
