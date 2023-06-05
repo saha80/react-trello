@@ -104,6 +104,7 @@ class Container extends Component {
 }
 
 Container.propTypes = {
+  /* eslint-disable react/no-unused-prop-types */
   behaviour: PropTypes.oneOf(['move', 'copy', 'drag-zone']),
   groupName: PropTypes.string,
   orientation: PropTypes.oneOf(['horizontal', 'vertical']),
@@ -117,6 +118,7 @@ Container.propTypes = {
   lockAxis: PropTypes.string,
   dragClass: PropTypes.string,
   dropClass: PropTypes.string,
+  /* eslint-enable react/no-unused-prop-types */
   onDragStart: PropTypes.func,
   onDragEnd: PropTypes.func,
   onDrop: PropTypes.func,
@@ -127,7 +129,7 @@ Container.propTypes = {
   onDragLeave: PropTypes.func,
   render: PropTypes.func,
   getGhostParent: PropTypes.func,
-  removeOnDropOut: PropTypes.bool
+  removeOnDropOut: PropTypes.bool // eslint-disable-line react/no-unused-prop-types
 }
 
 Container.defaultProps = {

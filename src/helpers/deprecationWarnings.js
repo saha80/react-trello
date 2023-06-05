@@ -1,5 +1,4 @@
 const REPLACE_TABLE = {
-  addCardLink: 'components.Card',
   customLaneHeader: 'components.LaneHeader',
   newLaneTemplate: 'components.NewLaneSection',
   newCardTemplate: 'components.NewCardForm',

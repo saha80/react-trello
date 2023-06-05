@@ -1,4 +1,4 @@
-import React, {Component, Suspense} from 'react'
+import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {useTranslation, I18nextProvider} from 'react-i18next'
 

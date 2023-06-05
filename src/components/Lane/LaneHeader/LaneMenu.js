@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import {Popover} from 'react-popopo'
 
@@ -14,8 +13,6 @@ import {
   GenDelButton,
   MenuButton
 } from 'rt/styles/Elements'
-
-const TEST = PropTypes.elementType
 
 const LaneMenu = ({t, onDelete}) => (
   <Popover

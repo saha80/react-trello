@@ -73,7 +73,6 @@ EditableLabel.propTypes = {
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
   autoFocus: PropTypes.bool,
-  inline: PropTypes.bool,
   value: PropTypes.string
 }
 
@@ -81,7 +80,6 @@ EditableLabel.defaultProps = {
   onChange: () => {},
   placeholder: '',
   autoFocus: false,
-  inline: false,
   value: ''
 }
 export default EditableLabel

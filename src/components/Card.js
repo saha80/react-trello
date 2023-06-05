@@ -18,7 +18,6 @@ class Card extends Component {
       style,
       tagStyle,
       onClick,
-      onDelete,
       onChange,
       className,
       id,

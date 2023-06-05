@@ -5,7 +5,6 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
-import pick from 'lodash/pick'
 import uuidv1 from 'uuid/v1'
 
 import Container from 'rt/dnd/Container'

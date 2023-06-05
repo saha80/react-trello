@@ -12,9 +12,8 @@ const CustomCard = props => {
     <MovableCardWrapper
       data-id={props.id}
       onClick={props.onClick}
-      style={props.style}
       className={props.className}
-      style={{backgroundColor: props.cardColor, padding: 6}}>
+      style={{...props.style, backgroundColor: props.cardColor, padding: 6}}>
       <header
         style={{
           borderBottom: '1px solid #eee',
