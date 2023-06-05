@@ -1,4 +1,5 @@
 import React from 'react'
+import PropsTypes from 'prop-types'
 
 import Draggable from './dnd/Draggable'
 import Container from './dnd/Container'
@@ -19,8 +20,15 @@ export {DefaultComponents as components}
 
 const DEFAULT_LANG = 'en'
 
-export default ({components, lang = DEFAULT_LANG, ...otherProps}) => {
+const default_ = ({components, lang = DEFAULT_LANG, ...otherProps}) => {
   deprecationWarnings(otherProps)
   const translate = createTranslate(locales[lang].translation)
   return <Board t={translate} components={{...DefaultComponents, ...components}} {...otherProps} />
 }
+
+default_.propTypes = {
+  components: PropsTypes.object,
+  lang: PropsTypes.string
+}
+
+export default default_

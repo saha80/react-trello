@@ -310,7 +310,13 @@ Lane.propTypes = {
   cardDragClass: PropTypes.string,
   cardDropClass: PropTypes.string,
   canAddLanes: PropTypes.bool,
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
+  handleDragStart: PropTypes.func,
+  handleDragEnd: PropTypes.func,
+  hideCardDeleteIcon: PropTypes.bool,
+  components: PropTypes.object,
+  getCardDetails: PropTypes.func,
+  className: PropTypes.string
 }
 
 Lane.defaultProps = {

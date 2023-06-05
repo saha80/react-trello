@@ -128,6 +128,8 @@ Container.propTypes = {
   onDragEnter: PropTypes.func,
   onDragLeave: PropTypes.func,
   render: PropTypes.func,
+  onDropReady: PropTypes.func,
+  children: PropTypes.node,
   getGhostParent: PropTypes.func,
   removeOnDropOut: PropTypes.bool // eslint-disable-line react/no-unused-prop-types
 }

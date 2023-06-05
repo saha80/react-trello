@@ -19,7 +19,9 @@ class Draggable extends Component {
 }
 
 Draggable.propTypes = {
-  render: PropTypes.func
+  render: PropTypes.func,
+  className: PropTypes.string,
+  children: PropTypes.node
 }
 
 export default Draggable

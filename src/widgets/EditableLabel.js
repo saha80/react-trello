@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class EditableLabel extends React.Component {
-  constructor({value}) {
-    super()
-    this.state = {value: value}
+  constructor(props) {
+    super(props)
+    this.state = {value: props.value}
+    this.refDiv = null
   }
 
   getText = el => {

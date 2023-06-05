@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import {Popover} from 'react-popopo'
 
@@ -31,5 +32,10 @@ const LaneMenu = ({t, onDelete}) => (
     </LaneMenuContent>
   </Popover>
 )
+
+LaneMenu.propTypes = {
+  t: PropTypes.func,
+  onDelete: PropTypes.func
+}
 
 export default LaneMenu

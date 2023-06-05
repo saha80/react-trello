@@ -250,6 +250,7 @@ BoardContainer.propTypes = {
   cardDragClass: PropTypes.string,
   laneDragClass: PropTypes.string,
   laneDropClass: PropTypes.string,
+  className: PropTypes.string,
   onCardMoveAcrossLanes: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired
 }

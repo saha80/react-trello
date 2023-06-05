@@ -16,31 +16,23 @@ const LaneHeaderComponent = ({
   labelStyle,
   t,
   laneDraggable
-}) => {
-  return (
-    <LaneHeader onDoubleClick={onDoubleClick} editLaneTitle={editLaneTitle}>
-      <Title draggable={laneDraggable} style={titleStyle}>
-        {editLaneTitle ? (
-          <InlineInput
-            value={title}
-            border
-            placeholder={t('placeholder.title')}
-            resize="vertical"
-            onSave={updateTitle}
-          />
-        ) : (
-          title
-        )}
-      </Title>
-      {label && (
-        <RightContent>
-          <span style={labelStyle}>{label}</span>
-        </RightContent>
+}) => (
+  <LaneHeader onDoubleClick={onDoubleClick} editLaneTitle={editLaneTitle}>
+    <Title draggable={laneDraggable} style={titleStyle}>
+      {editLaneTitle ? (
+        <InlineInput value={title} border placeholder={t('placeholder.title')} resize="vertical" onSave={updateTitle} />
+      ) : (
+        title
       )}
-      {canAddLanes && <LaneMenu t={t} onDelete={onDelete} />}
-    </LaneHeader>
-  )
-}
+    </Title>
+    {label && (
+      <RightContent>
+        <span style={labelStyle}>{label}</span>
+      </RightContent>
+    )}
+    {canAddLanes && <LaneMenu t={t} onDelete={onDelete} />}
+  </LaneHeader>
+)
 
 LaneHeaderComponent.propTypes = {
   updateTitle: PropTypes.func,
@@ -51,7 +43,9 @@ LaneHeaderComponent.propTypes = {
   title: PropTypes.string,
   onDelete: PropTypes.func,
   onDoubleClick: PropTypes.func,
-  t: PropTypes.func.isRequired
+  t: PropTypes.func.isRequired,
+  titleStyle: PropTypes.object,
+  labelStyle: PropTypes.object
 }
 
 LaneHeaderComponent.defaultProps = {

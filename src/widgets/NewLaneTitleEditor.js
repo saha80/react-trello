@@ -58,7 +58,7 @@ class NewLaneTitleEditor extends React.Component {
         ref={this.setRef}
         border={border}
         onKeyDown={this.onKeyDown}
-        placeholder={value.length == 0 ? undefined : placeholder}
+        placeholder={!value.length ? undefined : placeholder}
         defaultValue={value}
         rows={3}
         autoResize={autoResize}

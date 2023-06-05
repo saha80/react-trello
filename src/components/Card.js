@@ -95,6 +95,7 @@ Card.propTypes = {
   showDeleteButton: PropTypes.bool,
   onDelete: PropTypes.func,
   onClick: PropTypes.func,
+  onChange: PropTypes.func,
   style: PropTypes.object,
   tagStyle: PropTypes.object,
   className: PropTypes.string,
@@ -102,7 +103,10 @@ Card.propTypes = {
   title: PropTypes.string.isRequired,
   label: PropTypes.string,
   description: PropTypes.string,
-  tags: PropTypes.array
+  tags: PropTypes.array,
+  cardDraggable: PropTypes.bool,
+  editable: PropTypes.bool,
+  t: PropTypes.func
 }
 
 Card.defaultProps = {

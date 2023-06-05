@@ -56,5 +56,5 @@
     "skipDefaultLibCheck": false,
     "skipLibCheck": true
   },
-  "include": ["./src"]
+  "include": ["./src", "**/*.json"]
 }

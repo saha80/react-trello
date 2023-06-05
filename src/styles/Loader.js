@@ -11,6 +11,7 @@ const keyframeAnimation = keyframes`
       transform: scale(1);
     }
 `
+
 export const LoaderDiv = styled.div`
   text-align: center;
   margin: 15px 0;

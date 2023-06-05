@@ -93,6 +93,7 @@ InlineInputController.propTypes = {
   placeholder: PropTypes.string,
   value: PropTypes.string,
   autoFocus: PropTypes.bool,
+  className: PropTypes.string,
   resize: PropTypes.oneOf(['none', 'vertical', 'horizontal'])
 }
 

@@ -15,7 +15,7 @@ class NewLane extends Component {
 
   getValue = () => this.refInput.getValue()
 
-  onClickOutside = (a, b, c) => {
+  onClickOutside = () => {
     if (this.getValue().length > 0) {
       this.handleSubmit()
     } else {
