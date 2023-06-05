@@ -47,8 +47,8 @@ const LaneHelper = {
 
   updateLane: (state, updatedLane) => {
     const newLanes = state.lanes.map(lane => {
-      if (updatedLane.id == lane.id ) {
-        return { ...lane, ...updatedLane }
+      if (updatedLane.id == lane.id) {
+        return {...lane, ...updatedLane}
       } else {
         return lane
       }
@@ -118,7 +118,7 @@ const LaneHelper = {
 
   moveLane: (state, {oldIndex, newIndex}) => {
     const laneToMove = state.lanes[oldIndex]
-    const tempState = update(state, {lanes: {$splice: [[oldIndex, 1]]}});
+    const tempState = update(state, {lanes: {$splice: [[oldIndex, 1]]}})
     return update(tempState, {lanes: {$splice: [[newIndex, 0, laneToMove]]}})
   },
 

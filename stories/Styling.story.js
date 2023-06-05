@@ -25,7 +25,7 @@ const dataWithLaneStyles = {
           id: 'Milk',
           title: 'Buy milk',
           label: '15 mins',
-          description: '2 Gallons of milk at the Deli store',
+          description: '2 Gallons of milk at the Deli store'
         },
         {
           id: 'Plan2',
@@ -46,7 +46,7 @@ const dataWithLaneStyles = {
           title: 'Burn Garbage',
           label: '10 mins',
           description: 'Sort out recyclable and waste as needed'
-        },
+        }
       ]
     },
     {
@@ -57,19 +57,20 @@ const dataWithLaneStyles = {
         {
           id: 'archived',
           title: 'Archived',
-          label: '10 mins',
-        },
+          label: '10 mins'
+        }
       ]
     }
   ]
 }
 
-storiesOf('Styling', module)
-  .add('Lane Styling',
-     () => <Board data={dataWithLaneStyles} laneStyle={{backgroundColor: '#666'}} style={{backgroundColor: '#eee'}} />,
-   {
+storiesOf('Styling', module).add(
+  'Lane Styling',
+  () => <Board data={dataWithLaneStyles} laneStyle={{backgroundColor: '#666'}} style={{backgroundColor: '#eee'}} />,
+  {
     info: 'Change the look and feel of the lane'
-  })
+  }
+)
 
 const dataWithCardStyles = {
   lanes: [
@@ -83,7 +84,7 @@ const dataWithCardStyles = {
           title: 'Buy milk',
           label: '15 mins',
           description: '2 Gallons of milk at the Deli store',
-          style: { backgroundColor: '#eec' },
+          style: {backgroundColor: '#eec'}
         },
         {
           id: 'Plan2',
@@ -101,6 +102,10 @@ const dataWithCardStyles = {
   ]
 }
 
-storiesOf('Styling', module).add('Card Styling', () => <Board data={dataWithCardStyles} cardStyle={{backgroundColor: '#ffe'}} />, {
-  info: 'Change the background of cards'
-})
+storiesOf('Styling', module).add(
+  'Card Styling',
+  () => <Board data={dataWithCardStyles} cardStyle={{backgroundColor: '#ffe'}} />,
+  {
+    info: 'Change the background of cards'
+  }
+)

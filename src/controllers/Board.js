@@ -29,12 +29,8 @@ export default class Board extends Component {
       <Provider store={this.store}>
         <>
           <components.GlobalStyle />
-          <BoardContainer
-            id={this.id}
-            {...this.props}
-            className={allClassNames}
-          />
-       </>
+          <BoardContainer id={this.id} {...this.props} className={allClassNames} />
+        </>
       </Provider>
     )
   }

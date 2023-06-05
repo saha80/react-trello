@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 class EditableLabel extends React.Component {
   constructor({value}) {
     super()
-    this.state = { value: value }
+    this.state = {value: value}
   }
 
   getText = el => {
@@ -37,13 +37,13 @@ class EditableLabel extends React.Component {
     return `comPlainTextContentEditable ${placeholder}`
   }
 
-  onKeyDown = (e) => {
-    if(e.keyCode === 13) {
+  onKeyDown = e => {
+    if (e.keyCode === 13) {
       this.props.onChange(this.state.value)
       this.refDiv.blur()
       e.preventDefault()
     }
-    if(e.keyCode === 27) {
+    if (e.keyCode === 27) {
       this.refDiv.value = this.props.value
       this.setState({value: this.props.value})
       // this.refDiv.blur()
@@ -53,7 +53,7 @@ class EditableLabel extends React.Component {
   }
 
   render() {
-    const placeholder = this.props.value.length > 0 ? false : this.props.placeholder;
+    const placeholder = this.props.value.length > 0 ? false : this.props.placeholder
     return (
       <div
         ref={ref => (this.refDiv = ref)}
@@ -74,7 +74,7 @@ EditableLabel.propTypes = {
   placeholder: PropTypes.string,
   autoFocus: PropTypes.bool,
   inline: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.string
 }
 
 EditableLabel.defaultProps = {

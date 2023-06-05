@@ -1,13 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {
-  CardForm,
-  CardHeader,
-  CardRightContent,
-  CardTitle,
-  CardWrapper,
-  Detail
-} from 'rt/styles/Base'
+import {CardForm, CardHeader, CardRightContent, CardTitle, CardWrapper, Detail} from 'rt/styles/Base'
 import {AddButton, CancelButton} from 'rt/styles/Elements'
 import EditableLabel from 'rt/widgets/EditableLabel'
 
@@ -27,14 +20,21 @@ class NewCardForm extends Component {
         <CardWrapper>
           <CardHeader>
             <CardTitle>
-              <EditableLabel placeholder={t('placeholder.title')} onChange={val => this.updateField('title', val)} autoFocus />
+              <EditableLabel
+                placeholder={t('placeholder.title')}
+                onChange={val => this.updateField('title', val)}
+                autoFocus
+              />
             </CardTitle>
             <CardRightContent>
               <EditableLabel placeholder={t('placeholder.label')} onChange={val => this.updateField('label', val)} />
             </CardRightContent>
           </CardHeader>
           <Detail>
-            <EditableLabel placeholder={t('placeholder.description')} onChange={val => this.updateField('description', val)} />
+            <EditableLabel
+              placeholder={t('placeholder.description')}
+              onChange={val => this.updateField('description', val)}
+            />
           </Detail>
         </CardWrapper>
         <AddButton onClick={this.handleAdd}>{t('button.Add card')}</AddButton>
@@ -47,10 +47,9 @@ class NewCardForm extends Component {
 NewCardForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onAdd: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired
 }
 
-NewCardForm.defaultProps = {
-}
+NewCardForm.defaultProps = {}
 
 export default NewCardForm
