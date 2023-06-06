@@ -9,23 +9,25 @@ Pluggable components to add a Trello (like) kanban board to your application
 > This library is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. `Trello` is a registered trademark of Atlassian, Inc.
 
 #### Basic Demo
+
 [![Edit react-trello-example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/1o3zj95m9j)
 
 #### Features Showcase
+
 [Storybook](https://rcdexta.github.io/react-trello/)
 
 ## Features
 
 ![alt tag](https://raw.githubusercontent.com/rcdexta/react-trello/master/react-trello.gif)
 
-* Responsive and extensible
-* Easily pluggable into existing react application
-* Supports pagination when scrolling individual lanes
-* Drag-And-Drop on cards and lanes (compatible with touch devices)
-* Edit functionality to add/delete cards
-* Custom elements to define lane and card appearance
-* Event bus for triggering events externally (e.g.: adding or removing cards based on events coming from backend)
-* Inline edit lane's title
+- Responsive and extensible
+- Easily pluggable into existing react application
+- Supports pagination when scrolling individual lanes
+- Drag-And-Drop on cards and lanes (compatible with touch devices)
+- Edit functionality to add/delete cards
+- Custom elements to define lane and card appearance
+- Event bus for triggering events externally (e.g.: adding or removing cards based on events coming from backend)
+- Inline edit lane's title
 
 ## Getting Started
 
@@ -40,7 +42,6 @@ or
 ```bash
 $ yarn add react-trello
 ```
-
 
 ## Usage
 
@@ -101,8 +102,8 @@ import Board from 'react-trello/src'
 
 ## Upgrade
 
-Breaking changes. Since version 2.2 these properties are removed: `addLaneTitle`, `addCardLink`, `customLaneHeader`, `newCardTemplate`, `newLaneTemplate`, 
-and `customCardLayout` with `children` element. 
+Breaking changes. Since version 2.2 these properties are removed: `addLaneTitle`, `addCardLink`, `customLaneHeader`, `newCardTemplate`, `newLaneTemplate`,
+and `customCardLayout` with `children` element.
 
 Follow [upgrade instructions](UPGRADE.md) to make easy migration.
 
@@ -112,83 +113,80 @@ This is the container component that encapsulates the lanes and cards
 
 ### Required parameters
 
-| Name                | Type     | Description                                                                                                                    |
-| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| data                | object   | Actual board data in the form of json                                                                                          |
+| Name | Type   | Description                           |
+| ---- | ------ | ------------------------------------- |
+| data | object | Actual board data in the form of json |
 
 ### Optionable flags
 
-| Name                | Type     | Description                                                                                                                    |
-| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| draggable           | boolean  | Makes all cards and lanes draggable. Default: false                                                                            |
-| laneDraggable       | boolean  | Set to false to disable lane dragging. Default: true                                                                           |
-| cardDraggable       | boolean  | Set to false to disable card dragging. Default: true                                                                           |
-| collapsibleLanes    | boolean  | Make the lanes with cards collapsible. Default: false                                                                          |
-| editable            | boolean  | Makes the entire board editable. Allow cards to be added or deleted Default: false                                             |
-| canAddLanes         | boolean  | Allows new lanes to be added to the board.                          Default: false                                             |
-| hideCardDeleteIcon  | boolean  | Disable showing the delete icon to the top right corner of the card (when board is editable)                                   |
-| editLaneTitle     | boolean  | Allow inline lane title edit                                        Default: false                                             |
-
+| Name               | Type    | Description                                                                                  |
+| ------------------ | ------- | -------------------------------------------------------------------------------------------- |
+| draggable          | boolean | Makes all cards and lanes draggable. Default: false                                          |
+| laneDraggable      | boolean | Set to false to disable lane dragging. Default: true                                         |
+| cardDraggable      | boolean | Set to false to disable card dragging. Default: true                                         |
+| collapsibleLanes   | boolean | Make the lanes with cards collapsible. Default: false                                        |
+| editable           | boolean | Makes the entire board editable. Allow cards to be added or deleted Default: false           |
+| canAddLanes        | boolean | Allows new lanes to be added to the board. Default: false                                    |
+| hideCardDeleteIcon | boolean | Disable showing the delete icon to the top right corner of the card (when board is editable) |
+| editLaneTitle      | boolean | Allow inline lane title edit Default: false                                                  |
 
 ### Callbacks and handlers
 
-| Name                | Type     | Description                                                                                                                    |
-| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| handleDragStart     | function | Callback function triggered when card drag is started: `handleDragStart(cardId, laneId)`                                       |
-| handleDragEnd       | function | Callback function triggered when card drag ends, return false if you want to cancel drop: `handleDragEnd(cardId, sourceLaneId, targetLaneId, position, cardDetails)`                 |
-| handleLaneDragStart | function | Callback function triggered when lane drag is started: `handleLaneDragStart(laneId)`                                           |
-| handleLaneDragEnd   | function | Callback function triggered when lane drag ends: `handleLaneDragEnd(removedIndex, addedIndex, payload)`                                      |
-| onDataChange        | function | Called everytime the data changes due to user interaction or event bus: `onDataChange(newData)`                                |
-| onCardClick         | function | Called when a card is clicked: `onCardClick(cardId, metadata, laneId)`                                                         |
-| onCardAdd           | function | Called when a new card is added: `onCardAdd(card, laneId)`                                                                     |
-| onBeforeCardDelete  | function | Called before delete a card, please call the `callback()` if confirm to delete a card: `onConfirmCardDelete(callback)`    
-| onCardDelete        | function | Called when a card is deleted: `onCardDelete(cardId, laneId)`                                                                  |
-| onCardMoveAcrossLanes        | function | Called when a card is moved across lanes `onCardMoveAcrossLanes(fromLaneId, toLaneId, cardId, index)`                                                                  |
-| onLaneAdd           | function | Called when a new lane is added: `onLaneAdd(params)`                                                                     |
-| onLaneDelete        | function | Called when a lane is deleted `onLaneDelete(laneId)`                                                                     |
-| onLaneUpdate        | function | Called when a lane attributes are updated `onLaneUpdate(laneId, data)`                                                                     |
-| onLaneClick         | function | Called when a lane is clicked `onLaneClick(laneId)`. Card clicks are not propagated to lane click event                       |
-| onLaneScroll        | function | Called when a lane is scrolled to the end: `onLaneScroll(requestedPage, laneId)`                                               |
+| Name                  | Type     | Description                                                                                                                                                          |
+| --------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| handleDragStart       | function | Callback function triggered when card drag is started: `handleDragStart(cardId, laneId)`                                                                             |
+| handleDragEnd         | function | Callback function triggered when card drag ends, return false if you want to cancel drop: `handleDragEnd(cardId, sourceLaneId, targetLaneId, position, cardDetails)` |
+| handleLaneDragStart   | function | Callback function triggered when lane drag is started: `handleLaneDragStart(laneId)`                                                                                 |
+| handleLaneDragEnd     | function | Callback function triggered when lane drag ends: `handleLaneDragEnd(removedIndex, addedIndex, payload)`                                                              |
+| onDataChange          | function | Called everytime the data changes due to user interaction or event bus: `onDataChange(newData)`                                                                      |
+| onCardClick           | function | Called when a card is clicked: `onCardClick(cardId, metadata, laneId)`                                                                                               |
+| onCardAdd             | function | Called when a new card is added: `onCardAdd(card, laneId)`                                                                                                           |
+| onBeforeCardDelete    | function | Called before delete a card, please call the `callback()` if confirm to delete a card: `onConfirmCardDelete(callback)`                                               |
+| onCardDelete          | function | Called when a card is deleted: `onCardDelete(cardId, laneId)`                                                                                                        |
+| onCardMoveAcrossLanes | function | Called when a card is moved across lanes `onCardMoveAcrossLanes(fromLaneId, toLaneId, cardId, index)`                                                                |
+| onLaneAdd             | function | Called when a new lane is added: `onLaneAdd(params)`                                                                                                                 |
+| onLaneDelete          | function | Called when a lane is deleted `onLaneDelete(laneId)`                                                                                                                 |
+| onLaneUpdate          | function | Called when a lane attributes are updated `onLaneUpdate(laneId, data)`                                                                                               |
+| onLaneClick           | function | Called when a lane is clicked `onLaneClick(laneId)`. Card clicks are not propagated to lane click event                                                              |
+| onLaneScroll          | function | Called when a lane is scrolled to the end: `onLaneScroll(requestedPage, laneId)`                                                                                     |
 
 ### Other functions
 
-| Name                | Type     | Description                                                                                                                    |
-| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| eventBusHandle      | function | This is a special function that providers a publishHook to pass new events to the board. See details in Publish Events section |
-| laneSortFunction    | function | Used to specify the logic to sort cards on a lane: `laneSortFunction(card1, card2)`                                            |
+| Name             | Type     | Description                                                                                                                    |
+| ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| eventBusHandle   | function | This is a special function that providers a publishHook to pass new events to the board. See details in Publish Events section |
+| laneSortFunction | function | Used to specify the logic to sort cards on a lane: `laneSortFunction(card1, card2)`                                            |
 
 ### I18n support
 
-| Name                | Type     | Description                                                                                                                    |
-| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| lang    | string | Language of compiled texts ("en", "ru", "pt-br"). Default is "en"                                            |
-| t       | function | Translation function. You can specify either one key as a `String`. Look into ./src/locales for keys list |
+| Name | Type     | Description                                                                                               |
+| ---- | -------- | --------------------------------------------------------------------------------------------------------- |
+| lang | string   | Language of compiled texts ("en", "ru", "pt-br"). Default is "en"                                         |
+| t    | function | Translation function. You can specify either one key as a `String`. Look into ./src/locales for keys list |
 
 ### Style customization
 
-| Name                | Type     | Description                                                                                                                    |
-| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| style               | object   | Pass CSS style props to board container                                                                                        |
-| cardStyle           | object   | CSS style for every cards |
-| laneStyle           | object   | CSS style for every lanes |
-| tagStyle            | object   | If cards have tags, use this prop to modify their style                                                                        |
-| cardDragClass       | string   | CSS class to be applied to Card when being dragged                                                                             |
-| cardDropClass       | string   | CSS class to be applied to Card when being dropped                                                                             |
-| laneDragClass       | string   | CSS class to be applied to Lane when being dragged                                                                             |
-| laneDropClass       | string   | CSS class to be applied to Lane when being dropped                                                                             |
-| components          | object   | Map of customised components. [List](src/components/index.js) of available. |
-
+| Name          | Type   | Description                                                                 |
+| ------------- | ------ | --------------------------------------------------------------------------- |
+| style         | object | Pass CSS style props to board container                                     |
+| cardStyle     | object | CSS style for every cards                                                   |
+| laneStyle     | object | CSS style for every lanes                                                   |
+| tagStyle      | object | If cards have tags, use this prop to modify their style                     |
+| cardDragClass | string | CSS class to be applied to Card when being dragged                          |
+| cardDropClass | string | CSS class to be applied to Card when being dropped                          |
+| laneDragClass | string | CSS class to be applied to Lane when being dragged                          |
+| laneDropClass | string | CSS class to be applied to Lane when being dropped                          |
+| components    | object | Map of customised components. [List](src/components/index.js) of available. |
 
 ### Lane specific props
 
-| Name                | Type     | Description                                                                                                                    |
-| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| id                  | string   | ID of lane                                                                                                                     |
-| style               | object   | Pass CSS style props to lane container                                                                                         |
-| labelStyle          | object   | Pass CSS style props of label                                                                                                  |
-| cardStyle           | object   | Pass CSS style props for cards in this lane                                                                                    |
-| disallowAddingCard  | boolean  | Disallow adding card button in this lane (default: false)                                                                      |
-
+| Name               | Type    | Description                                               |
+| ------------------ | ------- | --------------------------------------------------------- |
+| id                 | string  | ID of lane                                                |
+| style              | object  | Pass CSS style props to lane container                    |
+| labelStyle         | object  | Pass CSS style props of label                             |
+| cardStyle          | object  | Pass CSS style props for cards in this lane               |
+| disallowAddingCard | boolean | Disallow adding card button in this lane (default: false) |
 
 Refer to `stories` folder for examples on many more options for customization.
 
@@ -228,7 +226,7 @@ const data = {
       ...
 };
 
-<Board 
+<Board
   style={{backgroundColor: 'red'}}  // Style of BoardWrapper
   data={data}
   />
@@ -295,7 +293,6 @@ The first event in the above example will move the card `Buy Milk` from the plan
 Pass translation function to provide custom or localized texts:
 
 ```javascript
-
 // If your translation table is flat
 //
 // For example: { 'placeholder.title': 'some text' }
@@ -312,24 +309,23 @@ const customTranslation = createTranslate(TRANSLATION_TABLE)
 
 List of available keys - [locales/en/translation.json](https://github.com/rcdexta/react-trello/blob/master/locales/en/translation.json)
 
-
 ### react-i18next example
 
 ```javascript
-import { withTranslation } from 'react-i18next';
+import {withTranslation} from 'react-i18next'
 
-const I18nBoard = withTranslation()(Board) 
+const I18nBoard = withTranslation()(Board)
 ```
 
 ## Compatible Browsers
 
 Tested to work with following browsers using [Browserling](https://www.browserling.com/):
 
-* Chrome 60 or above
-* Firefox 52 or above
-* Opera 51 or above
-* Safari 4.0 or above
-* Microsoft Edge 15 or above
+- Chrome 60 or above
+- Firefox 52 or above
+- Opera 51 or above
+- Safari 4.0 or above
+- Microsoft Edge 15 or above
 
 ## Logging
 
@@ -374,7 +370,6 @@ Learn how to write stories [here](https://storybook.js.org/basics/writing-storie
 
 </tr>
 </table>
-
 
 ### License
 

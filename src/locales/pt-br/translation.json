@@ -4,13 +4,13 @@
   "Delete lane": "Deletar coluna",
   "Lane actions": "Ações da coluna",
   "button": {
-      "Add lane": "Adicionar coluna",
-      "Add card": "Adicionar cartão",
-      "Cancel": "Cancelar"
+    "Add lane": "Adicionar coluna",
+    "Add card": "Adicionar cartão",
+    "Cancel": "Cancelar"
   },
   "placeholder": {
-      "title": "título",
-      "description": "descrição",
-      "label": "etiqueta"
+    "title": "título",
+    "description": "descrição",
+    "label": "etiqueta"
   }
 }
