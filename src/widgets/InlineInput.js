@@ -11,7 +11,7 @@ class InlineInputController extends React.Component {
 
   // This is the way to select all text if mouse clicked
   onMouseDown = e => {
-    if (document.activeElement != e.target) {
+    if (document.activeElement !== e.target) {
       e.preventDefault()
       this.refInput.focus()
     }
@@ -22,17 +22,17 @@ class InlineInputController extends React.Component {
   }
 
   onKeyDown = e => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       this.refInput.blur()
       e.preventDefault()
     }
-    if (e.keyCode == 27) {
+    if (e.keyCode === 27) {
       this.setValue(this.props.value)
       this.refInput.blur()
       e.preventDefault()
     }
-    if (e.keyCode == 9) {
-      if (this.getValue().length == 0) {
+    if (e.keyCode === 9) {
+      if (this.getValue().length === 0) {
         this.props.onCancel()
       }
       this.refInput.blur()
@@ -44,14 +44,14 @@ class InlineInputController extends React.Component {
   setValue = value => (this.refInput.value = value)
 
   updateValue = () => {
-    if (this.getValue() != this.props.value) {
+    if (this.getValue() !== this.props.value) {
       this.props.onSave(this.getValue())
     }
   }
 
   setRef = ref => {
     this.refInput = ref
-    if (this.props.resize != 'none') {
+    if (this.props.resize !== 'none') {
       autosize(this.refInput)
     }
   }

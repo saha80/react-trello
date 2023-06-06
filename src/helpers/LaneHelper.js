@@ -47,7 +47,7 @@ const LaneHelper = {
 
   updateLane: (state, updatedLane) => {
     const newLanes = state.lanes.map(lane => {
-      if (Object.is(updatedLane.id, lane.id)) {
+      if (updatedLane.id === lane.id) {
         return {...lane, ...updatedLane}
       } else {
         return lane

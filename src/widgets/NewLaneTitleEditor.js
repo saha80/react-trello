@@ -5,18 +5,18 @@ import autosize from 'autosize'
 
 class NewLaneTitleEditor extends React.Component {
   onKeyDown = e => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       this.refInput.blur()
       this.props.onSave()
       e.preventDefault()
     }
-    if (e.keyCode == 27) {
+    if (e.keyCode === 27) {
       this.cancel()
       e.preventDefault()
     }
 
-    if (e.keyCode == 9) {
-      if (this.getValue().length == 0) {
+    if (e.keyCode === 9) {
+      if (this.getValue().length === 0) {
         this.cancel()
       } else {
         this.props.onSave()
@@ -35,7 +35,7 @@ class NewLaneTitleEditor extends React.Component {
   setValue = value => (this.refInput.value = value)
 
   saveValue = () => {
-    if (this.getValue() != this.props.value) {
+    if (this.getValue() !== this.props.value) {
       this.props.onSave(this.getValue())
     }
   }
@@ -44,7 +44,7 @@ class NewLaneTitleEditor extends React.Component {
 
   setRef = ref => {
     this.refInput = ref
-    if (this.props.resize != 'none') {
+    if (this.props.resize !== 'none') {
       autosize(this.refInput)
     }
   }
