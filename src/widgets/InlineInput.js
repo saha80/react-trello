@@ -89,6 +89,7 @@ class InlineInputController extends React.Component {
 
 InlineInputController.propTypes = {
   onSave: PropTypes.func,
+  onCancel: PropTypes.func,
   border: PropTypes.bool,
   placeholder: PropTypes.string,
   value: PropTypes.string,

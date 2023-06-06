@@ -33,7 +33,8 @@ class BoardContainer extends Component {
       onDataChange(this.props.reducerData)
     }
     if (this.props.data && !isEqual(this.props.data, data)) {
-      this.props.actions.loadBoard(this.props.data)
+      const {actions, data} = this.props
+      actions.loadBoard(data)
       onDataChange(this.props.data)
     }
   }
@@ -218,7 +219,10 @@ class BoardContainer extends Component {
 BoardContainer.propTypes = {
   id: PropTypes.string,
   components: PropTypes.object,
-  actions: PropTypes.object,
+  actions: PropTypes.shape({
+    loadBoard: PropTypes.func,
+    addLane: PropTypes.func
+  }),
   data: PropTypes.object.isRequired,
   reducerData: PropTypes.object,
   onDataChange: PropTypes.func,
@@ -252,6 +256,8 @@ BoardContainer.propTypes = {
   laneDropClass: PropTypes.string,
   className: PropTypes.string,
   onCardMoveAcrossLanes: PropTypes.func.isRequired,
+  laneStyle: PropTypes.object,
+  cardStyle: PropTypes.object,
   t: PropTypes.func.isRequired
 }
 
