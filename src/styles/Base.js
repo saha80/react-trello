@@ -109,11 +109,7 @@ export const Section = styled.section`
   flex-direction: column;
 `
 
-interface LaneHeaderProps {
-  editLaneTitle?: boolean
-}
-
-export const LaneHeader = styled(Header)<LaneHeaderProps>`
+export const LaneHeader = styled(Header)`
   margin-bottom: 0px;
   ${props =>
     props.editLaneTitle &&
@@ -265,11 +261,7 @@ export const CardForm = styled.div`
   background-color: #e3e3e3;
 `
 
-export interface InlineInputProps {
-  border: boolean
-}
-
-export const InlineInput = styled.textarea<InlineInputProps>`
+export const InlineInput = styled.textarea`
   overflow-x: hidden; /* for Firefox (issue #5) */
   word-wrap: break-word;
   min-height: 18px;
