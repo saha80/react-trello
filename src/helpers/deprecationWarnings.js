@@ -17,7 +17,7 @@ const warn = (prop) => {
 
 export default (props) => {
   Object.keys(REPLACE_TABLE).forEach((key) => {
-    if (props.hasOwnProperty(key)) {
+    if (Object.hasOwn(props, key)) {
       warn(key);
     }
   });

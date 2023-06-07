@@ -7,7 +7,9 @@
     "curly": [1, "all"],
     "arrow-body-style": [1, "as-needed"],
     "no-fallthrough": 1,
-    "react/prop-types": 2
+    "react/prop-types": 2,
+    "react/jsx-handler-names": 0,
+    "react/jsx-curly-newline": 0
   },
   "extends": ["standard", "standard-jsx", "standard-react", "plugin:prettier/recommended"],
   "env": {

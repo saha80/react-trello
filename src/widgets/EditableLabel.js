@@ -12,7 +12,7 @@ class EditableLabel extends React.Component {
 
   onTextChange = (ev) => {
     const value = this.getText(ev.target);
-    this.setState({ value: value });
+    this.setState({ value });
   };
 
   componentDidMount() {
@@ -44,7 +44,10 @@ class EditableLabel extends React.Component {
       e.preventDefault();
     }
     if (e.keyCode === 27) {
-      this.refDiv.value = this.props.value;
+      if (this.refDiv) {
+        // @ts-ignore // fixme
+        this.refDiv.value = this.props.value;
+      }
       this.setState({ value: this.props.value });
       // this.refDiv.blur()
       e.preventDefault();

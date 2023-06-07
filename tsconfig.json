@@ -4,20 +4,12 @@
     "composite": true,
 
     /* Language and Environment */
-    "target": "es2020",
-    "lib": ["es2020", "DOM", "DOM.Iterable"],
+    "target": "es2022",
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
     "jsx": "react",
-    // "experimentalDecorators": true,
-    // "emitDecoratorMetadata": true,
-    // "jsxFactory": "",
-    // "jsxFragmentFactory": "",
-    // "jsxImportSource": "",
-    // "reactNamespace": "",
-    // "useDefineForClassFields": true,
-    // "moduleDetection": "auto",
 
     /* Modules */
-    "module": "es2020",
+    "module": "es2022",
     "baseUrl": "./",
     "paths": {
       "rt/*": ["./src/*"]
@@ -45,7 +37,7 @@
     "noUnusedParameters": true,
     // "exactOptionalPropertyTypes": true,
     "noImplicitReturns": true,
-    // "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": true,
     // "noUncheckedIndexedAccess": true,
     // "noImplicitOverride": true,
     // "noPropertyAccessFromIndexSignature": true,

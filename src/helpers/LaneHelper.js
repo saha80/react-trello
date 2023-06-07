@@ -45,7 +45,7 @@ const LaneHelper = {
 
   appendCardToLane: (state, { laneId, card, index }) => {
     const newLanes = LaneHelper.appendCardsToLane(state, {
-      laneId: laneId,
+      laneId,
       newCards: [card],
       index
     });
@@ -71,7 +71,7 @@ const LaneHelper = {
   removeCardFromLane: (state, { laneId, cardId }) => {
     const lanes = state.lanes.map((lane) => {
       if (lane.id === laneId) {
-        let newCards = lane.cards.filter((card) => card.id !== cardId);
+        const newCards = lane.cards.filter((card) => card.id !== cardId);
         return update(lane, { cards: { $set: newCards } });
       } else {
         return lane;
@@ -98,7 +98,7 @@ const LaneHelper = {
     return LaneHelper.appendCardToLane(updatedState, {
       laneId: toLaneId,
       card: cardToMove,
-      index: index
+      index
     });
   },
 
@@ -133,7 +133,7 @@ const LaneHelper = {
     return update(state, { lanes: { $set: lanes } });
   },
 
-  updateLanes: (state, lanes) => ({ ...state, ...{ lanes: lanes } }),
+  updateLanes: (state, lanes) => ({ ...state, ...{ lanes } }),
 
   moveLane: (state, { oldIndex, newIndex }) => {
     const laneToMove = state.lanes[oldIndex];

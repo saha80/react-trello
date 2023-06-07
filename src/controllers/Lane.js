@@ -35,7 +35,7 @@ class Lane extends Component {
           this.props.actions.paginateLane({
             laneId: this.props.id,
             newCards: moreCards,
-            nextPage: nextPage
+            nextPage
           });
         }
         this.setState({ loading: false });
@@ -74,12 +74,12 @@ class Lane extends Component {
         this.props.onCardDelete && this.props.onCardDelete(cardId, this.props.id);
         this.props.actions.removeCard({
           laneId: this.props.id,
-          cardId: cardId
+          cardId
         });
       });
     } else {
       this.props.onCardDelete && this.props.onCardDelete(cardId, this.props.id);
-      this.props.actions.removeCard({ laneId: this.props.id, cardId: cardId });
+      this.props.actions.removeCard({ laneId: this.props.id, cardId });
     }
   };
 
@@ -101,7 +101,7 @@ class Lane extends Component {
     const laneId = this.props.id;
     const id = uuidv1();
     this.hideEditableCard();
-    let card = { id, ...params };
+    const card = { id, ...params };
     this.props.actions.addCard({ laneId, card });
     this.props.onCardAdd(card, laneId);
   };
@@ -188,7 +188,7 @@ class Lane extends Component {
           {...card}
         />
       );
-      return cardDraggable && (!card.hasOwnProperty('draggable') || card.draggable) ? (
+      return cardDraggable && (!Object.hasOwn(card, 'draggable') || card.draggable) ? (
         <Draggable key={card.id}>{cardToRender}</Draggable>
       ) : (
         <span key={card.id}>{cardToRender}</span>

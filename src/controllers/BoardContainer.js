@@ -18,9 +18,8 @@ class BoardContainer extends Component {
   };
 
   componentDidMount() {
-    const { actions, eventBusHandle } = this.props;
-    actions.loadBoard(this.props.data);
-    if (eventBusHandle) {
+    this.props.actions.loadBoard(this.props.data);
+    if (this.props.eventBusHandle) {
       this.wireEventBus();
     }
   }
@@ -33,22 +32,19 @@ class BoardContainer extends Component {
       onDataChange(this.props.reducerData);
     }
     if (this.props.data && !isEqual(this.props.data, data)) {
-      const { actions, data } = this.props;
-      actions.loadBoard(data);
+      this.props.actions.loadBoard(this.props.data);
       onDataChange(this.props.data);
     }
   }
 
   onDragStart = ({ payload }) => {
-    const { handleLaneDragStart } = this.props;
-    handleLaneDragStart(payload.id);
+    this.props.handleLaneDragStart(payload.id);
   };
 
   onLaneDrop = ({ removedIndex, addedIndex, payload }) => {
-    const { actions, handleLaneDragEnd } = this.props;
     if (removedIndex !== addedIndex) {
-      actions.moveLane({ oldIndex: removedIndex, newIndex: addedIndex });
-      handleLaneDragEnd(removedIndex, addedIndex, payload);
+      this.props.actions.moveLane({ oldIndex: removedIndex, newIndex: addedIndex });
+      this.props.handleLaneDragEnd(removedIndex, addedIndex, payload);
     }
   };
 
@@ -58,44 +54,42 @@ class BoardContainer extends Component {
   getLaneDetails = (index) => this.props.reducerData.lanes[index];
 
   wireEventBus = () => {
-    const { actions, eventBusHandle } = this.props;
-    let eventBus = {
+    this.props.eventBusHandle({
       publish: (event) => {
         switch (event.type) {
           case 'ADD_CARD':
-            return actions.addCard({ laneId: event.laneId, card: event.card });
+            return this.props.actions.addCard({ laneId: event.laneId, card: event.card });
           case 'UPDATE_CARD':
-            return actions.updateCard({
+            return this.props.actions.updateCard({
               laneId: event.laneId,
               card: event.card
             });
           case 'REMOVE_CARD':
-            return actions.removeCard({
+            return this.props.actions.removeCard({
               laneId: event.laneId,
               cardId: event.cardId
             });
           case 'REFRESH_BOARD':
-            return actions.loadBoard(event.data);
+            return this.props.actions.loadBoard(event.data);
           case 'MOVE_CARD':
-            return actions.moveCardAcrossLanes({
+            return this.props.actions.moveCardAcrossLanes({
               fromLaneId: event.fromLaneId,
               toLaneId: event.toLaneId,
               cardId: event.cardId,
               index: event.index
             });
           case 'UPDATE_CARDS':
-            return actions.updateCards({
+            return this.props.actions.updateCards({
               laneId: event.laneId,
               cards: event.cards
             });
           case 'UPDATE_LANES':
-            return actions.updateLanes(event.lanes);
+            return this.props.actions.updateLanes(event.lanes);
           case 'UPDATE_LANE':
-            return actions.updateLane(event.lane);
+            return this.props.actions.updateLane(event.lane);
         }
       }
-    };
-    eventBusHandle(eventBus);
+    });
   };
 
   // + add
@@ -240,7 +234,15 @@ BoardContainer.propTypes = {
   components: PropTypes.object,
   actions: PropTypes.shape({
     loadBoard: PropTypes.func,
-    addLane: PropTypes.func
+    addLane: PropTypes.func,
+    moveLane: PropTypes.func,
+    addCard: PropTypes.func,
+    updateCard: PropTypes.func,
+    removeCard: PropTypes.func,
+    moveCardAcrossLanes: PropTypes.func,
+    updateCards: PropTypes.func,
+    updateLanes: PropTypes.func,
+    updateLane: PropTypes.func
   }),
   data: PropTypes.object.isRequired,
   reducerData: PropTypes.object,

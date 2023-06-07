@@ -23,7 +23,7 @@ const addCard = () => {
 
 function generateCards(requestedPage = 1) {
   const cards = [];
-  let fetchedItems = (requestedPage - 1) * PER_PAGE;
+  const fetchedItems = (requestedPage - 1) * PER_PAGE;
   for (let i = fetchedItems + 1; i <= fetchedItems + PER_PAGE; i++) {
     cards.push({
       id: `${i}`,
@@ -65,7 +65,7 @@ class BoardWrapper extends Component {
   };
 
   paginate = (requestedPage, laneId) => {
-    let newCards = generateCards(requestedPage);
+    const newCards = generateCards(requestedPage);
     return this.delayedPromise(2000, newCards);
   };
 

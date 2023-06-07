@@ -111,7 +111,7 @@ export const Section = styled.section`
 
 export const LaneHeader = styled(Header)`
   margin-bottom: 0px;
-  ${(props) =>
+  ${(/** @type {{editLaneTitle: boolean;}} */ props) =>
     props.editLaneTitle &&
     css`
       padding: 0px;
@@ -281,7 +281,7 @@ export const InlineInput = styled.textarea`
   border: 0;
   padding: 0 8px;
   outline: 0;
-  ${(props) =>
+  ${(/** @type {{border: boolean}} */ props) =>
     props.border &&
     css`
       &:focus {

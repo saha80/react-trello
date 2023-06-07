@@ -10,5 +10,5 @@ const LaneFooter = ({ onClick, collapsed }) => (
 );
 
 storiesOf('Custom Components', module).add('LaneFooter', () => (
-  <Board collapsibleLanes components={{ LaneFooter: LaneFooter }} data={data} />
+  <Board collapsibleLanes components={{ LaneFooter }} data={data} />
 ));

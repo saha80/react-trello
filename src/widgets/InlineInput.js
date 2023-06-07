@@ -79,7 +79,6 @@ class InlineInputController extends React.Component {
         autoCorrect="off"
         autoCapitalize="off"
         spellCheck="false"
-        dataGramm="false"
         rows={1}
         autoFocus={autoFocus}
       />

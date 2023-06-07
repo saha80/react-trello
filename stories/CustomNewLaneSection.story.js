@@ -11,6 +11,6 @@ const NewLaneSection = ({ t, onClick }) => (
 
 storiesOf('Custom Components', module).add(
   'NewLaneSection',
-  () => <Board editable canAddLanes components={{ NewLaneSection: NewLaneSection }} data={data} />,
+  () => <Board editable canAddLanes components={{ NewLaneSection }} data={data} />,
   {}
 );
