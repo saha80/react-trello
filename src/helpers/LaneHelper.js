@@ -10,6 +10,10 @@ const LaneHelper = {
     return update(state, { lanes: { $set: newLanes } });
   },
 
+  deinitialiseLanes: (state, _) => {
+    return update(state, { lanes: { $set: [] } });
+  },
+
   paginateLane: (state, { laneId, newCards, nextPage }) => {
     const updatedLanes = LaneHelper.appendCardsToLane(state, {
       laneId,
@@ -58,13 +62,9 @@ const LaneHelper = {
   },
 
   updateLane: (state, updatedLane) => {
-    const newLanes = state.lanes.map((lane) => {
-      if (updatedLane.id === lane.id) {
-        return { ...lane, ...updatedLane };
-      } else {
-        return lane;
-      }
-    });
+    const newLanes = state.lanes.map(
+      (lane) => (updatedLane.id === lane.id ? { ...lane, ...updatedLane } : lane)
+    );
     return update(state, { lanes: { $set: newLanes } });
   },
 

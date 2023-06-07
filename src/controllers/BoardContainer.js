@@ -24,6 +24,10 @@ class BoardContainer extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.actions.unloadBoard();
+  }
+
   // apply patch
   componentDidUpdate(prevProps) {
     // this.props.data changes when external Board input props change and this.props.reducerData changes due to event bus or UI changes
@@ -234,6 +238,7 @@ BoardContainer.propTypes = {
   components: PropTypes.object,
   actions: PropTypes.shape({
     loadBoard: PropTypes.func,
+    unloadBoard: PropTypes.func,
     addLane: PropTypes.func,
     moveLane: PropTypes.func,
     addCard: PropTypes.func,
