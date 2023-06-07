@@ -55,8 +55,20 @@ const data = {
       title: 'Planned Tasks',
       label: '2/2',
       cards: [
-        {id: 'Card1', title: 'Write Blog', description: 'Can AI make memes', label: '30 mins', draggable: false},
-        {id: 'Card2', title: 'Pay Rent', description: 'Transfer via NEFT', label: '5 mins', metadata: {sha: 'be312a1'}}
+        {
+          id: 'Card1',
+          title: 'Write Blog',
+          description: 'Can AI make memes',
+          label: '30 mins',
+          draggable: false
+        },
+        {
+          id: 'Card2',
+          title: 'Pay Rent',
+          description: 'Transfer via NEFT',
+          label: '5 mins',
+          metadata: { sha: 'be312a1' }
+        }
       ]
     },
     {
@@ -66,7 +78,7 @@ const data = {
       cards: []
     }
   ]
-}
+};
 ```
 
 `draggable` property of Card object is `true` by default.
@@ -74,12 +86,12 @@ const data = {
 The data is passed to the board component and that's it.
 
 ```jsx
-import React from 'react'
-import Board from 'react-trello'
+import React from 'react';
+import Board from 'react-trello';
 
 export default class App extends React.Component {
   render() {
-    return <Board data={data} />
+    return <Board data={data} />;
   }
 }
 ```
@@ -97,7 +109,7 @@ $ yarn add rcdexta/react-trello
 and
 
 ```javascript
-import Board from 'react-trello/src'
+import Board from 'react-trello/src';
 ```
 
 ## Upgrade
@@ -312,9 +324,9 @@ List of available keys - [locales/en/translation.json](https://github.com/rcdext
 ### react-i18next example
 
 ```javascript
-import {withTranslation} from 'react-i18next'
+import { withTranslation } from 'react-i18next';
 
-const I18nBoard = withTranslation()(Board)
+const I18nBoard = withTranslation()(Board);
 ```
 
 ## Compatible Browsers

@@ -1,12 +1,12 @@
-import React from 'react'
-import {storiesOf} from '@storybook/react'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
 
-import Board from '../src'
+import Board from '../src';
 
-const CustomLaneHeader = ({label, cards, title, current, target}) => {
+const CustomLaneHeader = ({ label, cards, title, current, target }) => {
   const buttonHandler = () => {
-    alert(`The label passed to the lane was: ${label}. The lane has ${cards.length} cards!`)
-  }
+    alert(`The label passed to the lane was: ${label}. The lane has ${cards.length} cards!`);
+  };
   return (
     <div>
       <header
@@ -17,11 +17,12 @@ const CustomLaneHeader = ({label, cards, title, current, target}) => {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between'
-        }}>
-        <div style={{fontSize: 14, fontWeight: 'bold'}}>{title}</div>
+        }}
+      >
+        <div style={{ fontSize: 14, fontWeight: 'bold' }}>{title}</div>
         {label && (
-          <div style={{width: '30%', textAlign: 'right', fontSize: 13}}>
-            <button onClick={buttonHandler} style={{cursor: 'pointer'}}>
+          <div style={{ width: '30%', textAlign: 'right', fontSize: 13 }}>
+            <button onClick={buttonHandler} style={{ cursor: 'pointer' }}>
               ?
             </button>
           </div>
@@ -31,8 +32,8 @@ const CustomLaneHeader = ({label, cards, title, current, target}) => {
         Percentage: {current || 0}/{target}
       </div>
     </div>
-  )
-}
+  );
+};
 
 storiesOf('Custom Components', module).add(
   'LaneHeader',
@@ -70,16 +71,16 @@ storiesOf('Custom Components', module).add(
               title: 'Michael Caine',
               description: 'You are welcome. Interested in doing business with you' + ' again',
               tags: [
-                {title: 'Critical', color: 'white', bgcolor: 'red'},
-                {title: '2d ETA', color: 'white', bgcolor: '#0079BF'}
+                { title: 'Critical', color: 'white', bgcolor: 'red' },
+                { title: '2d ETA', color: 'white', bgcolor: '#0079BF' }
               ]
             }
           ]
         }
       ]
-    }
+    };
 
-    return <Board data={data} components={{LaneHeader: CustomLaneHeader}} />
+    return <Board data={data} components={{ LaneHeader: CustomLaneHeader }} />;
   },
-  {info: 'Style your lane header appearance'}
-)
+  { info: 'Style your lane header appearance' }
+);

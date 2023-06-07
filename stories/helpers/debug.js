@@ -1,10 +1,10 @@
 export default message => {
   if (process.env.NODE_ENV === 'test') {
-    return
+    return;
   }
   if (typeof message === 'object') {
-    console.dir(message)
+    console.dir(message);
   } else {
-    console.log(message)
+    console.log(message);
   }
-}
+};

@@ -1,6 +1,6 @@
-import {addDecorator, configure} from '@storybook/react'
-import {withInfo} from '@storybook/addon-info'
-import {withOptions} from '@storybook/addon-options'
+import { addDecorator, configure } from '@storybook/react';
+import { withInfo } from '@storybook/addon-info';
+import { withOptions } from '@storybook/addon-options';
 
 addDecorator(
   withOptions({
@@ -12,7 +12,7 @@ addDecorator(
     addonPanelInRight: false,
     showAddonPanel: false
   })
-)
+);
 
 addDecorator(
   withInfo({
@@ -21,10 +21,10 @@ addDecorator(
     source: true,
     propTables: false
   })
-)
+);
 
 function loadStories() {
-  require('../stories')
+  require('../stories');
 }
 
-configure(loadStories, module)
+configure(loadStories, module);

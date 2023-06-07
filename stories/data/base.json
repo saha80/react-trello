@@ -4,7 +4,7 @@
       "id": "PLANNED",
       "title": "Planned Tasks",
       "label": "20/70",
-      "style": {"width": 280},
+      "style": { "width": 280 },
       "cards": [
         {
           "id": "Milk",
@@ -36,7 +36,7 @@
       "id": "WIP",
       "title": "Work In Progress",
       "label": "10/20",
-      "style": {"width": 280},
+      "style": { "width": 280 },
       "cards": [
         {
           "id": "Wip1",
@@ -50,13 +50,13 @@
       "id": "BLOCKED",
       "title": "Blocked",
       "label": "0/0",
-      "style": {"width": 280},
+      "style": { "width": 280 },
       "cards": []
     },
     {
       "id": "COMPLETED",
       "title": "Completed",
-      "style": {"width": 280},
+      "style": { "width": 280 },
       "label": "2/5",
       "cards": [
         {
@@ -76,7 +76,7 @@
     {
       "id": "REPEAT",
       "title": "Repeat",
-      "style": {"width": 280},
+      "style": { "width": 280 },
       "label": "1/1",
       "cards": [
         {
@@ -90,7 +90,7 @@
     {
       "id": "ARCHIVED",
       "title": "Archived",
-      "style": {"width": 280},
+      "style": { "width": 280 },
       "label": "1/1",
       "cards": [
         {
@@ -104,7 +104,7 @@
     {
       "id": "ARCHIVED2",
       "title": "Archived2",
-      "style": {"width": 280},
+      "style": { "width": 280 },
       "label": "1/1",
       "cards": [
         {
@@ -118,7 +118,7 @@
     {
       "id": "ARCHIVED3",
       "title": "Archived3",
-      "style": {"width": 280},
+      "style": { "width": 280 },
       "label": "1/1",
       "cards": [
         {

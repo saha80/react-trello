@@ -75,7 +75,8 @@ Instead of
   customLaneHeader={<CustomLaneHeader />}
   newCardTemplate={<NewCard />}
   newLaneTemplate={<NewLane />}
-  customCardLayout>
+  customCardLayout
+>
   <CustomCard />
 </Board>
 ```
@@ -89,8 +90,8 @@ const components = {
   NewCardForm: NewCard,
   NewLaneSection: NewLane,
   Card: CustomCard
-}
-;<Board components={components} />
+};
+<Board components={components} />;
 ```
 
 That's all. Have a nice day! )

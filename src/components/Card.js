@@ -1,16 +1,16 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import {MovableCardWrapper, CardHeader, CardRightContent, CardTitle, Detail, Footer} from 'rt/styles/Base'
-import InlineInput from 'rt/widgets/InlineInput'
-import Tag from './Card/Tag'
-import DeleteButton from 'rt/widgets/DeleteButton'
+import { MovableCardWrapper, CardHeader, CardRightContent, CardTitle, Detail, Footer } from 'rt/styles/Base';
+import InlineInput from 'rt/widgets/InlineInput';
+import Tag from './Card/Tag';
+import DeleteButton from 'rt/widgets/DeleteButton';
 
 class Card extends Component {
   onDelete = e => {
-    this.props.onDelete()
-    e.stopPropagation()
-  }
+    this.props.onDelete();
+    e.stopPropagation();
+  };
 
   render() {
     const {
@@ -28,11 +28,11 @@ class Card extends Component {
       cardDraggable,
       editable,
       t
-    } = this.props
+    } = this.props;
 
     const updateCard = card => {
-      onChange({...card, id})
-    }
+      onChange({ ...card, id });
+    };
 
     return (
       <MovableCardWrapper data-id={id} onClick={onClick} style={style} className={className}>
@@ -44,7 +44,7 @@ class Card extends Component {
                 border
                 placeholder={t('placeholder.title')}
                 resize="vertical"
-                onSave={value => updateCard({title: value})}
+                onSave={value => updateCard({ title: value })}
               />
             ) : (
               title
@@ -57,7 +57,7 @@ class Card extends Component {
                 border
                 placeholder={t('placeholder.label')}
                 resize="vertical"
-                onSave={value => updateCard({label: value})}
+                onSave={value => updateCard({ label: value })}
               />
             ) : (
               label
@@ -72,7 +72,7 @@ class Card extends Component {
               border
               placeholder={t('placeholder.description')}
               resize="vertical"
-              onSave={value => updateCard({description: value})}
+              onSave={value => updateCard({ description: value })}
             />
           ) : (
             description
@@ -87,7 +87,7 @@ class Card extends Component {
             </Footer>
           )}
       </MovableCardWrapper>
-    )
+    );
   }
 }
 
@@ -107,7 +107,7 @@ Card.propTypes = {
   cardDraggable: PropTypes.bool,
   editable: PropTypes.bool,
   t: PropTypes.func
-}
+};
 
 Card.defaultProps = {
   showDeleteButton: true,
@@ -120,6 +120,6 @@ Card.defaultProps = {
   label: '',
   tags: [],
   className: ''
-}
+};
 
-export default Card
+export default Card;

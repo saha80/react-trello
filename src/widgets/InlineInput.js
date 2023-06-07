@@ -1,68 +1,68 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {InlineInput} from 'rt/styles/Base'
-import autosize from 'autosize'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { InlineInput } from 'rt/styles/Base';
+import autosize from 'autosize';
 
 class InlineInputController extends React.Component {
   // apply patch
   onFocus = e => {
-    e.target.select()
-  }
+    e.target.select();
+  };
 
   // This is the way to select all text if mouse clicked
   onMouseDown = e => {
     if (document.activeElement !== e.target) {
-      e.preventDefault()
-      this.refInput.focus()
+      e.preventDefault();
+      this.refInput.focus();
     }
-  }
+  };
 
   onBlur = () => {
-    this.updateValue()
-  }
+    this.updateValue();
+  };
 
   onKeyDown = e => {
     if (e.keyCode === 13) {
-      this.refInput.blur()
-      e.preventDefault()
+      this.refInput.blur();
+      e.preventDefault();
     }
     if (e.keyCode === 27) {
-      this.setValue(this.props.value)
-      this.refInput.blur()
-      e.preventDefault()
+      this.setValue(this.props.value);
+      this.refInput.blur();
+      e.preventDefault();
     }
     if (e.keyCode === 9) {
       if (this.getValue().length === 0) {
-        this.props.onCancel()
+        this.props.onCancel();
       }
-      this.refInput.blur()
-      e.preventDefault()
+      this.refInput.blur();
+      e.preventDefault();
     }
-  }
+  };
 
-  getValue = () => this.refInput.value
-  setValue = value => (this.refInput.value = value)
+  getValue = () => this.refInput.value;
+  setValue = value => (this.refInput.value = value);
 
   updateValue = () => {
     if (this.getValue() !== this.props.value) {
-      this.props.onSave(this.getValue())
+      this.props.onSave(this.getValue());
     }
-  }
+  };
 
   setRef = ref => {
-    this.refInput = ref
+    this.refInput = ref;
     if (this.props.resize !== 'none') {
-      autosize(this.refInput)
+      autosize(this.refInput);
     }
-  }
+  };
 
   // apply patch
   componentDidUpdate() {
-    this.setValue(this.props.value)
+    this.setValue(this.props.value);
   }
 
   render() {
-    const {autoFocus, border, value, placeholder, className} = this.props
+    const { autoFocus, border, value, placeholder, className } = this.props;
 
     return (
       <InlineInput
@@ -83,7 +83,7 @@ class InlineInputController extends React.Component {
         rows={1}
         autoFocus={autoFocus}
       />
-    )
+    );
   }
 }
 
@@ -96,7 +96,7 @@ InlineInputController.propTypes = {
   autoFocus: PropTypes.bool,
   className: PropTypes.string,
   resize: PropTypes.oneOf(['none', 'vertical', 'horizontal'])
-}
+};
 
 InlineInputController.defaultProps = {
   onSave: () => {},
@@ -105,6 +105,6 @@ InlineInputController.defaultProps = {
   border: false,
   autoFocus: false,
   resize: 'none'
-}
+};
 
-export default InlineInputController
+export default InlineInputController;

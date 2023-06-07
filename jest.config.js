@@ -11,4 +11,4 @@ module.exports = {
   },
   coveragePathIgnorePatterns: ['/stories/', '/.storybook/', '<rootDir>/node_modules/', 'story(.*).tsx'],
   collectCoverage: true
-}
+};

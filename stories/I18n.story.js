@@ -1,15 +1,15 @@
-import React from 'react'
-import {storiesOf} from '@storybook/react'
-import {useTranslation, I18nextProvider} from 'react-i18next'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { useTranslation, I18nextProvider } from 'react-i18next';
 
-import Board from '../src'
-import i18n from './helpers/i18n'
-import createTranslate from 'rt/helpers/createTranslate'
+import Board from '../src';
+import i18n from './helpers/i18n';
+import createTranslate from 'rt/helpers/createTranslate';
 
-const smallData = require('./data/data-sort')
+const smallData = require('./data/data-sort');
 
 const I18nBoard = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   return (
     <div>
       <div>
@@ -18,8 +18,8 @@ const I18nBoard = () => {
       </div>
       <Board data={smallData} t={t} editable canAddLanes draggable />
     </div>
-  )
-}
+  );
+};
 
 storiesOf('I18n', module)
   .add(
@@ -40,12 +40,12 @@ storiesOf('I18n', module)
           description: 'description',
           label: 'label'
         }
-      }
+      };
 
-      const customTranslation = createTranslate(TEXTS)
-      return <Board data={smallData} t={customTranslation} editable canAddLanes draggable />
+      const customTranslation = createTranslate(TEXTS);
+      return <Board data={smallData} t={customTranslation} editable canAddLanes draggable />;
     },
-    {info: 'Have custom text titles'}
+    { info: 'Have custom text titles' }
   )
   .add(
     'Flat translation table',
@@ -61,13 +61,15 @@ storiesOf('I18n', module)
         'placeholder.title': 'Titel',
         'placeholder.description': 'Beschreibung',
         'placeholder.label': 'Label'
-      }
+      };
 
-      return <Board data={smallData} t={key => FLAT_TRANSLATION_TABLE[key]} editable canAddLanes draggable />
+      return <Board data={smallData} t={key => FLAT_TRANSLATION_TABLE[key]} editable canAddLanes draggable />;
     },
-    {info: 'Flat translation table'}
-  )
+    { info: 'Flat translation table' }
+  );
 
 storiesOf('I18n', module)
   .addDecorator(story => <I18nextProvider i18n={i18n}>{story()}</I18nextProvider>)
-  .add('Using i18next', () => <I18nBoard />, {info: 'Availability to switching between languages'})
+  .add('Using i18next', () => <I18nBoard />, {
+    info: 'Availability to switching between languages'
+  });

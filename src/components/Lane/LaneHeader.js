@@ -1,8 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import InlineInput from 'rt/widgets/InlineInput'
-import {Title, LaneHeader, RightContent} from 'rt/styles/Base'
-import LaneMenu from './LaneHeader/LaneMenu'
+import React from 'react';
+import PropTypes from 'prop-types';
+import InlineInput from 'rt/widgets/InlineInput';
+import { Title, LaneHeader, RightContent } from 'rt/styles/Base';
+import LaneMenu from './LaneHeader/LaneMenu';
 
 const LaneHeaderComponent = ({
   updateTitle,
@@ -32,7 +32,7 @@ const LaneHeaderComponent = ({
     )}
     {canAddLanes && <LaneMenu t={t} onDelete={onDelete} />}
   </LaneHeader>
-)
+);
 
 LaneHeaderComponent.propTypes = {
   updateTitle: PropTypes.func,
@@ -46,12 +46,12 @@ LaneHeaderComponent.propTypes = {
   t: PropTypes.func.isRequired,
   titleStyle: PropTypes.object,
   labelStyle: PropTypes.object
-}
+};
 
 LaneHeaderComponent.defaultProps = {
   updateTitle: () => {},
   editLaneTitle: false,
   canAddLanes: false
-}
+};
 
-export default LaneHeaderComponent
+export default LaneHeaderComponent;

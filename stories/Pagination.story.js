@@ -1,41 +1,41 @@
-import React from 'react'
-import {storiesOf} from '@storybook/react'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
 
-import Board from '../src'
+import Board from '../src';
 
 storiesOf('Basic Functions', module).add(
   'Infinite Scrolling',
   () => {
-    const PER_PAGE = 15
+    const PER_PAGE = 15;
 
     function delayedPromise(durationInMs, resolutionPayload) {
       return new Promise(function(resolve) {
         setTimeout(function() {
-          resolve(resolutionPayload)
-        }, durationInMs)
-      })
+          resolve(resolutionPayload);
+        }, durationInMs);
+      });
     }
 
     function generateCards(requestedPage = 1) {
-      const cards = []
-      let fetchedItems = (requestedPage - 1) * PER_PAGE
+      const cards = [];
+      let fetchedItems = (requestedPage - 1) * PER_PAGE;
       for (let i = fetchedItems + 1; i <= fetchedItems + PER_PAGE; i++) {
         cards.push({
           id: `${i}`,
           title: `Card${i}`,
           description: `Description for #${i}`
-        })
+        });
       }
-      return cards
+      return cards;
     }
 
     function paginate(requestedPage, laneId) {
       // simulate no more cards after page 2
       if (requestedPage > 2) {
-        return delayedPromise(2000, [])
+        return delayedPromise(2000, []);
       }
-      let newCards = generateCards(requestedPage)
-      return delayedPromise(2000, newCards)
+      let newCards = generateCards(requestedPage);
+      return delayedPromise(2000, newCards);
     }
 
     const data = {
@@ -46,7 +46,7 @@ storiesOf('Basic Functions', module).add(
           cards: generateCards()
         }
       ]
-    }
+    };
 
     return (
       <Board
@@ -54,7 +54,7 @@ storiesOf('Basic Functions', module).add(
         laneSortFunction={(card1, card2) => parseInt(card1.id) - parseInt(card2.id)}
         onLaneScroll={paginate}
       />
-    )
+    );
   },
   {
     info: `
@@ -68,4 +68,4 @@ storiesOf('Basic Functions', module).add(
       ~~~
     `
   }
-)
+);

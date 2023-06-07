@@ -1,9 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import {Popover} from 'react-popopo'
+import { Popover } from 'react-popopo';
 
-import {CustomPopoverContent, CustomPopoverContainer} from 'rt/styles/Base'
+import { CustomPopoverContent, CustomPopoverContainer } from 'rt/styles/Base';
 
 import {
   LaneMenuTitle,
@@ -13,14 +13,15 @@ import {
   LaneMenuItem,
   GenDelButton,
   MenuButton
-} from 'rt/styles/Elements'
+} from 'rt/styles/Elements';
 
-const LaneMenu = ({t, onDelete}) => (
+const LaneMenu = ({ t, onDelete }) => (
   <Popover
     position="bottom"
     PopoverContainer={CustomPopoverContainer}
     PopoverContent={CustomPopoverContent}
-    trigger={<MenuButton>⋮</MenuButton>}>
+    trigger={<MenuButton>⋮</MenuButton>}
+  >
     <LaneMenuHeader>
       <LaneMenuTitle>{t('Lane actions')}</LaneMenuTitle>
       <DeleteWrapper>
@@ -31,11 +32,11 @@ const LaneMenu = ({t, onDelete}) => (
       <LaneMenuItem onClick={onDelete}>{t('Delete lane')}</LaneMenuItem>
     </LaneMenuContent>
   </Popover>
-)
+);
 
 LaneMenu.propTypes = {
   t: PropTypes.func,
   onDelete: PropTypes.func
-}
+};
 
-export default LaneMenu
+export default LaneMenu;

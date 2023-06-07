@@ -1,60 +1,60 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {InlineInput} from 'rt/styles/Base'
-import autosize from 'autosize'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { InlineInput } from 'rt/styles/Base';
+import autosize from 'autosize';
 
 class NewLaneTitleEditor extends React.Component {
   onKeyDown = e => {
     if (e.keyCode === 13) {
-      this.refInput.blur()
-      this.props.onSave()
-      e.preventDefault()
+      this.refInput.blur();
+      this.props.onSave();
+      e.preventDefault();
     }
     if (e.keyCode === 27) {
-      this.cancel()
-      e.preventDefault()
+      this.cancel();
+      e.preventDefault();
     }
 
     if (e.keyCode === 9) {
       if (this.getValue().length === 0) {
-        this.cancel()
+        this.cancel();
       } else {
-        this.props.onSave()
+        this.props.onSave();
       }
-      e.preventDefault()
+      e.preventDefault();
     }
-  }
+  };
 
   cancel = () => {
-    this.setValue('')
-    this.props.onCancel()
-    this.refInput.blur()
-  }
+    this.setValue('');
+    this.props.onCancel();
+    this.refInput.blur();
+  };
 
-  getValue = () => this.refInput.value
-  setValue = value => (this.refInput.value = value)
+  getValue = () => this.refInput.value;
+  setValue = value => (this.refInput.value = value);
 
   saveValue = () => {
     if (this.getValue() !== this.props.value) {
-      this.props.onSave(this.getValue())
+      this.props.onSave(this.getValue());
     }
-  }
+  };
 
-  focus = () => this.refInput.focus()
+  focus = () => this.refInput.focus();
 
   setRef = ref => {
-    this.refInput = ref
+    this.refInput = ref;
     if (this.props.resize !== 'none') {
-      autosize(this.refInput)
+      autosize(this.refInput);
     }
-  }
+  };
 
   render() {
-    const {autoFocus, resize, border, autoResize, value, placeholder} = this.props
+    const { autoFocus, resize, border, autoResize, value, placeholder } = this.props;
 
     return (
       <InlineInput
-        style={{resize: resize}}
+        style={{ resize: resize }}
         ref={this.setRef}
         border={border}
         onKeyDown={this.onKeyDown}
@@ -64,7 +64,7 @@ class NewLaneTitleEditor extends React.Component {
         autoResize={autoResize}
         autoFocus={autoFocus}
       />
-    )
+    );
   }
 }
 
@@ -77,7 +77,7 @@ NewLaneTitleEditor.propTypes = {
   autoFocus: PropTypes.bool,
   autoResize: PropTypes.bool,
   resize: PropTypes.oneOf(['none', 'vertical', 'horizontal'])
-}
+};
 
 NewLaneTitleEditor.defaultProps = {
   inputRef: () => {},
@@ -89,6 +89,6 @@ NewLaneTitleEditor.defaultProps = {
   autoFocus: false,
   autoResize: false,
   resize: 'none'
-}
+};
 
-export default NewLaneTitleEditor
+export default NewLaneTitleEditor;

@@ -1,113 +1,122 @@
-import React, {Component} from 'react'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import Container from 'rt/dnd/Container'
-import Draggable from 'rt/dnd/Draggable'
-import PropTypes from 'prop-types'
-import pick from 'lodash/pick'
-import isEqual from 'lodash/isEqual'
-import Lane from './Lane'
-import {PopoverWrapper} from 'react-popopo'
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Container from 'rt/dnd/Container';
+import Draggable from 'rt/dnd/Draggable';
+import PropTypes from 'prop-types';
+import pick from 'lodash/pick';
+import isEqual from 'lodash/isEqual';
+import Lane from './Lane';
+import { PopoverWrapper } from 'react-popopo';
 
-import * as boardActions from 'rt/actions/BoardActions'
-import * as laneActions from 'rt/actions/LaneActions'
+import * as boardActions from 'rt/actions/BoardActions';
+import * as laneActions from 'rt/actions/LaneActions';
 
 class BoardContainer extends Component {
   state = {
     addLaneMode: false
-  }
+  };
 
   componentDidMount() {
-    const {actions, eventBusHandle} = this.props
-    actions.loadBoard(this.props.data)
+    const { actions, eventBusHandle } = this.props;
+    actions.loadBoard(this.props.data);
     if (eventBusHandle) {
-      this.wireEventBus()
+      this.wireEventBus();
     }
   }
 
   // apply patch
   componentDidUpdate(prevProps) {
     // this.props.data changes when external Board input props change and this.props.reducerData changes due to event bus or UI changes
-    const {data, reducerData, onDataChange} = prevProps
+    const { data, reducerData, onDataChange } = prevProps;
     if (this.props.reducerData && !isEqual(reducerData, this.props.reducerData)) {
-      onDataChange(this.props.reducerData)
+      onDataChange(this.props.reducerData);
     }
     if (this.props.data && !isEqual(this.props.data, data)) {
-      const {actions, data} = this.props
-      actions.loadBoard(data)
-      onDataChange(this.props.data)
+      const { actions, data } = this.props;
+      actions.loadBoard(data);
+      onDataChange(this.props.data);
     }
   }
 
-  onDragStart = ({payload}) => {
-    const {handleLaneDragStart} = this.props
-    handleLaneDragStart(payload.id)
-  }
+  onDragStart = ({ payload }) => {
+    const { handleLaneDragStart } = this.props;
+    handleLaneDragStart(payload.id);
+  };
 
-  onLaneDrop = ({removedIndex, addedIndex, payload}) => {
-    const {actions, handleLaneDragEnd} = this.props
+  onLaneDrop = ({ removedIndex, addedIndex, payload }) => {
+    const { actions, handleLaneDragEnd } = this.props;
     if (removedIndex !== addedIndex) {
-      actions.moveLane({oldIndex: removedIndex, newIndex: addedIndex})
-      handleLaneDragEnd(removedIndex, addedIndex, payload)
+      actions.moveLane({ oldIndex: removedIndex, newIndex: addedIndex });
+      handleLaneDragEnd(removedIndex, addedIndex, payload);
     }
-  }
+  };
   getCardDetails = (laneId, cardIndex) => {
-    return this.props.reducerData.lanes.find(lane => lane.id === laneId).cards[cardIndex]
-  }
+    return this.props.reducerData.lanes.find(lane => lane.id === laneId).cards[cardIndex];
+  };
   getLaneDetails = index => {
-    return this.props.reducerData.lanes[index]
-  }
+    return this.props.reducerData.lanes[index];
+  };
 
   wireEventBus = () => {
-    const {actions, eventBusHandle} = this.props
+    const { actions, eventBusHandle } = this.props;
     let eventBus = {
       publish: event => {
         switch (event.type) {
           case 'ADD_CARD':
-            return actions.addCard({laneId: event.laneId, card: event.card})
+            return actions.addCard({ laneId: event.laneId, card: event.card });
           case 'UPDATE_CARD':
-            return actions.updateCard({laneId: event.laneId, card: event.card})
+            return actions.updateCard({
+              laneId: event.laneId,
+              card: event.card
+            });
           case 'REMOVE_CARD':
-            return actions.removeCard({laneId: event.laneId, cardId: event.cardId})
+            return actions.removeCard({
+              laneId: event.laneId,
+              cardId: event.cardId
+            });
           case 'REFRESH_BOARD':
-            return actions.loadBoard(event.data)
+            return actions.loadBoard(event.data);
           case 'MOVE_CARD':
             return actions.moveCardAcrossLanes({
               fromLaneId: event.fromLaneId,
               toLaneId: event.toLaneId,
               cardId: event.cardId,
               index: event.index
-            })
+            });
           case 'UPDATE_CARDS':
-            return actions.updateCards({laneId: event.laneId, cards: event.cards})
+            return actions.updateCards({
+              laneId: event.laneId,
+              cards: event.cards
+            });
           case 'UPDATE_LANES':
-            return actions.updateLanes(event.lanes)
+            return actions.updateLanes(event.lanes);
           case 'UPDATE_LANE':
-            return actions.updateLane(event.lane)
+            return actions.updateLane(event.lane);
         }
       }
-    }
-    eventBusHandle(eventBus)
-  }
+    };
+    eventBusHandle(eventBus);
+  };
 
   // + add
   hideEditableLane = () => {
-    this.setState({addLaneMode: false})
-  }
+    this.setState({ addLaneMode: false });
+  };
 
   showEditableLane = () => {
-    this.setState({addLaneMode: true})
-  }
+    this.setState({ addLaneMode: true });
+  };
 
   addNewLane = params => {
-    this.hideEditableLane()
-    this.props.actions.addLane(params)
-    this.props.onLaneAdd(params)
-  }
+    this.hideEditableLane();
+    this.props.actions.addLane(params);
+    this.props.onLaneAdd(params);
+  };
 
   get groupName() {
-    const {id} = this.props
-    return `TrelloBoard${id}`
+    const { id } = this.props;
+    return `TrelloBoard${id}`;
   }
 
   render() {
@@ -137,9 +146,9 @@ class BoardContainer extends Component {
       onCardMoveAcrossLanes,
       t,
       ...otherProps
-    } = this.props
+    } = this.props;
 
-    const {addLaneMode} = this.state
+    const { addLaneMode } = this.state;
     // Stick to whitelisting attributes to segregate board and lane props
     const passthroughProps = pick(this.props, [
       'onCardMoveAcrossLanes',
@@ -165,7 +174,7 @@ class BoardContainer extends Component {
       'cardDragClass',
       'editLaneTitle',
       't'
-    ])
+    ]);
 
     return (
       <components.BoardWrapper style={style} {...otherProps} draggable={false}>
@@ -178,9 +187,10 @@ class BoardContainer extends Component {
             onDrop={this.onLaneDrop}
             lockAxis="x"
             getChildPayload={index => this.getLaneDetails(index)}
-            groupName={this.groupName}>
+            groupName={this.groupName}
+          >
             {reducerData.lanes.map((lane, index) => {
-              const {id, droppable, ...otherProps} = lane
+              const { id, droppable, ...otherProps } = lane;
               const laneToRender = (
                 <Lane
                   key={id}
@@ -197,8 +207,8 @@ class BoardContainer extends Component {
                   {...otherProps}
                   {...passthroughProps}
                 />
-              )
-              return draggable && laneDraggable ? <Draggable key={lane.id}>{laneToRender}</Draggable> : laneToRender
+              );
+              return draggable && laneDraggable ? <Draggable key={lane.id}>{laneToRender}</Draggable> : laneToRender;
             })}
           </Container>
         </PopoverWrapper>
@@ -212,7 +222,7 @@ class BoardContainer extends Component {
           </Container>
         )}
       </components.BoardWrapper>
-    )
+    );
   }
 }
 
@@ -259,7 +269,7 @@ BoardContainer.propTypes = {
   laneStyle: PropTypes.object,
   cardStyle: PropTypes.object,
   t: PropTypes.func.isRequired
-}
+};
 
 BoardContainer.defaultProps = {
   t: v => v,
@@ -283,17 +293,17 @@ BoardContainer.defaultProps = {
   cardDragClass: 'react_trello_dragClass',
   laneDragClass: 'react_trello_dragLaneClass',
   laneDropClass: ''
-}
+};
 
 const mapStateToProps = state => {
-  return state.lanes ? {reducerData: state} : {}
-}
+  return state.lanes ? { reducerData: state } : {};
+};
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({...boardActions, ...laneActions}, dispatch)
-})
+  actions: bindActionCreators({ ...boardActions, ...laneActions }, dispatch)
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BoardContainer)
+)(BoardContainer);

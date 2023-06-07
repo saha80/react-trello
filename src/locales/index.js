@@ -10,4 +10,4 @@ export default {
   'pt-br': {
     translation: require('./pt-br/translation.json')
   }
-}
+};

@@ -1,16 +1,16 @@
-import React, {Component} from 'react'
-import classNames from 'classnames'
-import PropTypes from 'prop-types'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import isEqual from 'lodash/isEqual'
-import cloneDeep from 'lodash/cloneDeep'
-import uuidv1 from 'uuid/v1'
+import React, { Component } from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import isEqual from 'lodash/isEqual';
+import cloneDeep from 'lodash/cloneDeep';
+import uuidv1 from 'uuid/v1';
 
-import Container from 'rt/dnd/Container'
-import Draggable from 'rt/dnd/Draggable'
+import Container from 'rt/dnd/Container';
+import Draggable from 'rt/dnd/Draggable';
 
-import * as laneActions from 'rt/actions/LaneActions'
+import * as laneActions from 'rt/actions/LaneActions';
 
 class Lane extends Component {
   state = {
@@ -19,130 +19,133 @@ class Lane extends Component {
     addCardMode: false,
     collapsed: false,
     isDraggingOver: false
-  }
+  };
 
   handleScroll = evt => {
-    const node = evt.target
-    const elemScrollPosition = node.scrollHeight - node.scrollTop - node.clientHeight
-    const {onLaneScroll} = this.props
+    const node = evt.target;
+    const elemScrollPosition = node.scrollHeight - node.scrollTop - node.clientHeight;
+    const { onLaneScroll } = this.props;
     // In some browsers and/or screen sizes a decimal rest value between 0 and 1 exists, so it should be checked on < 1 instead of < 0
     if (elemScrollPosition < 1 && onLaneScroll && !this.state.loading) {
-      const {currentPage} = this.state
-      this.setState({loading: true})
-      const nextPage = currentPage + 1
+      const { currentPage } = this.state;
+      this.setState({ loading: true });
+      const nextPage = currentPage + 1;
       onLaneScroll(nextPage, this.props.id).then(moreCards => {
         if ((moreCards || []).length > 0) {
           this.props.actions.paginateLane({
             laneId: this.props.id,
             newCards: moreCards,
             nextPage: nextPage
-          })
+          });
         }
-        this.setState({loading: false})
-      })
+        this.setState({ loading: false });
+      });
     }
-  }
+  };
 
   sortCards(cards, sortFunction) {
-    if (!cards) return []
-    if (!sortFunction) return cards
+    if (!cards) return [];
+    if (!sortFunction) return cards;
     return cards.concat().sort(function(card1, card2) {
-      return sortFunction(card1, card2)
-    })
+      return sortFunction(card1, card2);
+    });
   }
 
   laneDidMount = node => {
     if (node) {
-      node.addEventListener('scroll', this.handleScroll)
+      node.addEventListener('scroll', this.handleScroll);
     }
-  }
+  };
 
   // apply patch
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.cards, this.props.cards)) {
       this.setState({
         currentPage: this.props.currentPage
-      })
+      });
     }
   }
 
   removeCard = cardId => {
     if (this.props.onBeforeCardDelete && typeof this.props.onBeforeCardDelete === 'function') {
       this.props.onBeforeCardDelete(() => {
-        this.props.onCardDelete && this.props.onCardDelete(cardId, this.props.id)
-        this.props.actions.removeCard({laneId: this.props.id, cardId: cardId})
-      })
+        this.props.onCardDelete && this.props.onCardDelete(cardId, this.props.id);
+        this.props.actions.removeCard({
+          laneId: this.props.id,
+          cardId: cardId
+        });
+      });
     } else {
-      this.props.onCardDelete && this.props.onCardDelete(cardId, this.props.id)
-      this.props.actions.removeCard({laneId: this.props.id, cardId: cardId})
+      this.props.onCardDelete && this.props.onCardDelete(cardId, this.props.id);
+      this.props.actions.removeCard({ laneId: this.props.id, cardId: cardId });
     }
-  }
+  };
 
   handleCardClick = (e, card) => {
-    const {onCardClick} = this.props
-    onCardClick && onCardClick(card.id, card.metadata, card.laneId)
-    e.stopPropagation()
-  }
+    const { onCardClick } = this.props;
+    onCardClick && onCardClick(card.id, card.metadata, card.laneId);
+    e.stopPropagation();
+  };
 
   showEditableCard = () => {
-    this.setState({addCardMode: true})
-  }
+    this.setState({ addCardMode: true });
+  };
 
   hideEditableCard = () => {
-    this.setState({addCardMode: false})
-  }
+    this.setState({ addCardMode: false });
+  };
 
   addNewCard = params => {
-    const laneId = this.props.id
-    const id = uuidv1()
-    this.hideEditableCard()
-    let card = {id, ...params}
-    this.props.actions.addCard({laneId, card})
-    this.props.onCardAdd(card, laneId)
-  }
+    const laneId = this.props.id;
+    const id = uuidv1();
+    this.hideEditableCard();
+    let card = { id, ...params };
+    this.props.actions.addCard({ laneId, card });
+    this.props.onCardAdd(card, laneId);
+  };
 
-  onDragStart = ({payload}) => {
-    const {handleDragStart} = this.props
-    handleDragStart && handleDragStart(payload.id, payload.laneId)
-  }
+  onDragStart = ({ payload }) => {
+    const { handleDragStart } = this.props;
+    handleDragStart && handleDragStart(payload.id, payload.laneId);
+  };
 
   shouldAcceptDrop = sourceContainerOptions => {
-    return this.props.droppable && sourceContainerOptions.groupName === this.groupName
-  }
+    return this.props.droppable && sourceContainerOptions.groupName === this.groupName;
+  };
 
   get groupName() {
-    const {boardId} = this.props
-    return `TrelloBoard${boardId}Lane`
+    const { boardId } = this.props;
+    return `TrelloBoard${boardId}Lane`;
   }
 
   onDragEnd = (laneId, result) => {
-    const {handleDragEnd} = this.props
-    const {addedIndex, payload} = result
+    const { handleDragEnd } = this.props;
+    const { addedIndex, payload } = result;
 
     if (this.state.isDraggingOver) {
-      this.setState({isDraggingOver: false})
+      this.setState({ isDraggingOver: false });
     }
 
     if (addedIndex != null) {
-      const newCard = {...cloneDeep(payload), laneId}
-      const response = handleDragEnd ? handleDragEnd(payload.id, payload.laneId, laneId, addedIndex, newCard) : true
+      const newCard = { ...cloneDeep(payload), laneId };
+      const response = handleDragEnd ? handleDragEnd(payload.id, payload.laneId, laneId, addedIndex, newCard) : true;
       if (response === undefined || !!response) {
         this.props.actions.moveCardAcrossLanes({
           fromLaneId: payload.laneId,
           toLaneId: laneId,
           cardId: payload.id,
           index: addedIndex
-        })
-        this.props.onCardMoveAcrossLanes(payload.laneId, laneId, payload.id, addedIndex)
+        });
+        this.props.onCardMoveAcrossLanes(payload.laneId, laneId, payload.id, addedIndex);
       }
-      return response
+      return response;
     }
-  }
+  };
 
   updateCard = updatedCard => {
-    this.props.actions.updateCard({laneId: this.props.id, card: updatedCard})
-    this.props.onCardUpdate(this.props.id, updatedCard)
-  }
+    this.props.actions.updateCard({ laneId: this.props.id, card: updatedCard });
+    this.props.onCardUpdate(this.props.id, updatedCard);
+  };
 
   renderDragContainer = isDraggingOver => {
     const {
@@ -158,13 +161,13 @@ class Lane extends Component {
       cardStyle,
       components,
       t
-    } = this.props
-    const {addCardMode, collapsed} = this.state
+    } = this.props;
+    const { addCardMode, collapsed } = this.state;
 
-    const showableCards = collapsed ? [] : cards
+    const showableCards = collapsed ? [] : cards;
 
     const cardList = this.sortCards(showableCards, laneSortFunction).map((card, idx) => {
-      const onDeleteCard = () => this.removeCard(card.id)
+      const onDeleteCard = () => this.removeCard(card.id);
       const cardToRender = (
         <components.Card
           key={card.id}
@@ -181,13 +184,13 @@ class Lane extends Component {
           t={t}
           {...card}
         />
-      )
+      );
       return cardDraggable && (!card.hasOwnProperty('draggable') || card.draggable) ? (
         <Draggable key={card.id}>{cardToRender}</Draggable>
       ) : (
         <span key={card.id}>{cardToRender}</span>
-      )
-    })
+      );
+    });
 
     return (
       <components.ScrollableLane ref={this.laneDidMount} isDraggingOver={isDraggingOver}>
@@ -198,10 +201,11 @@ class Lane extends Component {
           dropClass={cardDropClass}
           onDragStart={this.onDragStart}
           onDrop={e => this.onDragEnd(id, e)}
-          onDragEnter={() => this.setState({isDraggingOver: true})}
-          onDragLeave={() => this.setState({isDraggingOver: false})}
+          onDragEnter={() => this.setState({ isDraggingOver: true })}
+          onDragLeave={() => this.setState({ isDraggingOver: false })}
           shouldAcceptDrop={this.shouldAcceptDrop}
-          getChildPayload={index => this.props.getCardDetails(id, index)}>
+          getChildPayload={index => this.props.getCardDetails(id, index)}
+        >
           {cardList}
         </Container>
         {editable && !addCardMode && <components.AddCardLink onClick={this.showEditableCard} t={t} laneId={id} />}
@@ -209,22 +213,22 @@ class Lane extends Component {
           <components.NewCardForm onCancel={this.hideEditableCard} t={t} laneId={id} onAdd={this.addNewCard} />
         )}
       </components.ScrollableLane>
-    )
-  }
+    );
+  };
 
   removeLane = () => {
-    const {id} = this.props
-    this.props.actions.removeLane({laneId: id})
-    this.props.onLaneDelete(id)
-  }
+    const { id } = this.props;
+    this.props.actions.removeLane({ laneId: id });
+    this.props.onLaneDelete(id);
+  };
 
   updateTitle = value => {
-    this.props.actions.updateLane({id: this.props.id, title: value})
-    this.props.onLaneUpdate(this.props.id, {title: value})
-  }
+    this.props.actions.updateLane({ id: this.props.id, title: value });
+    this.props.onLaneUpdate(this.props.id, { title: value });
+  };
 
   renderHeader = pickedProps => {
-    const {components} = this.props
+    const { components } = this.props;
     return (
       <components.LaneHeader
         {...pickedProps}
@@ -232,15 +236,15 @@ class Lane extends Component {
         onDoubleClick={this.toggleLaneCollapsed}
         updateTitle={this.updateTitle}
       />
-    )
-  }
+    );
+  };
 
   toggleLaneCollapsed = () => {
-    this.props.collapsibleLanes && this.setState(state => ({collapsed: !state.collapsed}))
-  }
+    this.props.collapsibleLanes && this.setState(state => ({ collapsed: !state.collapsed }));
+  };
 
   render() {
-    const {loading, isDraggingOver, collapsed} = this.state
+    const { loading, isDraggingOver, collapsed } = this.state;
     const {
       id,
       cards,
@@ -257,22 +261,23 @@ class Lane extends Component {
       onCardUpdate,
       onCardMoveAcrossLanes,
       ...otherProps
-    } = this.props
-    const allClassNames = classNames('react-trello-lane', this.props.className || '')
-    const showFooter = collapsibleLanes && cards.length > 0
+    } = this.props;
+    const allClassNames = classNames('react-trello-lane', this.props.className || '');
+    const showFooter = collapsibleLanes && cards.length > 0;
     return (
       <components.Section
         {...otherProps}
         key={id}
         onClick={() => onLaneClick && onLaneClick(id)}
         draggable={false}
-        className={allClassNames}>
-        {this.renderHeader({id, cards, ...otherProps})}
+        className={allClassNames}
+      >
+        {this.renderHeader({ id, cards, ...otherProps })}
         {this.renderDragContainer(isDraggingOver)}
         {loading && <components.Loader />}
         {showFooter && <components.LaneFooter onClick={this.toggleLaneCollapsed} collapsed={collapsed} />}
       </components.Section>
-    )
+    );
   }
 }
 
@@ -317,7 +322,7 @@ Lane.propTypes = {
   components: PropTypes.object,
   getCardDetails: PropTypes.func,
   className: PropTypes.string
-}
+};
 
 Lane.defaultProps = {
   style: {},
@@ -328,13 +333,13 @@ Lane.defaultProps = {
   onLaneUpdate: () => {},
   onCardAdd: () => {},
   onCardUpdate: () => {}
-}
+};
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(laneActions, dispatch)
-})
+});
 
 export default connect(
   null,
   mapDispatchToProps
-)(Lane)
+)(Lane);
