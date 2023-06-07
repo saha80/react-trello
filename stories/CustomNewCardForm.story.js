@@ -11,8 +11,8 @@ class NewCardForm extends Component {
       title: this.titleRef.value,
       description: this.descRef.value
     });
-  setTitleRef = ref => (this.titleRef = ref);
-  setDescRef = ref => (this.descRef = ref);
+  setTitleRef = (ref) => (this.titleRef = ref);
+  setDescRef = (ref) => (this.descRef = ref);
   render() {
     const { onCancel } = this.props;
     return (

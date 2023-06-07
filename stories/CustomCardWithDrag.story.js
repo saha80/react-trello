@@ -7,35 +7,33 @@ import debug from './helpers/debug';
 
 import Board from '../src';
 
-const CustomCard = props => {
-  return (
-    <MovableCardWrapper
-      data-id={props.id}
-      onClick={props.onClick}
-      className={props.className}
-      style={{ ...props.style, backgroundColor: props.cardColor, padding: 6 }}
+const CustomCard = (props) => (
+  <MovableCardWrapper
+    data-id={props.id}
+    onClick={props.onClick}
+    className={props.className}
+    style={{ ...props.style, backgroundColor: props.cardColor, padding: 6 }}
+  >
+    <header
+      style={{
+        borderBottom: '1px solid #eee',
+        paddingBottom: 6,
+        marginBottom: 10,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+      }}
     >
-      <header
-        style={{
-          borderBottom: '1px solid #eee',
-          paddingBottom: 6,
-          marginBottom: 10,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between'
-        }}
-      >
-        <div style={{ fontSize: 14, fontWeight: 'bold' }}>{props.name}</div>
-      </header>
-      <div style={{ fontSize: 12, color: '#BD3B36' }}>
-        <div style={{ color: '#4C4C4C', fontWeight: 'bold' }}>{props.subTitle}</div>
-        <div style={{ padding: '5px 0px' }}>
-          <i>{props.body}</i>
-        </div>
+      <div style={{ fontSize: 14, fontWeight: 'bold' }}>{props.name}</div>
+    </header>
+    <div style={{ fontSize: 12, color: '#BD3B36' }}>
+      <div style={{ color: '#4C4C4C', fontWeight: 'bold' }}>{props.subTitle}</div>
+      <div style={{ padding: '5px 0px' }}>
+        <i>{props.body}</i>
       </div>
-    </MovableCardWrapper>
-  );
-};
+    </div>
+  </MovableCardWrapper>
+);
 
 const customCardData = {
   lanes: [
@@ -78,7 +76,7 @@ const customCardData = {
 class BoardWithCustomCard extends Component {
   state = { boardData: customCardData, draggedData: undefined };
 
-  updateBoard = newData => {
+  updateBoard = (newData) => {
     debug('calling updateBoard');
     this.setState({ draggedData: newData });
   };
@@ -86,8 +84,8 @@ class BoardWithCustomCard extends Component {
   onDragEnd = (cardId, sourceLandId, targetLaneId, card) => {
     debug('Calling onDragENd');
     const { draggedData } = this.state;
-    const laneIndex = draggedData.lanes.findIndex(lane => lane.id === sourceLandId);
-    const cardIndex = draggedData.lanes[laneIndex].cards.findIndex(card => card.id === cardId);
+    const laneIndex = draggedData.lanes.findIndex((lane) => lane.id === sourceLandId);
+    const cardIndex = draggedData.lanes[laneIndex].cards.findIndex((card) => card.id === cardId);
     const updatedData = update(draggedData, {
       lanes: {
         [laneIndex]: {
@@ -106,17 +104,15 @@ class BoardWithCustomCard extends Component {
         draggable
         onDataChange={this.updateBoard}
         handleDragEnd={this.onDragEnd}
-        onCardClick={(cardId, metadata) => alert(`Card with id:${cardId} clicked. Has metadata.id: ${metadata.id}`)}
+        onCardClick={(cardId, metadata) =>
+          alert(`Card with id:${cardId} clicked. Has metadata.id: ${metadata.id}`)
+        }
         components={{ Card: CustomCard }}
       />
     );
   }
 }
 
-storiesOf('Custom Components', module).add(
-  'Drag-n-Drop Styling',
-  () => {
-    return <BoardWithCustomCard />;
-  },
-  { info: 'Change card color on drag-n-drop' }
-);
+storiesOf('Custom Components', module).add('Drag-n-Drop Styling', () => <BoardWithCustomCard />, {
+  info: 'Change card color on drag-n-drop'
+});

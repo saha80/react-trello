@@ -9,7 +9,7 @@ const data = require('./data/collapsible.json');
 storiesOf('Advanced Features', module).add(
   'Collapsible Lanes',
   () => {
-    const shouldReceiveNewData = nextData => {
+    const shouldReceiveNewData = (nextData) => {
       debug('data has changed');
       debug(nextData);
     };

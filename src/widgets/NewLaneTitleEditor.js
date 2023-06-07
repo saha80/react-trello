@@ -4,7 +4,7 @@ import { InlineInput } from 'rt/styles/Base';
 import autosize from 'autosize';
 
 class NewLaneTitleEditor extends React.Component {
-  onKeyDown = e => {
+  onKeyDown = (e) => {
     if (e.keyCode === 13) {
       this.refInput.blur();
       this.props.onSave();
@@ -32,7 +32,7 @@ class NewLaneTitleEditor extends React.Component {
   };
 
   getValue = () => this.refInput.value;
-  setValue = value => (this.refInput.value = value);
+  setValue = (value) => (this.refInput.value = value);
 
   saveValue = () => {
     if (this.getValue() !== this.props.value) {
@@ -42,7 +42,7 @@ class NewLaneTitleEditor extends React.Component {
 
   focus = () => this.refInput.focus();
 
-  setRef = ref => {
+  setRef = (ref) => {
     this.refInput = ref;
     if (this.props.resize !== 'none') {
       autosize(this.refInput);

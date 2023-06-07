@@ -5,12 +5,12 @@ import autosize from 'autosize';
 
 class InlineInputController extends React.Component {
   // apply patch
-  onFocus = e => {
+  onFocus = (e) => {
     e.target.select();
   };
 
   // This is the way to select all text if mouse clicked
-  onMouseDown = e => {
+  onMouseDown = (e) => {
     if (document.activeElement !== e.target) {
       e.preventDefault();
       this.refInput.focus();
@@ -21,7 +21,7 @@ class InlineInputController extends React.Component {
     this.updateValue();
   };
 
-  onKeyDown = e => {
+  onKeyDown = (e) => {
     if (e.keyCode === 13) {
       this.refInput.blur();
       e.preventDefault();
@@ -41,7 +41,7 @@ class InlineInputController extends React.Component {
   };
 
   getValue = () => this.refInput.value;
-  setValue = value => (this.refInput.value = value);
+  setValue = (value) => (this.refInput.value = value);
 
   updateValue = () => {
     if (this.getValue() !== this.props.value) {
@@ -49,7 +49,7 @@ class InlineInputController extends React.Component {
     }
   };
 
-  setRef = ref => {
+  setRef = (ref) => {
     this.refInput = ref;
     if (this.props.resize !== 'none') {
       autosize(this.refInput);

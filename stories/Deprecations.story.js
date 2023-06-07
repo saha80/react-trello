@@ -7,9 +7,11 @@ import './board.css';
 
 const data = require('./data/base.json');
 
-const CustomLaneHeader = props => {
+const CustomLaneHeader = (props) => {
   const buttonHandler = () => {
-    alert(`The label passed to the lane was: ${props.label}. The lane has ${props.cards.length} cards!`);
+    alert(
+      `The label passed to the lane was: ${props.label}. The lane has ${props.cards.length} cards!`
+    );
   };
   return (
     <div>
@@ -59,10 +61,18 @@ class NewCard extends Component {
         <div style={{ padding: 5, margin: 5 }}>
           <div>
             <div style={{ marginBottom: 5 }}>
-              <input type="text" onChange={evt => this.updateField('title', evt)} placeholder="Title" />
+              <input
+                type="text"
+                onChange={(evt) => this.updateField('title', evt)}
+                placeholder="Title"
+              />
             </div>
             <div style={{ marginBottom: 5 }}>
-              <input type="text" onChange={evt => this.updateField('description', evt)} placeholder="Description" />
+              <input
+                type="text"
+                onChange={(evt) => this.updateField('description', evt)}
+                placeholder="Description"
+              />
             </div>
           </div>
           <button onClick={this.handleAdd}>Add</button>
@@ -72,59 +82,58 @@ class NewCard extends Component {
     );
   }
 }
-const CustomCard = props => {
-  return (
-    <div style={{ padding: 6 }}>
-      <header
+const CustomCard = (props) => (
+  <div style={{ padding: 6 }}>
+    <header
+      style={{
+        borderBottom: '1px solid #eee',
+        paddingBottom: 6,
+        marginBottom: 10,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        color: props.cardColor
+      }}
+    >
+      <div style={{ fontSize: 14, fontWeight: 'bold' }}>{props.name}</div>
+      <div style={{ fontSize: 11 }}>{props.dueOn}</div>
+    </header>
+    <div style={{ fontSize: 12, color: '#BD3B36' }}>
+      <div style={{ color: '#4C4C4C', fontWeight: 'bold' }}>{props.subTitle}</div>
+      <div style={{ padding: '5px 0px' }}>
+        <i>{props.body}</i>
+      </div>
+      <div
         style={{
-          borderBottom: '1px solid #eee',
-          paddingBottom: 6,
-          marginBottom: 10,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          color: props.cardColor
+          marginTop: 10,
+          textAlign: 'center',
+          color: props.cardColor,
+          fontSize: 15,
+          fontWeight: 'bold'
         }}
       >
-        <div style={{ fontSize: 14, fontWeight: 'bold' }}>{props.name}</div>
-        <div style={{ fontSize: 11 }}>{props.dueOn}</div>
-      </header>
-      <div style={{ fontSize: 12, color: '#BD3B36' }}>
-        <div style={{ color: '#4C4C4C', fontWeight: 'bold' }}>{props.subTitle}</div>
-        <div style={{ padding: '5px 0px' }}>
-          <i>{props.body}</i>
-        </div>
+        {props.escalationText}
+      </div>
+      {props.tags && (
         <div
           style={{
-            marginTop: 10,
-            textAlign: 'center',
-            color: props.cardColor,
-            fontSize: 15,
-            fontWeight: 'bold'
+            borderTop: '1px solid #eee',
+            paddingTop: 6,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            flexDirection: 'row',
+            flexWrap: 'wrap'
           }}
         >
-          {props.escalationText}
+          {props.tags.map((tag) => (
+            <Tag key={tag.title} {...tag} tagStyle={props.tagStyle} />
+          ))}
         </div>
-        {props.tags && (
-          <div
-            style={{
-              borderTop: '1px solid #eee',
-              paddingTop: 6,
-              display: 'flex',
-              justifyContent: 'flex-end',
-              flexDirection: 'row',
-              flexWrap: 'wrap'
-            }}
-          >
-            {props.tags.map(tag => (
-              <Tag key={tag.title} {...tag} tagStyle={props.tagStyle} />
-            ))}
-          </div>
-        )}
-      </div>
+      )}
     </div>
-  );
-};
+  </div>
+);
+
 storiesOf('Deprecation warnings', module).add(
   'v2.2 warnings',
   () => (

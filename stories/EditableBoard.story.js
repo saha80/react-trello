@@ -15,7 +15,7 @@ storiesOf('Editable Board', module)
   .add(
     'Add/Delete Cards',
     () => {
-      const shouldReceiveNewData = nextData => {
+      const shouldReceiveNewData = (nextData) => {
         debug('Board has changed');
         debug(nextData);
       };
@@ -37,7 +37,9 @@ storiesOf('Editable Board', module)
           onDataChange={shouldReceiveNewData}
           onCardDelete={handleCardDelete}
           onCardAdd={handleCardAdd}
-          onCardClick={(cardId, metadata, laneId) => alert(`Card with id:${cardId} clicked. Card in lane: ${laneId}`)}
+          onCardClick={(cardId, metadata, laneId) =>
+            alert(`Card with id:${cardId} clicked. Card in lane: ${laneId}`)
+          }
           editable
         />
       );
@@ -46,34 +48,37 @@ storiesOf('Editable Board', module)
   )
   .add(
     'Add New Lane',
-    () => {
-      return (
-        <Board data={smallData} editable canAddLanes onLaneAdd={t => debug('You added a line with title ' + t.title)} />
-      );
-    },
+    () => (
+      <Board
+        data={smallData}
+        editable
+        canAddLanes
+        onLaneAdd={(t) => debug('You added a line with title ' + t.title)}
+      />
+    ),
     { info: 'Allow adding new lane' }
   )
   .add(
     'Disallow Adding Card for specific Lane',
-    () => {
-      return <Board data={disallowAddingCardData} editable />;
-    },
-    { info: 'Can hide the add card button on specific lanes' }
+    () => <Board data={disallowAddingCardData} editable />,
+    {
+      info: 'Can hide the add card button on specific lanes'
+    }
   )
   .add(
     'Inline Edit Lane Title and Cards',
-    () => {
-      return (
-        <Board
-          data={smallData}
-          editable
-          canAddLanes
-          editLaneTitle
-          onCardUpdate={(cardId, data) => debug(`onCardUpdate: ${cardId} -> ${JSON.stringify(data, null, 2)}`)}
-          onLaneUpdate={(laneId, data) => debug(`onLaneUpdate: ${laneId} -> ${data.title}`)}
-          onLaneAdd={t => debug('You added a line with title ' + t.title)}
-        />
-      );
-    },
+    () => (
+      <Board
+        data={smallData}
+        editable
+        canAddLanes
+        editLaneTitle
+        onCardUpdate={(cardId, data) =>
+          debug(`onCardUpdate: ${cardId} -> ${JSON.stringify(data, null, 2)}`)
+        }
+        onLaneUpdate={(laneId, data) => debug(`onLaneUpdate: ${laneId} -> ${data.title}`)}
+        onLaneAdd={(t) => debug('You added a line with title ' + t.title)}
+      />
+    ),
     { info: 'Allow edit lane title and cards' }
   );

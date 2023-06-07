@@ -10,7 +10,7 @@ const data = require('./data/base.json');
 class RealtimeBoard extends Component {
   state = { boardData: data, eventBus: undefined };
 
-  setEventBus = handle => {
+  setEventBus = (handle) => {
     this.state.eventBus = handle;
   };
 
@@ -84,7 +84,7 @@ class RealtimeBoard extends Component {
     });
   };
 
-  shouldReceiveNewData = nextData => {
+  shouldReceiveNewData = (nextData) => {
     debug('data has changed');
     debug(nextData);
   };
@@ -110,7 +110,11 @@ class RealtimeBoard extends Component {
         <button onClick={this.updateCard} style={{ margin: 5 }}>
           Update Dispose Garbage
         </button>
-        <Board data={this.state.boardData} onDataChange={this.shouldReceiveNewData} eventBusHandle={this.setEventBus} />
+        <Board
+          data={this.state.boardData}
+          onDataChange={this.shouldReceiveNewData}
+          eventBusHandle={this.setEventBus}
+        />
       </div>
     );
   }

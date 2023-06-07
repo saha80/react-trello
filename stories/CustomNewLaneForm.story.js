@@ -9,7 +9,7 @@ class NewLaneForm extends Component {
   render() {
     const { onCancel, t } = this.props;
     const handleAdd = () => this.props.onAdd({ title: this.inputRef.value });
-    const setInputRef = ref => (this.inputRef = ref);
+    const setInputRef = (ref) => (this.inputRef = ref);
     return (
       <div>
         <input ref={setInputRef} placeholder={t('placeholder.title')} autoFocus />

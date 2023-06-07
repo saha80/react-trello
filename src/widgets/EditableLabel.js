@@ -8,11 +8,9 @@ class EditableLabel extends React.Component {
     this.refDiv = null;
   }
 
-  getText = el => {
-    return el.innerText;
-  };
+  getText = (el) => el.innerText;
 
-  onTextChange = ev => {
+  onTextChange = (ev) => {
     const value = this.getText(ev.target);
     this.setState({ value: value });
   };
@@ -27,18 +25,19 @@ class EditableLabel extends React.Component {
     this.props.onChange(this.state.value);
   };
 
-  onPaste = ev => {
+  onPaste = (ev) => {
     ev.preventDefault();
     const value = ev.clipboardData.getData('text');
     document.execCommand('insertText', false, value);
   };
 
   getClassName = () => {
-    const placeholder = this.state.value === '' ? 'comPlainTextContentEditable--has-placeholder' : '';
+    const placeholder =
+      this.state.value === '' ? 'comPlainTextContentEditable--has-placeholder' : '';
     return `comPlainTextContentEditable ${placeholder}`;
   };
 
-  onKeyDown = e => {
+  onKeyDown = (e) => {
     if (e.keyCode === 13) {
       this.props.onChange(this.state.value);
       this.refDiv.blur();
@@ -57,7 +56,7 @@ class EditableLabel extends React.Component {
     const placeholder = this.props.value.length > 0 ? false : this.props.placeholder;
     return (
       <div
-        ref={ref => (this.refDiv = ref)}
+        ref={(ref) => (this.refDiv = ref)}
         contentEditable="true"
         className={this.getClassName()}
         onPaste={this.onPaste}

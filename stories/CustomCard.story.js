@@ -21,7 +21,7 @@ const CustomCard = ({
   showDeleteButton,
   onDelete
 }) => {
-  const clickDelete = e => {
+  const clickDelete = (e) => {
     onDelete();
     e.stopPropagation();
   };
@@ -70,7 +70,7 @@ const CustomCard = ({
               flexWrap: 'wrap'
             }}
           >
-            {tags.map(tag => (
+            {tags.map((tag) => (
               <Tag key={tag.title} {...tag} tagStyle={tagStyle} />
             ))}
           </div>
@@ -152,17 +152,17 @@ const data = {
 
 storiesOf('Custom Components', module).add(
   'Card',
-  () => {
-    return (
-      <Board
-        tagStyle={{ fontSize: '80%' }}
-        data={data}
-        draggable
-        components={{ Card: CustomCard }}
-        onCardClick={(cardId, metadata) => alert(`Card with id:${cardId} clicked. Has metadata.id: ${metadata.id}`)}
-      />
-    );
-  },
+  () => (
+    <Board
+      tagStyle={{ fontSize: '80%' }}
+      data={data}
+      draggable
+      components={{ Card: CustomCard }}
+      onCardClick={(cardId, metadata) =>
+        alert(`Card with id:${cardId} clicked. Has metadata.id: ${metadata.id}`)
+      }
+    />
+  ),
   {
     info: 'Style your own card appearance. Watch out for usage of tags in custom styling as well!'
   }

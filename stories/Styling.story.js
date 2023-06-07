@@ -9,7 +9,13 @@ const data = require('./data/base.json');
 
 storiesOf('Styling', module).add(
   'Board Styling',
-  () => <Board data={data} style={{ padding: '30px 20px', fontFamily: 'Verdana' }} className="boardContainer" />,
+  () => (
+    <Board
+      data={data}
+      style={{ padding: '30px 20px', fontFamily: 'Verdana' }}
+      className="boardContainer"
+    />
+  ),
   { info: 'Change the background and other css styles for the board container' }
 );
 
@@ -76,7 +82,13 @@ const dataWithLaneStyles = {
 
 storiesOf('Styling', module).add(
   'Lane Styling',
-  () => <Board data={dataWithLaneStyles} laneStyle={{ backgroundColor: '#666' }} style={{ backgroundColor: '#eee' }} />,
+  () => (
+    <Board
+      data={dataWithLaneStyles}
+      laneStyle={{ backgroundColor: '#666' }}
+      style={{ backgroundColor: '#eee' }}
+    />
+  ),
   {
     info: 'Change the look and feel of the lane'
   }

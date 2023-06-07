@@ -8,15 +8,15 @@ const REPLACE_TABLE = {
   addCardLink: '`t` function with key "Click to add card"'
 };
 
-const warn = prop => {
+const warn = (prop) => {
   const use = REPLACE_TABLE[prop];
   console.warn(
     `react-trello property '${prop}' is removed. Use '${use}' instead. More - https://github.com/rcdexta/react-trello/blob/master/UPGRADE.md`
   );
 };
 
-export default props => {
-  Object.keys(REPLACE_TABLE).forEach(key => {
+export default (props) => {
+  Object.keys(REPLACE_TABLE).forEach((key) => {
     if (props.hasOwnProperty(key)) {
       warn(key);
     }

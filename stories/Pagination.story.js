@@ -9,8 +9,8 @@ storiesOf('Basic Functions', module).add(
     const PER_PAGE = 15;
 
     function delayedPromise(durationInMs, resolutionPayload) {
-      return new Promise(function(resolve) {
-        setTimeout(function() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
           resolve(resolutionPayload);
         }, durationInMs);
       });

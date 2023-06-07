@@ -63,13 +63,21 @@ storiesOf('I18n', module)
         'placeholder.label': 'Label'
       };
 
-      return <Board data={smallData} t={key => FLAT_TRANSLATION_TABLE[key]} editable canAddLanes draggable />;
+      return (
+        <Board
+          data={smallData}
+          t={(key) => FLAT_TRANSLATION_TABLE[key]}
+          editable
+          canAddLanes
+          draggable
+        />
+      );
     },
     { info: 'Flat translation table' }
   );
 
 storiesOf('I18n', module)
-  .addDecorator(story => <I18nextProvider i18n={i18n}>{story()}</I18nextProvider>)
+  .addDecorator((story) => <I18nextProvider i18n={i18n}>{story()}</I18nextProvider>)
   .add('Using i18next', () => <I18nBoard />, {
     info: 'Availability to switching between languages'
   });

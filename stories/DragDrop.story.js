@@ -26,7 +26,7 @@ storiesOf('Drag-n-Drop', module)
         debug(card);
       };
 
-      const handleLaneDragStart = laneId => {
+      const handleLaneDragStart = (laneId) => {
         debug(`lane drag started for ${laneId}`);
       };
 
@@ -35,7 +35,7 @@ storiesOf('Drag-n-Drop', module)
         debug(`New lane position: ${addedIndex}`);
       };
 
-      const shouldReceiveNewData = nextData => {
+      const shouldReceiveNewData = (nextData) => {
         debug('data has changed');
         debug(nextData);
       };
@@ -63,8 +63,6 @@ storiesOf('Drag-n-Drop', module)
   )
   .add(
     'Drag Styling',
-    () => {
-      return <Board data={data} cardDragClass="draggingCard" laneDragClass="draggingLane" draggable />;
-    },
+    () => <Board data={data} cardDragClass="draggingCard" laneDragClass="draggingLane" draggable />,
     { info: 'Modifying appearance of dragged card' }
   );

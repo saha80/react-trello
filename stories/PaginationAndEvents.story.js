@@ -38,17 +38,16 @@ function generateCards(requestedPage = 1) {
 class BoardWrapper extends Component {
   state = { data: this.props.data };
 
-  setEventBus = handle => {
+  setEventBus = (handle) => {
     eventBus = handle;
   };
 
-  delayedPromise = (durationInMs, resolutionPayload) => {
-    return new Promise(function(resolve) {
-      setTimeout(function() {
+  delayedPromise = (durationInMs, resolutionPayload) =>
+    new Promise((resolve) => {
+      setTimeout(() => {
         resolve(resolutionPayload);
       }, durationInMs);
     });
-  };
 
   refreshCards = () => {
     eventBus.publish({

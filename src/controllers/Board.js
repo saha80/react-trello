@@ -18,10 +18,8 @@ export default class Board extends Component {
     this.id = props.id || uuidv1();
   }
 
-  getStore = () => {
-    // When you create multiple boards, unique stores are created for isolation
-    return createStore(boardReducer, applyMiddleware(...middlewares));
-  };
+  // When you create multiple boards, unique stores are created for isolation
+  getStore = () => createStore(boardReducer, applyMiddleware(...middlewares));
 
   render() {
     const { className, components = DefaultComponents } = this.props;
@@ -30,7 +28,12 @@ export default class Board extends Component {
       <Provider store={this.store}>
         <>
           <components.GlobalStyle />
-          <BoardContainer id={this.id} data={this.props.data} {...this.props} className={allClassNames} />
+          <BoardContainer
+            id={this.id}
+            data={this.props.data}
+            {...this.props}
+            className={allClassNames}
+          />
         </>
       </Provider>
     );

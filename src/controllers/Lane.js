@@ -21,7 +21,7 @@ class Lane extends Component {
     isDraggingOver: false
   };
 
-  handleScroll = evt => {
+  handleScroll = (evt) => {
     const node = evt.target;
     const elemScrollPosition = node.scrollHeight - node.scrollTop - node.clientHeight;
     const { onLaneScroll } = this.props;
@@ -30,7 +30,7 @@ class Lane extends Component {
       const { currentPage } = this.state;
       this.setState({ loading: true });
       const nextPage = currentPage + 1;
-      onLaneScroll(nextPage, this.props.id).then(moreCards => {
+      onLaneScroll(nextPage, this.props.id).then((moreCards) => {
         if ((moreCards || []).length > 0) {
           this.props.actions.paginateLane({
             laneId: this.props.id,
@@ -44,14 +44,16 @@ class Lane extends Component {
   };
 
   sortCards(cards, sortFunction) {
-    if (!cards) return [];
-    if (!sortFunction) return cards;
-    return cards.concat().sort(function(card1, card2) {
-      return sortFunction(card1, card2);
-    });
+    if (!cards) {
+      return [];
+    }
+    if (!sortFunction) {
+      return cards;
+    }
+    return cards.concat().sort((card1, card2) => sortFunction(card1, card2));
   }
 
-  laneDidMount = node => {
+  laneDidMount = (node) => {
     if (node) {
       node.addEventListener('scroll', this.handleScroll);
     }
@@ -66,7 +68,7 @@ class Lane extends Component {
     }
   }
 
-  removeCard = cardId => {
+  removeCard = (cardId) => {
     if (this.props.onBeforeCardDelete && typeof this.props.onBeforeCardDelete === 'function') {
       this.props.onBeforeCardDelete(() => {
         this.props.onCardDelete && this.props.onCardDelete(cardId, this.props.id);
@@ -95,7 +97,7 @@ class Lane extends Component {
     this.setState({ addCardMode: false });
   };
 
-  addNewCard = params => {
+  addNewCard = (params) => {
     const laneId = this.props.id;
     const id = uuidv1();
     this.hideEditableCard();
@@ -109,9 +111,8 @@ class Lane extends Component {
     handleDragStart && handleDragStart(payload.id, payload.laneId);
   };
 
-  shouldAcceptDrop = sourceContainerOptions => {
-    return this.props.droppable && sourceContainerOptions.groupName === this.groupName;
-  };
+  shouldAcceptDrop = (sourceContainerOptions) =>
+    this.props.droppable && sourceContainerOptions.groupName === this.groupName;
 
   get groupName() {
     const { boardId } = this.props;
@@ -128,7 +129,9 @@ class Lane extends Component {
 
     if (addedIndex != null) {
       const newCard = { ...cloneDeep(payload), laneId };
-      const response = handleDragEnd ? handleDragEnd(payload.id, payload.laneId, laneId, addedIndex, newCard) : true;
+      const response = handleDragEnd
+        ? handleDragEnd(payload.id, payload.laneId, laneId, addedIndex, newCard)
+        : true;
       if (response === undefined || !!response) {
         this.props.actions.moveCardAcrossLanes({
           fromLaneId: payload.laneId,
@@ -142,12 +145,12 @@ class Lane extends Component {
     }
   };
 
-  updateCard = updatedCard => {
+  updateCard = (updatedCard) => {
     this.props.actions.updateCard({ laneId: this.props.id, card: updatedCard });
     this.props.onCardUpdate(this.props.id, updatedCard);
   };
 
-  renderDragContainer = isDraggingOver => {
+  renderDragContainer = (isDraggingOver) => {
     const {
       id,
       cards,
@@ -175,8 +178,8 @@ class Lane extends Component {
           style={card.style || cardStyle}
           className="react-trello-card"
           onDelete={onDeleteCard}
-          onClick={e => this.handleCardClick(e, card)}
-          onChange={updatedCard => this.updateCard(updatedCard)}
+          onClick={(e) => this.handleCardClick(e, card)}
+          onChange={(updatedCard) => this.updateCard(updatedCard)}
           showDeleteButton={!hideCardDeleteIcon}
           tagStyle={tagStyle}
           cardDraggable={cardDraggable}
@@ -200,17 +203,25 @@ class Lane extends Component {
           dragClass={cardDragClass}
           dropClass={cardDropClass}
           onDragStart={this.onDragStart}
-          onDrop={e => this.onDragEnd(id, e)}
+          onDrop={(e) => this.onDragEnd(id, e)}
           onDragEnter={() => this.setState({ isDraggingOver: true })}
           onDragLeave={() => this.setState({ isDraggingOver: false })}
           shouldAcceptDrop={this.shouldAcceptDrop}
-          getChildPayload={index => this.props.getCardDetails(id, index)}
+          getChildPayload={(index) => this.props.getCardDetails(id, index)}
         >
           {cardList}
         </Container>
-        {editable && !addCardMode && <components.AddCardLink onClick={this.showEditableCard} t={t} laneId={id} />}
+        {editable &&
+          !addCardMode && (
+            <components.AddCardLink onClick={this.showEditableCard} t={t} laneId={id} />
+          )}
         {addCardMode && (
-          <components.NewCardForm onCancel={this.hideEditableCard} t={t} laneId={id} onAdd={this.addNewCard} />
+          <components.NewCardForm
+            onCancel={this.hideEditableCard}
+            t={t}
+            laneId={id}
+            onAdd={this.addNewCard}
+          />
         )}
       </components.ScrollableLane>
     );
@@ -222,12 +233,12 @@ class Lane extends Component {
     this.props.onLaneDelete(id);
   };
 
-  updateTitle = value => {
+  updateTitle = (value) => {
     this.props.actions.updateLane({ id: this.props.id, title: value });
     this.props.onLaneUpdate(this.props.id, { title: value });
   };
 
-  renderHeader = pickedProps => {
+  renderHeader = (pickedProps) => {
     const { components } = this.props;
     return (
       <components.LaneHeader
@@ -240,7 +251,7 @@ class Lane extends Component {
   };
 
   toggleLaneCollapsed = () => {
-    this.props.collapsibleLanes && this.setState(state => ({ collapsed: !state.collapsed }));
+    this.props.collapsibleLanes && this.setState((state) => ({ collapsed: !state.collapsed }));
   };
 
   render() {
@@ -275,7 +286,9 @@ class Lane extends Component {
         {this.renderHeader({ id, cards, ...otherProps })}
         {this.renderDragContainer(isDraggingOver)}
         {loading && <components.Loader />}
-        {showFooter && <components.LaneFooter onClick={this.toggleLaneCollapsed} collapsed={collapsed} />}
+        {showFooter && (
+          <components.LaneFooter onClick={this.toggleLaneCollapsed} collapsed={collapsed} />
+        )}
       </components.Section>
     );
   }
@@ -335,7 +348,7 @@ Lane.defaultProps = {
   onCardUpdate: () => {}
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(laneActions, dispatch)
 });
 

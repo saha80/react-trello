@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { MovableCardWrapper, CardHeader, CardRightContent, CardTitle, Detail, Footer } from 'rt/styles/Base';
+import {
+  MovableCardWrapper,
+  CardHeader,
+  CardRightContent,
+  CardTitle,
+  Detail,
+  Footer
+} from 'rt/styles/Base';
 import InlineInput from 'rt/widgets/InlineInput';
 import Tag from './Card/Tag';
 import DeleteButton from 'rt/widgets/DeleteButton';
 
 class Card extends Component {
-  onDelete = e => {
+  onDelete = (e) => {
     this.props.onDelete();
     e.stopPropagation();
   };
@@ -30,7 +37,7 @@ class Card extends Component {
       t
     } = this.props;
 
-    const updateCard = card => {
+    const updateCard = (card) => {
       onChange({ ...card, id });
     };
 
@@ -44,7 +51,7 @@ class Card extends Component {
                 border
                 placeholder={t('placeholder.title')}
                 resize="vertical"
-                onSave={value => updateCard({ title: value })}
+                onSave={(value) => updateCard({ title: value })}
               />
             ) : (
               title
@@ -57,7 +64,7 @@ class Card extends Component {
                 border
                 placeholder={t('placeholder.label')}
                 resize="vertical"
-                onSave={value => updateCard({ label: value })}
+                onSave={(value) => updateCard({ label: value })}
               />
             ) : (
               label
@@ -72,7 +79,7 @@ class Card extends Component {
               border
               placeholder={t('placeholder.description')}
               resize="vertical"
-              onSave={value => updateCard({ description: value })}
+              onSave={(value) => updateCard({ description: value })}
             />
           ) : (
             description
@@ -81,7 +88,7 @@ class Card extends Component {
         {tags &&
           tags.length > 0 && (
             <Footer>
-              {tags.map(tag => (
+              {tags.map((tag) => (
                 <Tag key={tag.title} {...tag} tagStyle={tagStyle} />
               ))}
             </Footer>

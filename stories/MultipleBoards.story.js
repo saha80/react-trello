@@ -13,17 +13,15 @@ const containerStyles = {
 
 storiesOf('Multiple Boards', module).add(
   'Two Boards',
-  () => {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <div style={containerStyles}>
-          <Board id="board1" data={data1} draggable />
-        </div>
-        <div style={containerStyles}>
-          <Board id="board2" data={data2} draggable />
-        </div>
+  () => (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={containerStyles}>
+        <Board id="board1" data={data1} draggable />
       </div>
-    );
-  },
+      <div style={containerStyles}>
+        <Board id="board2" data={data2} draggable />
+      </div>
+    </div>
+  ),
   { info: 'Have two boards rendering their own data' }
 );

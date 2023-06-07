@@ -51,17 +51,16 @@ class BoardContainer extends Component {
       handleLaneDragEnd(removedIndex, addedIndex, payload);
     }
   };
-  getCardDetails = (laneId, cardIndex) => {
-    return this.props.reducerData.lanes.find(lane => lane.id === laneId).cards[cardIndex];
-  };
-  getLaneDetails = index => {
-    return this.props.reducerData.lanes[index];
-  };
+
+  getCardDetails = (laneId, cardIndex) =>
+    this.props.reducerData.lanes.find((lane) => lane.id === laneId).cards[cardIndex];
+
+  getLaneDetails = (index) => this.props.reducerData.lanes[index];
 
   wireEventBus = () => {
     const { actions, eventBusHandle } = this.props;
     let eventBus = {
-      publish: event => {
+      publish: (event) => {
         switch (event.type) {
           case 'ADD_CARD':
             return actions.addCard({ laneId: event.laneId, card: event.card });
@@ -108,7 +107,7 @@ class BoardContainer extends Component {
     this.setState({ addLaneMode: true });
   };
 
-  addNewLane = params => {
+  addNewLane = (params) => {
     this.hideEditableLane();
     this.props.actions.addLane(params);
     this.props.onLaneAdd(params);
@@ -186,7 +185,7 @@ class BoardContainer extends Component {
             dropClass={laneDropClass}
             onDrop={this.onLaneDrop}
             lockAxis="x"
-            getChildPayload={index => this.getLaneDetails(index)}
+            getChildPayload={(index) => this.getLaneDetails(index)}
             groupName={this.groupName}
           >
             {reducerData.lanes.map((lane, index) => {
@@ -208,7 +207,11 @@ class BoardContainer extends Component {
                   {...passthroughProps}
                 />
               );
-              return draggable && laneDraggable ? <Draggable key={lane.id}>{laneToRender}</Draggable> : laneToRender;
+              return draggable && laneDraggable ? (
+                <Draggable key={lane.id}>{laneToRender}</Draggable>
+              ) : (
+                laneToRender
+              );
             })}
           </Container>
         </PopoverWrapper>
@@ -217,7 +220,13 @@ class BoardContainer extends Component {
             {editable && !addLaneMode ? (
               <components.NewLaneSection t={t} onClick={this.showEditableLane} />
             ) : (
-              addLaneMode && <components.NewLaneForm onCancel={this.hideEditableLane} onAdd={this.addNewLane} t={t} />
+              addLaneMode && (
+                <components.NewLaneForm
+                  onCancel={this.hideEditableLane}
+                  onAdd={this.addNewLane}
+                  t={t}
+                />
+              )
             )}
           </Container>
         )}
@@ -272,7 +281,7 @@ BoardContainer.propTypes = {
 };
 
 BoardContainer.defaultProps = {
-  t: v => v,
+  t: (v) => v,
   onDataChange: () => {},
   handleDragStart: () => {},
   handleDragEnd: () => {},
@@ -295,11 +304,9 @@ BoardContainer.defaultProps = {
   laneDropClass: ''
 };
 
-const mapStateToProps = state => {
-  return state.lanes ? { reducerData: state } : {};
-};
+const mapStateToProps = (state) => (state.lanes ? { reducerData: state } : {});
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({ ...boardActions, ...laneActions }, dispatch)
 });
 

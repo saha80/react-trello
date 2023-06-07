@@ -20,7 +20,13 @@ const LaneHeaderComponent = ({
   <LaneHeader onDoubleClick={onDoubleClick} editLaneTitle={editLaneTitle}>
     <Title draggable={laneDraggable} style={titleStyle}>
       {editLaneTitle ? (
-        <InlineInput value={title} border placeholder={t('placeholder.title')} resize="vertical" onSave={updateTitle} />
+        <InlineInput
+          value={title}
+          border
+          placeholder={t('placeholder.title')}
+          resize="vertical"
+          onSave={updateTitle}
+        />
       ) : (
         title
       )}

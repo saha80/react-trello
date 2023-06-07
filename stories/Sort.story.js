@@ -11,7 +11,9 @@ storiesOf('Basic Functions', module)
     () => (
       <Board
         data={data}
-        laneSortFunction={(card1, card2) => new Date(card1.metadata.completedAt) - new Date(card2.metadata.completedAt)}
+        laneSortFunction={(card1, card2) =>
+          new Date(card1.metadata.completedAt) - new Date(card2.metadata.completedAt)
+        }
       />
     ),
     { info: 'A lane sorted by completed at ascending' }
@@ -21,7 +23,9 @@ storiesOf('Basic Functions', module)
     () => (
       <Board
         data={data}
-        laneSortFunction={(card1, card2) => new Date(card2.metadata.completedAt) - new Date(card1.metadata.completedAt)}
+        laneSortFunction={(card1, card2) =>
+          new Date(card2.metadata.completedAt) - new Date(card1.metadata.completedAt)
+        }
       />
     ),
     { info: 'A lane sorted by completed at descending' }
