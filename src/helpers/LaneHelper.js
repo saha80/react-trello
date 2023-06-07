@@ -10,9 +10,7 @@ const LaneHelper = {
     return update(state, { lanes: { $set: newLanes } });
   },
 
-  deinitialiseLanes: (state, _) => {
-    return update(state, { lanes: { $set: [] } });
-  },
+  deinitialiseLanes: (state, _) => update(state, { lanes: { $set: [] } }),
 
   paginateLane: (state, { laneId, newCards, nextPage }) => {
     const updatedLanes = LaneHelper.appendCardsToLane(state, {
