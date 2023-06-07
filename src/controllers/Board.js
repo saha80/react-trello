@@ -4,30 +4,36 @@ import { Provider } from 'react-redux';
 import classNames from 'classnames';
 import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
-import { v1 as uuidv1 } from 'uuid';
+import uuidv1 from 'uuid/v1';
 import BoardContainer from './BoardContainer';
 import boardReducer from 'rt/reducers/BoardReducer';
+import DefaultComponents from '../components';
 
 const middlewares = process.env.REDUX_LOGGING ? [logger] : [];
 
-class Board extends Component {
-  constructor({ id }) {
-    super();
+export default class Board extends Component {
+  constructor(props) {
+    super(props);
     this.store = this.getStore();
-    this.id = id || uuidv1();
+    this.id = props.id || uuidv1();
   }
 
   // When you create multiple boards, unique stores are created for isolation
   getStore = () => createStore(boardReducer, applyMiddleware(...middlewares));
 
   render() {
-    const { className, components } = this.props;
+    const { className, components = DefaultComponents } = this.props;
     const allClassNames = classNames('react-trello-board', className || '');
     return (
       <Provider store={this.store}>
         <>
           <components.GlobalStyle />
-          <BoardContainer id={this.id} {...this.props} className={allClassNames} />
+          <BoardContainer
+            id={this.id}
+            data={this.props.data}
+            {...this.props}
+            className={allClassNames}
+          />
         </>
       </Provider>
     );
@@ -35,9 +41,8 @@ class Board extends Component {
 }
 
 Board.propTypes = {
+  id: PropTypes.string,
   className: PropTypes.string,
   components: PropTypes.object,
-  id: PropTypes.string,
+  data: PropTypes.object.isRequired
 };
-
-export default Board;

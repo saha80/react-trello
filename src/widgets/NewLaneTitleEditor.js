@@ -32,7 +32,6 @@ class NewLaneTitleEditor extends React.Component {
   };
 
   getValue = () => this.refInput.value;
-
   setValue = (value) => (this.refInput.value = value);
 
   saveValue = () => {
@@ -51,7 +50,7 @@ class NewLaneTitleEditor extends React.Component {
   };
 
   render() {
-    const { autoFocus, resize, border, autoResize, value, placeholder } = this.props;
+    const { autoFocus, resize, border, value, placeholder } = this.props;
 
     return (
       <InlineInput
@@ -59,10 +58,9 @@ class NewLaneTitleEditor extends React.Component {
         ref={this.setRef}
         border={border}
         onKeyDown={this.onKeyDown}
-        placeholder={value.length === 0 ? undefined : placeholder}
+        placeholder={!value.length ? undefined : placeholder}
         defaultValue={value}
         rows={3}
-        autoResize={autoResize}
         autoFocus={autoFocus}
       />
     );
@@ -76,8 +74,7 @@ NewLaneTitleEditor.propTypes = {
   placeholder: PropTypes.string,
   value: PropTypes.string,
   autoFocus: PropTypes.bool,
-  autoResize: PropTypes.bool,
-  resize: PropTypes.oneOf(['none', 'vertical', 'horizontal']),
+  resize: PropTypes.oneOf(['none', 'vertical', 'horizontal'])
 };
 
 NewLaneTitleEditor.defaultProps = {
@@ -88,8 +85,7 @@ NewLaneTitleEditor.defaultProps = {
   value: '',
   border: false,
   autoFocus: false,
-  autoResize: false,
-  resize: 'none',
+  resize: 'none'
 };
 
 export default NewLaneTitleEditor;

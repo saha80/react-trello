@@ -3,19 +3,15 @@ import PropTypes from 'prop-types';
 import { NewLaneSection } from 'rt/styles/Base';
 import { AddLaneLink } from 'rt/styles/Elements';
 
-function NewLaneSectionWrapper({ t, onClick }) {
-  return (
-    <NewLaneSection>
-      <AddLaneLink onClick={onClick} t={t}>
-        {t('Add another lane')}
-      </AddLaneLink>
-    </NewLaneSection>
-  );
-}
+const NewLaneSection_ = ({ t, onClick }) => (
+  <NewLaneSection>
+    <AddLaneLink onClick={onClick}>{t('Add another lane')}</AddLaneLink>
+  </NewLaneSection>
+);
 
-NewLaneSectionWrapper.propTypes = {
-  onClick: PropTypes.func,
+NewLaneSection_.propTypes = {
   t: PropTypes.func,
+  onClick: PropTypes.func
 };
 
-export default NewLaneSectionWrapper;
+export default NewLaneSection_;

@@ -5,5 +5,5 @@ import InlineInput from './InlineInput';
 export default {
   DeleteButton,
   EditableLabel,
-  InlineInput,
+  InlineInput
 };

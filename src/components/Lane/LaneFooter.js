@@ -5,13 +5,13 @@ import { LaneFooter } from 'rt/styles/Base';
 
 import { CollapseBtn, ExpandBtn } from 'rt/styles/Elements';
 
-function LaneFooterWrapper({ onClick, collapsed }) {
-  return <LaneFooter onClick={onClick}>{collapsed ? <ExpandBtn /> : <CollapseBtn />}</LaneFooter>;
-}
+const LaneFooter_ = ({ onClick, collapsed }) => (
+  <LaneFooter onClick={onClick}>{collapsed ? <ExpandBtn /> : <CollapseBtn />}</LaneFooter>
+);
 
-LaneFooterWrapper.propTypes = {
-  collapsed: PropTypes.bool,
+LaneFooter_.propTypes = {
   onClick: PropTypes.func,
+  collapsed: PropTypes.bool
 };
 
-export default LaneFooterWrapper;
+export default LaneFooter_;

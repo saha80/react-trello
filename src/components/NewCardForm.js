@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { CardForm, CardHeader, CardRightContent, CardTitle, CardWrapper, Detail } from 'rt/styles/Base';
+import {
+  CardForm,
+  CardHeader,
+  CardRightContent,
+  CardTitle,
+  CardWrapper,
+  Detail
+} from 'rt/styles/Base';
 import { AddButton, CancelButton } from 'rt/styles/Elements';
 import EditableLabel from 'rt/widgets/EditableLabel';
 
@@ -21,27 +28,26 @@ class NewCardForm extends Component {
           <CardHeader>
             <CardTitle>
               <EditableLabel
-                autoFocus
-                onChange={(val) => this.updateField('title', val)}
                 placeholder={t('placeholder.title')}
+                onChange={(val) => this.updateField('title', val)}
+                autoFocus
               />
             </CardTitle>
-
             <CardRightContent>
-              <EditableLabel onChange={(val) => this.updateField('label', val)} placeholder={t('placeholder.label')} />
+              <EditableLabel
+                placeholder={t('placeholder.label')}
+                onChange={(val) => this.updateField('label', val)}
+              />
             </CardRightContent>
           </CardHeader>
-
           <Detail>
             <EditableLabel
-              onChange={(val) => this.updateField('description', val)}
               placeholder={t('placeholder.description')}
+              onChange={(val) => this.updateField('description', val)}
             />
           </Detail>
         </CardWrapper>
-
         <AddButton onClick={this.handleAdd}>{t('button.Add card')}</AddButton>
-
         <CancelButton onClick={onCancel}>{t('button.Cancel')}</CancelButton>
       </CardForm>
     );
@@ -49,9 +55,9 @@ class NewCardForm extends Component {
 }
 
 NewCardForm.propTypes = {
-  onAdd: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired
 };
 
 NewCardForm.defaultProps = {};

@@ -3,12 +3,17 @@
 
 module.exports = {
   transform: {
-    '^.+\\.jsx?$': 'babel-jest',
+    '\\.[jt]sx?$': 'babel-jest'
   },
   moduleNameMapper: {
     '\\.(jpg|png|gif|svg)$': '<rootDir>/tests/__mocks__/fileMock.js',
-    '\\.(css)$': 'identity-obj-proxy',
+    '\\.(css)$': 'identity-obj-proxy'
   },
-  coveragePathIgnorePatterns: ['/stories/', '/.storybook/', '<rootDir>/node_modules/', 'story(.*).tsx'],
-  collectCoverage: true,
+  coveragePathIgnorePatterns: [
+    '/stories/',
+    '/.storybook/',
+    '<rootDir>/node_modules/',
+    'story(.*).tsx'
+  ],
+  collectCoverage: true
 };

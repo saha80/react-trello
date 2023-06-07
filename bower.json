@@ -2,22 +2,9 @@
   "name": "react-trello",
   "description": "Pluggable components to add a trello like kanban board to your application (browserified)",
   "main": "dist/index.js",
-  "authors": [
-    "RC",
-    "Prakash"
-  ],
+  "authors": ["RC", "Prakash"],
   "license": "MIT",
-  "keywords": [
-    "react",
-    "trello",
-    "board"
-  ],
+  "keywords": ["react", "trello", "board"],
   "homepage": "https://github.com/rcdexta/react-trello",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ]
+  "ignore": ["**/.*", "node_modules", "bower_components", "test", "tests"]
 }

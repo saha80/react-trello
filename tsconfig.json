@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    /* Projects */
+    "composite": true,
+
+    /* Language and Environment */
+    "target": "es2022",
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "jsx": "react",
+
+    /* Modules */
+    "module": "es2022",
+    "baseUrl": "./",
+    "paths": {
+      "rt/*": ["./src/*"]
+    },
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+
+    /* JavaScript Support */
+    "allowJs": true,
+    "checkJs": true,
+
+    /* Emit */
+    "outDir": "./tsbuild",
+
+    /* Interop Constraints */
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+    "noImplicitAny": false, // todo: change to true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    // "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    // "noUncheckedIndexedAccess": true,
+    // "noImplicitOverride": true,
+    // "noPropertyAccessFromIndexSignature": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+
+    /* Completeness */
+    "skipDefaultLibCheck": false,
+    "skipLibCheck": true
+  },
+  "include": ["./src", "**/*.json"]
+}

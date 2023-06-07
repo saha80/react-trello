@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 import { LaneTitle, NewLaneButtons, Section } from 'rt/styles/Base';
 import { AddButton, CancelButton } from 'rt/styles/Elements';
 import NewLaneTitleEditor from 'rt/widgets/NewLaneTitleEditor';
-import { v1 as uuidv1 } from 'uuid';
+import uuidv1 from 'uuid/v1';
 
 class NewLane extends Component {
   handleSubmit = () => {
     this.props.onAdd({
       id: uuidv1(),
-      title: this.getValue(),
+      title: this.getValue()
     });
   };
 
   getValue = () => this.refInput.getValue();
 
-  onClickOutside = (a, b, c) => {
+  onClickOutside = () => {
     if (this.getValue().length > 0) {
       this.handleSubmit();
     } else {
@@ -29,19 +29,17 @@ class NewLane extends Component {
       <Section>
         <LaneTitle>
           <NewLaneTitleEditor
-            autoFocus
-            border
+            ref={(ref) => (this.refInput = ref)}
+            placeholder={t('placeholder.title')}
             onCancel={this.props.onCancel}
             onSave={this.handleSubmit}
-            placeholder={t('placeholder.title')}
-            ref={(ref) => (this.refInput = ref)}
             resize="vertical"
+            border
+            autoFocus
           />
         </LaneTitle>
-
         <NewLaneButtons>
           <AddButton onClick={this.handleSubmit}>{t('button.Add lane')}</AddButton>
-
           <CancelButton onClick={onCancel}>{t('button.Cancel')}</CancelButton>
         </NewLaneButtons>
       </Section>
@@ -50,9 +48,9 @@ class NewLane extends Component {
 }
 
 NewLane.propTypes = {
-  onAdd: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired
 };
 
 NewLane.defaultProps = {};

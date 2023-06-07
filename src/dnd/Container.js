@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import SmoothDnD, { dropHandlers } from 'trello-smooth-dnd';
+import container, { dropHandlers } from 'trello-smooth-dnd';
 
-SmoothDnD.dropHandler = dropHandlers.reactDropHandler().handler;
-SmoothDnD.wrapChild = (p) => p; // dont wrap children they will already be wrapped
+container.dropHandler = dropHandlers.reactDropHandler().handler;
+container.wrapChild = (p) => p; // dont wrap children they will already be wrapped
 
 class Container extends Component {
   constructor(props) {
@@ -14,22 +15,24 @@ class Container extends Component {
   }
 
   componentDidMount() {
-    if (this.containerDiv) {
-      this.prevContainer = this.containerDiv;
-      this.smoothDnD = SmoothDnD(this.containerDiv, this.getContainerOptions()); // unused props could be referenced in SmoothDnD
-    }
+    this.containerDiv = this.containerDiv || ReactDOM.findDOMNode(this);
+    this.prevContainer = this.containerDiv;
+    this.container = container(this.containerDiv, this.getContainerOptions());
   }
 
   componentWillUnmount() {
-    this.smoothDnD?.dispose();
-    this.smoothDnD = null;
+    this.container.dispose();
+    this.container = null;
   }
 
   componentDidUpdate() {
-    if (this.containerDiv && this.prevContainer && this.prevContainer !== this.containerDiv) {
-      this.smoothDnD?.dispose();
-      this.smoothDnD = SmoothDnD(this.containerDiv, this.getContainerOptions()); // unused props could be referenced in SmoothDnD
-      this.prevContainer = this.containerDiv;
+    this.containerDiv = this.containerDiv || ReactDOM.findDOMNode(this);
+    if (this.containerDiv) {
+      if (this.prevContainer && this.prevContainer !== this.containerDiv) {
+        this.container.dispose();
+        this.container = container(this.containerDiv, this.getContainerOptions());
+        this.prevContainer = this.containerDiv;
+      }
     }
   }
 
@@ -105,6 +108,7 @@ Container.propTypes = {
   behaviour: PropTypes.oneOf(['move', 'copy', 'drag-zone']),
   groupName: PropTypes.string,
   orientation: PropTypes.oneOf(['horizontal', 'vertical']),
+  style: PropTypes.object,
   dragHandleSelector: PropTypes.string,
   className: PropTypes.string,
   nonDragAreaSelector: PropTypes.string,
@@ -115,19 +119,25 @@ Container.propTypes = {
   dragClass: PropTypes.string,
   dropClass: PropTypes.string,
   /* eslint-enable react/no-unused-prop-types */
-  style: PropTypes.object,
   onDragStart: PropTypes.func,
   onDragEnd: PropTypes.func,
   onDrop: PropTypes.func,
-  onDropReady: PropTypes.func,
   getChildPayload: PropTypes.func,
   shouldAnimateDrop: PropTypes.func,
   shouldAcceptDrop: PropTypes.func,
   onDragEnter: PropTypes.func,
   onDragLeave: PropTypes.func,
   render: PropTypes.func,
-  getGhostParent: PropTypes.func,
+  onDropReady: PropTypes.func,
   children: PropTypes.node,
+  getGhostParent: PropTypes.func,
+  removeOnDropOut: PropTypes.bool // eslint-disable-line react/no-unused-prop-types
+};
+
+Container.defaultProps = {
+  behaviour: 'move',
+  orientation: 'vertical',
+  className: 'reactTrelloBoard'
 };
 
 export default Container;

@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class EditableLabel extends React.Component {
-  constructor({ value }) {
-    super();
-    this.state = { value };
+  constructor(props) {
+    super(props);
+    this.state = { value: props.value };
+    this.refDiv = null;
   }
 
   getText = (el) => el.innerText;
@@ -31,7 +32,8 @@ class EditableLabel extends React.Component {
   };
 
   getClassName = () => {
-    const placeholder = this.state.value === '' ? 'comPlainTextContentEditable--has-placeholder' : '';
+    const placeholder =
+      this.state.value === '' ? 'comPlainTextContentEditable--has-placeholder' : '';
     return `comPlainTextContentEditable ${placeholder}`;
   };
 
@@ -42,7 +44,10 @@ class EditableLabel extends React.Component {
       e.preventDefault();
     }
     if (e.keyCode === 27) {
-      this.refDiv.value = this.props.value;
+      if (this.refDiv) {
+        // @ts-ignore // fixme
+        this.refDiv.value = this.props.value;
+      }
       this.setState({ value: this.props.value });
       // this.refDiv.blur()
       e.preventDefault();
@@ -71,15 +76,14 @@ EditableLabel.propTypes = {
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
   autoFocus: PropTypes.bool,
-  inline: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
-  value: PropTypes.string,
+  value: PropTypes.string
 };
 
 EditableLabel.defaultProps = {
   onChange: () => {},
   placeholder: '',
   autoFocus: false,
-  inline: false,
-  value: '',
+  value: ''
 };
+
 export default EditableLabel;

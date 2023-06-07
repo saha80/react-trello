@@ -14,19 +14,23 @@ import * as laneActions from 'rt/actions/LaneActions';
 
 class BoardContainer extends Component {
   state = {
-    addLaneMode: false,
+    addLaneMode: false
   };
 
   componentDidMount() {
-    const { actions, eventBusHandle } = this.props;
-    actions.loadBoard(this.props.data);
-    if (eventBusHandle) {
+    this.props.actions.loadBoard(this.props.data);
+    if (this.props.eventBusHandle) {
       this.wireEventBus();
     }
   }
 
+  componentWillUnmount() {
+    this.props.actions.unloadBoard();
+  }
+
   // apply patch
   componentDidUpdate(prevProps) {
+    // this.props.data changes when external Board input props change and this.props.reducerData changes due to event bus or UI changes
     const { data, reducerData, onDataChange } = prevProps;
     if (this.props.reducerData && !isEqual(reducerData, this.props.reducerData)) {
       onDataChange(this.props.reducerData);
@@ -38,15 +42,13 @@ class BoardContainer extends Component {
   }
 
   onDragStart = ({ payload }) => {
-    const { handleLaneDragStart } = this.props;
-    handleLaneDragStart(payload.id);
+    this.props.handleLaneDragStart(payload.id);
   };
 
   onLaneDrop = ({ removedIndex, addedIndex, payload }) => {
-    const { actions, handleLaneDragEnd } = this.props;
     if (removedIndex !== addedIndex) {
-      actions.moveLane({ oldIndex: removedIndex, newIndex: addedIndex });
-      handleLaneDragEnd(removedIndex, addedIndex, payload);
+      this.props.actions.moveLane({ oldIndex: removedIndex, newIndex: addedIndex });
+      this.props.handleLaneDragEnd(removedIndex, addedIndex, payload);
     }
   };
 
@@ -56,35 +58,42 @@ class BoardContainer extends Component {
   getLaneDetails = (index) => this.props.reducerData.lanes[index];
 
   wireEventBus = () => {
-    const { actions, eventBusHandle } = this.props;
-    const eventBus = {
+    this.props.eventBusHandle({
       publish: (event) => {
         switch (event.type) {
           case 'ADD_CARD':
-            return actions.addCard({ laneId: event.laneId, card: event.card });
+            return this.props.actions.addCard({ laneId: event.laneId, card: event.card });
           case 'UPDATE_CARD':
-            return actions.updateCard({ laneId: event.laneId, card: event.card });
+            return this.props.actions.updateCard({
+              laneId: event.laneId,
+              card: event.card
+            });
           case 'REMOVE_CARD':
-            return actions.removeCard({ laneId: event.laneId, cardId: event.cardId });
+            return this.props.actions.removeCard({
+              laneId: event.laneId,
+              cardId: event.cardId
+            });
           case 'REFRESH_BOARD':
-            return actions.loadBoard(event.data);
+            return this.props.actions.loadBoard(event.data);
           case 'MOVE_CARD':
-            return actions.moveCardAcrossLanes({
+            return this.props.actions.moveCardAcrossLanes({
               fromLaneId: event.fromLaneId,
               toLaneId: event.toLaneId,
               cardId: event.cardId,
-              index: event.index,
+              index: event.index
             });
           case 'UPDATE_CARDS':
-            return actions.updateCards({ laneId: event.laneId, cards: event.cards });
+            return this.props.actions.updateCards({
+              laneId: event.laneId,
+              cards: event.cards
+            });
           case 'UPDATE_LANES':
-            return actions.updateLanes(event.lanes);
+            return this.props.actions.updateLanes(event.lanes);
           case 'UPDATE_LANE':
-            return actions.updateLane(event.lane);
+            return this.props.actions.updateLane(event.lane);
         }
-      },
-    };
-    eventBusHandle(eventBus);
+      }
+    });
   };
 
   // + add
@@ -161,7 +170,7 @@ class BoardContainer extends Component {
       'handleDragEnd',
       'cardDragClass',
       'editLaneTitle',
-      't',
+      't'
     ]);
 
     return (
@@ -196,7 +205,11 @@ class BoardContainer extends Component {
                   {...passthroughProps}
                 />
               );
-              return draggable && laneDraggable ? <Draggable key={lane.id}>{laneToRender}</Draggable> : laneToRender;
+              return draggable && laneDraggable ? (
+                <Draggable key={lane.id}>{laneToRender}</Draggable>
+              ) : (
+                laneToRender
+              );
             })}
           </Container>
         </PopoverWrapper>
@@ -205,7 +218,13 @@ class BoardContainer extends Component {
             {editable && !addLaneMode ? (
               <components.NewLaneSection t={t} onClick={this.showEditableLane} />
             ) : (
-              addLaneMode && <components.NewLaneForm onCancel={this.hideEditableLane} onAdd={this.addNewLane} t={t} />
+              addLaneMode && (
+                <components.NewLaneForm
+                  onCancel={this.hideEditableLane}
+                  onAdd={this.addNewLane}
+                  t={t}
+                />
+              )
             )}
           </Container>
         )}
@@ -217,7 +236,19 @@ class BoardContainer extends Component {
 BoardContainer.propTypes = {
   id: PropTypes.string,
   components: PropTypes.object,
-  actions: PropTypes.object,
+  actions: PropTypes.shape({
+    loadBoard: PropTypes.func,
+    unloadBoard: PropTypes.func,
+    addLane: PropTypes.func,
+    moveLane: PropTypes.func,
+    addCard: PropTypes.func,
+    updateCard: PropTypes.func,
+    removeCard: PropTypes.func,
+    moveCardAcrossLanes: PropTypes.func,
+    updateCards: PropTypes.func,
+    updateLanes: PropTypes.func,
+    updateLane: PropTypes.func
+  }),
   data: PropTypes.object.isRequired,
   reducerData: PropTypes.object,
   onDataChange: PropTypes.func,
@@ -244,15 +275,16 @@ BoardContainer.propTypes = {
   handleLaneDragEnd: PropTypes.func,
   style: PropTypes.object,
   tagStyle: PropTypes.object,
-  cardStyle: PropTypes.object,
-  laneStyle: PropTypes.object,
   laneDraggable: PropTypes.bool,
   cardDraggable: PropTypes.bool,
   cardDragClass: PropTypes.string,
   laneDragClass: PropTypes.string,
   laneDropClass: PropTypes.string,
+  className: PropTypes.string,
   onCardMoveAcrossLanes: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired,
+  laneStyle: PropTypes.object,
+  cardStyle: PropTypes.object,
+  t: PropTypes.func.isRequired
 };
 
 BoardContainer.defaultProps = {
@@ -276,13 +308,16 @@ BoardContainer.defaultProps = {
   cardDraggable: true,
   cardDragClass: 'react_trello_dragClass',
   laneDragClass: 'react_trello_dragLaneClass',
-  laneDropClass: '',
+  laneDropClass: ''
 };
 
 const mapStateToProps = (state) => (state.lanes ? { reducerData: state } : {});
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators({ ...boardActions, ...laneActions }, dispatch),
+  actions: bindActionCreators({ ...boardActions, ...laneActions }, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BoardContainer);

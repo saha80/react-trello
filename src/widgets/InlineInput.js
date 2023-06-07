@@ -41,7 +41,6 @@ class InlineInputController extends React.Component {
   };
 
   getValue = () => this.refInput.value;
-
   setValue = (value) => (this.refInput.value = value);
 
   updateValue = () => {
@@ -80,7 +79,6 @@ class InlineInputController extends React.Component {
         autoCorrect="off"
         autoCapitalize="off"
         spellCheck="false"
-        dataGramm="false"
         rows={1}
         autoFocus={autoFocus}
       />
@@ -92,11 +90,11 @@ InlineInputController.propTypes = {
   onSave: PropTypes.func,
   onCancel: PropTypes.func,
   border: PropTypes.bool,
-  className: PropTypes.string,
   placeholder: PropTypes.string,
   value: PropTypes.string,
   autoFocus: PropTypes.bool,
-  resize: PropTypes.oneOf(['none', 'vertical', 'horizontal']),
+  className: PropTypes.string,
+  resize: PropTypes.oneOf(['none', 'vertical', 'horizontal'])
 };
 
 InlineInputController.defaultProps = {
@@ -105,7 +103,7 @@ InlineInputController.defaultProps = {
   value: '',
   border: false,
   autoFocus: false,
-  resize: 'none',
+  resize: 'none'
 };
 
 export default InlineInputController;

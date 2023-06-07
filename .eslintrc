@@ -1,19 +1,17 @@
 {
-  "parser": "@babel/eslint-parser",
+  "parser": "babel-eslint",
   "rules": {
     "strict": 1,
     "no-undef": 1,
+    "prefer-arrow-callback": [1, { "allowNamedFunctions": false, "allowUnboundThis": false }],
+    "curly": [1, "all"],
+    "arrow-body-style": [1, "as-needed"],
     "no-fallthrough": 1,
-    "react/prop-types": 2
+    "react/prop-types": 2,
+    "react/jsx-handler-names": 0,
+    "react/jsx-curly-newline": 0
   },
-  "plugins": ["react"],
-  "extends": [
-    "standard",
-    "standard-react",
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["standard", "standard-jsx", "standard-react", "plugin:prettier/recommended"],
   "env": {
     "browser": true,
     "node": true

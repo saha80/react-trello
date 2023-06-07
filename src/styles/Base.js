@@ -111,12 +111,13 @@ export const Section = styled.section`
 
 export const LaneHeader = styled(Header)`
   margin-bottom: 0px;
-  ${(props) =>
+  ${(/** @type {{editLaneTitle: boolean;}} */ props) =>
     props.editLaneTitle &&
     css`
       padding: 0px;
       line-height: 30px;
-    `} ${(props) =>
+    `};
+  ${(props) =>
     !props.editLaneTitle &&
     css`
       padding: 0px 5px;
@@ -148,7 +149,7 @@ export const Title = styled.span`
   font-weight: bold;
   font-size: 15px;
   line-height: 18px;
-  cursor: ${(props) => (props.draggable ? 'grab' : 'auto')};
+  cursor: ${(props) => (props.draggable ? 'grab' : `auto`)};
   width: 70%;
 `;
 
@@ -158,6 +159,7 @@ export const RightContent = styled.span`
   padding-right: 10px;
   font-size: 13px;
 `;
+
 export const CardWrapper = styled.article`
   border-radius: 3px;
   border-bottom: 1px solid #ccc;
@@ -279,7 +281,7 @@ export const InlineInput = styled.textarea`
   border: 0;
   padding: 0 8px;
   outline: 0;
-  ${(props) =>
+  ${(/** @type {{border: boolean}} */ props) =>
     props.border &&
     css`
       &:focus {
