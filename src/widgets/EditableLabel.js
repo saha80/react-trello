@@ -2,22 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class EditableLabel extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: props.value };
-    this.refDiv = null;
-  }
+  state = { value: this.props.value };
 
-  getText = (el) => el.innerText;
+  /** @type {React.RefObject<HTMLDivElement>} */ refDiv = React.createRef();
 
-  onTextChange = (ev) => {
-    const value = this.getText(ev.target);
-    this.setState({ value });
-  };
+  onInput = (event) => this.setState({ value: event.target.innerText });
 
   componentDidMount() {
     if (this.props.autoFocus) {
-      this.refDiv.focus();
+      this.refDiv.current?.focus();
     }
   }
 
@@ -25,33 +18,26 @@ class EditableLabel extends React.Component {
     this.props.onChange(this.state.value);
   };
 
-  onPaste = (ev) => {
-    ev.preventDefault();
-    const value = ev.clipboardData.getData('text');
-    document.execCommand('insertText', false, value);
+  onPaste = (event) => {
+    event.preventDefault();
+    document.execCommand('insertText', false, event.clipboardData.getData('text'));
   };
 
-  getClassName = () => {
-    const placeholder =
-      this.state.value === '' ? 'comPlainTextContentEditable--has-placeholder' : '';
-    return `comPlainTextContentEditable ${placeholder}`;
-  };
-
-  onKeyDown = (e) => {
-    if (e.keyCode === 13) {
+  onKeyDown = (event) => {
+    if (event.keyCode === 13) {
       this.props.onChange(this.state.value);
-      this.refDiv.blur();
-      e.preventDefault();
+      this.refDiv.current?.blur();
+      event.preventDefault();
     }
-    if (e.keyCode === 27) {
-      if (this.refDiv) {
+
+    if (event.keyCode === 27) {
+      if (this.refDiv.current) {
         // @ts-ignore // fixme
-        this.refDiv.value = this.props.value;
+        this.refDiv.current.value = this.props.value;
       }
       this.setState({ value: this.props.value });
-      // this.refDiv.blur()
-      e.preventDefault();
-      e.stopPropagation();
+      event.preventDefault();
+      event.stopPropagation();
     }
   };
 
@@ -59,12 +45,17 @@ class EditableLabel extends React.Component {
     const placeholder = this.props.value.length > 0 ? false : this.props.placeholder;
     return (
       <div
-        ref={(ref) => (this.refDiv = ref)}
+        ref={this.refDiv}
         contentEditable="true"
-        className={this.getClassName()}
+        className={[
+          'comPlainTextContentEditable',
+          !this.state.value && 'comPlainTextContentEditable--has-placeholder'
+        ]
+          .filter(Boolean)
+          .join(' ')}
         onPaste={this.onPaste}
         onBlur={this.onBlur}
-        onInput={this.onTextChange}
+        onInput={this.onInput}
         onKeyDown={this.onKeyDown}
         placeholder={placeholder}
       />

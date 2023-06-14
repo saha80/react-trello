@@ -1,22 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  MovableCardWrapper,
-  CardHeader,
-  CardRightContent,
-  CardTitle,
-  Detail,
-  Footer
-} from 'rt/styles/Base';
+import * as S from 'rt/styles/Base';
+
 import InlineInput from 'rt/widgets/InlineInput';
-import Tag from './Card/Tag';
 import DeleteButton from 'rt/widgets/DeleteButton';
 
-class Card extends Component {
-  onDelete = (e) => {
+import Tag from './Card/Tag';
+
+class Card extends React.Component {
+  onTitleSave = (title) => {
+    this.props.onChange({ title, id: this.props.id });
+  };
+
+  onLabelSave = (label) => {
+    this.props.onChange({ label, id: this.props.id });
+  };
+
+  onDelete = (event) => {
     this.props.onDelete();
-    e.stopPropagation();
+    event.stopPropagation();
+  };
+
+  onDescriptionSave = (description) => {
+    this.props.onChange({ description, id: this.props.id });
   };
 
   render() {
@@ -25,7 +32,6 @@ class Card extends Component {
       style,
       tagStyle,
       onClick,
-      onChange,
       className,
       id,
       title,
@@ -37,63 +43,58 @@ class Card extends Component {
       t
     } = this.props;
 
-    const updateCard = (card) => {
-      onChange({ ...card, id });
-    };
-
     return (
-      <MovableCardWrapper data-id={id} onClick={onClick} style={style} className={className}>
-        <CardHeader>
-          <CardTitle draggable={cardDraggable}>
+      <S.MovableCardWrapper data-id={id} onClick={onClick} style={style} className={className}>
+        <S.CardHeader>
+          <S.CardTitle draggable={cardDraggable}>
             {editable ? (
               <InlineInput
                 value={title}
                 border
                 placeholder={t('placeholder.title')}
                 resize="vertical"
-                onSave={(value) => updateCard({ title: value })}
+                onSave={this.onTitleSave}
               />
             ) : (
               title
             )}
-          </CardTitle>
-          <CardRightContent>
+          </S.CardTitle>
+          <S.CardRightContent>
             {editable ? (
               <InlineInput
                 value={label}
                 border
                 placeholder={t('placeholder.label')}
                 resize="vertical"
-                onSave={(value) => updateCard({ label: value })}
+                onSave={this.onLabelSave}
               />
             ) : (
               label
             )}
-          </CardRightContent>
+          </S.CardRightContent>
           {showDeleteButton && <DeleteButton onClick={this.onDelete} />}
-        </CardHeader>
-        <Detail>
+        </S.CardHeader>
+        <S.Detail>
           {editable ? (
             <InlineInput
               value={description}
               border
               placeholder={t('placeholder.description')}
               resize="vertical"
-              onSave={(value) => updateCard({ description: value })}
+              onSave={this.onDescriptionSave}
             />
           ) : (
             description
           )}
-        </Detail>
-        {tags &&
-          tags.length > 0 && (
-            <Footer>
-              {tags.map((tag) => (
-                <Tag key={tag.title} {...tag} tagStyle={tagStyle} />
-              ))}
-            </Footer>
-          )}
-      </MovableCardWrapper>
+        </S.Detail>
+        {tags?.length ? (
+          <S.Footer>
+            {tags.map((tag) => (
+              <Tag key={tag.title} {...tag} tagStyle={tagStyle} />
+            ))}
+          </S.Footer>
+        ) : null}
+      </S.MovableCardWrapper>
     );
   }
 }

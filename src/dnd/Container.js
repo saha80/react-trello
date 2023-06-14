@@ -1,106 +1,74 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import PropTypes from 'prop-types';
 import container, { dropHandlers } from 'trello-smooth-dnd';
 
 container.dropHandler = dropHandlers.reactDropHandler().handler;
-container.wrapChild = (p) => p; // dont wrap children they will already be wrapped
+container.wrapChild = (child) => child; // dont wrap children they will already be wrapped
 
-class Container extends Component {
-  constructor(props) {
-    super(props);
-    this.getContainerOptions = this.getContainerOptions.bind(this);
-    this.setRef = this.setRef.bind(this);
-    this.prevContainer = null;
-  }
+class Container extends React.Component {
+  /** @type {HTMLDivElement | null} */ containerDiv = null;
+  /** @type {HTMLDivElement | null} */ prevContainer = null;
+  /** @type { { dispose: () => void } | null} */ container = null;
 
   componentDidMount() {
-    this.containerDiv = this.containerDiv || ReactDOM.findDOMNode(this);
     this.prevContainer = this.containerDiv;
-    this.container = container(this.containerDiv, this.getContainerOptions());
+    if (this.containerDiv) {
+      this.container = container(this.containerDiv, this.getContainerOptions());
+    }
   }
 
   componentWillUnmount() {
-    this.container.dispose();
+    this.container?.dispose();
     this.container = null;
   }
 
   componentDidUpdate() {
-    this.containerDiv = this.containerDiv || ReactDOM.findDOMNode(this);
-    if (this.containerDiv) {
-      if (this.prevContainer && this.prevContainer !== this.containerDiv) {
-        this.container.dispose();
-        this.container = container(this.containerDiv, this.getContainerOptions());
-        this.prevContainer = this.containerDiv;
-      }
+    if (this.containerDiv && this.prevContainer && this.prevContainer !== this.containerDiv) {
+      this.container?.dispose();
+      this.container = container(this.containerDiv, this.getContainerOptions());
+      this.prevContainer = this.containerDiv;
     }
   }
+
+  setRef = (/** @type {HTMLDivElement | null} */ element) => {
+    this.containerDiv = element;
+  };
 
   render() {
-    if (this.props.render) {
-      return this.props.render(this.setRef);
-    } else {
-      return (
-        <div style={this.props.style} ref={this.setRef}>
-          {this.props.children}
-        </div>
-      );
-    }
+    const { render, style, children } = this.props;
+
+    return render ? (
+      render(this.setRef)
+    ) : (
+      <div style={style} ref={this.setRef}>
+        {children}
+      </div>
+    );
   }
 
-  setRef(element) {
-    this.containerDiv = element;
-  }
-
-  getContainerOptions() {
-    const functionProps = {};
-
-    if (this.props.onDragStart) {
-      functionProps.onDragStart = (...p) => this.props.onDragStart(...p);
-    }
-
-    if (this.props.onDragEnd) {
-      functionProps.onDragEnd = (...p) => this.props.onDragEnd(...p);
-    }
-
-    if (this.props.onDrop) {
-      functionProps.onDrop = (...p) => this.props.onDrop(...p);
-    }
-
-    if (this.props.getChildPayload) {
-      functionProps.getChildPayload = (...p) => this.props.getChildPayload(...p);
-    }
-
-    if (this.props.shouldAnimateDrop) {
-      functionProps.shouldAnimateDrop = (...p) => this.props.shouldAnimateDrop(...p);
-    }
-
-    if (this.props.shouldAcceptDrop) {
-      functionProps.shouldAcceptDrop = (...p) => this.props.shouldAcceptDrop(...p);
-    }
-
-    if (this.props.onDragEnter) {
-      functionProps.onDragEnter = (...p) => this.props.onDragEnter(...p);
-    }
-
-    if (this.props.onDragLeave) {
-      functionProps.onDragLeave = (...p) => this.props.onDragLeave(...p);
-    }
-
-    if (this.props.render) {
-      functionProps.render = (...p) => this.props.render(...p);
-    }
-
-    if (this.props.onDropReady) {
-      functionProps.onDropReady = (...p) => this.props.onDropReady(...p);
-    }
-
-    if (this.props.getGhostParent) {
-      functionProps.getGhostParent = (...p) => this.props.getGhostParent(...p);
-    }
-
-    return Object.assign({}, this.props, functionProps);
-  }
+  getContainerOptions = () => ({
+    ...this.props,
+    ...Object.fromEntries(
+      Object.entries(this.props)
+        .filter(
+          ([key, value]) =>
+            [
+              'onDragStart',
+              'onDragEnd',
+              'onDrop',
+              'getChildPayload',
+              'shouldAnimateDrop',
+              'shouldAcceptDrop',
+              'onDragEnter',
+              'onDragLeave',
+              'render',
+              'onDropReady',
+              'getGhostParent'
+            ].includes(key) && value
+        )
+        .map(([key, callable]) => [key, (...args) => callable(...args)])
+    )
+  });
 }
 
 Container.propTypes = {
@@ -118,7 +86,6 @@ Container.propTypes = {
   lockAxis: PropTypes.string,
   dragClass: PropTypes.string,
   dropClass: PropTypes.string,
-  /* eslint-enable react/no-unused-prop-types */
   onDragStart: PropTypes.func,
   onDragEnd: PropTypes.func,
   onDrop: PropTypes.func,
@@ -127,11 +94,12 @@ Container.propTypes = {
   shouldAcceptDrop: PropTypes.func,
   onDragEnter: PropTypes.func,
   onDragLeave: PropTypes.func,
-  render: PropTypes.func,
   onDropReady: PropTypes.func,
-  children: PropTypes.node,
   getGhostParent: PropTypes.func,
-  removeOnDropOut: PropTypes.bool // eslint-disable-line react/no-unused-prop-types
+  removeOnDropOut: PropTypes.bool,
+  /* eslint-enable react/no-unused-prop-types */
+  render: PropTypes.func,
+  children: PropTypes.node
 };
 
 Container.defaultProps = {

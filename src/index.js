@@ -1,10 +1,10 @@
 import React from 'react';
-import PropsTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import Draggable from './dnd/Draggable';
 import Container from './dnd/Container';
 import BoardContainer from './controllers/BoardContainer';
-import Board from './controllers/Board';
+import BoardController from './controllers/Board';
 import Lane from './controllers/Lane';
 import deprecationWarnings from './helpers/deprecationWarnings';
 import DefaultComponents from './components';
@@ -20,17 +20,34 @@ export { DefaultComponents as components };
 
 const DEFAULT_LANG = 'en';
 
-const default_ = ({ components, lang = DEFAULT_LANG, ...otherProps }) => {
+const Board = ({ components, lang = DEFAULT_LANG, ...otherProps }) => {
   deprecationWarnings(otherProps);
-  const translate = createTranslate(locales[lang].translation);
+
   return (
-    <Board t={translate} components={{ ...DefaultComponents, ...components }} {...otherProps} />
+    <BoardController
+      t={createTranslate(locales[lang].translation)}
+      components={{ ...DefaultComponents, ...components }}
+      {...otherProps}
+    />
   );
 };
 
-default_.propTypes = {
-  components: PropsTypes.object,
-  lang: PropsTypes.string
+Board.propTypes = {
+  components: PropTypes.shape({
+    AddCardLink: PropTypes.elementType,
+    BoardWrapper: PropTypes.elementType,
+    Card: PropTypes.elementType,
+    GlobalStyle: PropTypes.elementType,
+    LaneFooter: PropTypes.elementType,
+    LaneHeader: PropTypes.elementType,
+    Loader: PropTypes.elementType,
+    NewCardForm: PropTypes.elementType,
+    NewLaneForm: PropTypes.elementType,
+    NewLaneSection: PropTypes.elementType,
+    ScrollableLane: PropTypes.elementType,
+    Section: PropTypes.elementType
+  }),
+  lang: PropTypes.string
 };
 
-export default default_;
+export default Board;

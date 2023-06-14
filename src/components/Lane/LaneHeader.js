@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import InlineInput from 'rt/widgets/InlineInput';
-import { Title, LaneHeader, RightContent } from 'rt/styles/Base';
+import * as S from 'rt/styles/Base';
 import LaneMenu from './LaneHeader/LaneMenu';
 
-const LaneHeaderComponent = ({
+const LaneHeader = ({
   updateTitle,
   canAddLanes,
   onDelete,
@@ -17,8 +17,8 @@ const LaneHeaderComponent = ({
   t,
   laneDraggable
 }) => (
-  <LaneHeader onDoubleClick={onDoubleClick} editLaneTitle={editLaneTitle}>
-    <Title draggable={laneDraggable} style={titleStyle}>
+  <S.LaneHeader onDoubleClick={onDoubleClick} editLaneTitle={editLaneTitle}>
+    <S.Title draggable={laneDraggable} style={titleStyle}>
       {editLaneTitle ? (
         <InlineInput
           value={title}
@@ -30,17 +30,17 @@ const LaneHeaderComponent = ({
       ) : (
         title
       )}
-    </Title>
+    </S.Title>
     {label && (
-      <RightContent>
+      <S.RightContent>
         <span style={labelStyle}>{label}</span>
-      </RightContent>
+      </S.RightContent>
     )}
     {canAddLanes && <LaneMenu t={t} onDelete={onDelete} />}
-  </LaneHeader>
+  </S.LaneHeader>
 );
 
-LaneHeaderComponent.propTypes = {
+LaneHeader.propTypes = {
   updateTitle: PropTypes.func,
   editLaneTitle: PropTypes.bool,
   canAddLanes: PropTypes.bool,
@@ -54,10 +54,10 @@ LaneHeaderComponent.propTypes = {
   labelStyle: PropTypes.object
 };
 
-LaneHeaderComponent.defaultProps = {
+LaneHeader.defaultProps = {
   updateTitle: () => {},
   editLaneTitle: false,
   canAddLanes: false
 };
 
-export default LaneHeaderComponent;
+export default LaneHeader;

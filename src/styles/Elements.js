@@ -37,6 +37,7 @@ export const DelButton = styled.button`
   background: inherit;
   cursor: pointer;
   opacity: 0;
+
   ${MovableCardWrapper}:hover & {
     opacity: 1;
   }
@@ -168,6 +169,7 @@ export const CollapseBtn = styled(ExpandCollapseBase)`
     border-right: 7px solid transparent;
     border-radius: 6px;
   }
+
   &:after {
     content: '';
     position: absolute;
@@ -180,21 +182,23 @@ export const CollapseBtn = styled(ExpandCollapseBase)`
 `;
 
 export const ExpandBtn = styled(ExpandCollapseBase)`
-  &:before {
+  &:before,
+  &:after {
     content: '';
     position: absolute;
     top: 0;
+  }
+
+  &:before {
     left: 0;
     border-top: 7px solid #444;
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     border-radius: 6px;
   }
+
   &:after {
-    content: '';
-    position: absolute;
     left: 4px;
-    top: 0px;
     border-top: 3px solid #e3e3e3;
     border-left: 3px solid transparent;
     border-right: 3px solid transparent;
@@ -241,7 +245,7 @@ export const AddLaneLink = styled.button`
   padding: 4px 16px;
   vertical-align: top;
   margin-top: 0;
-  margin-right: 0px;
+  margin-right: 0;
   border-radius: 4px;
   font-size: 13px;
   cursor: pointer;

@@ -1,18 +1,32 @@
-import React, { Component } from 'react';
-import classNames from 'classnames';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import isEqual from 'lodash/isEqual';
-import cloneDeep from 'lodash/cloneDeep';
-import uuidv1 from 'uuid/v1';
+import isEqual from 'react-fast-compare';
+import { v4 as uuidv4 } from 'uuid';
 
 import Container from 'rt/dnd/Container';
 import Draggable from 'rt/dnd/Draggable';
 
 import * as laneActions from 'rt/actions/LaneActions';
 
-class Lane extends Component {
+const sortCards = (
+  /** @type {boolean} */ collapsed,
+  /** @type {any[] | undefined} */ cards,
+  /** @type {((a: any, b: any) => number) | undefined} */ laneSortFunction
+) => {
+  if (collapsed || !cards) {
+    return [];
+  }
+
+  if (laneSortFunction) {
+    return [...cards].sort(laneSortFunction);
+  }
+
+  return cards;
+};
+
+class Lane extends React.Component {
   state = {
     loading: false,
     currentPage: this.props.currentPage,
@@ -21,139 +35,161 @@ class Lane extends Component {
     isDraggingOver: false
   };
 
-  handleScroll = (evt) => {
-    const node = evt.target;
-    const elemScrollPosition = node.scrollHeight - node.scrollTop - node.clientHeight;
-    const { onLaneScroll } = this.props;
+  scrollEventListener = ({ target }) => {
+    const elementScrollPosition = target.scrollHeight - target.scrollTop - target.clientHeight;
     // In some browsers and/or screen sizes a decimal rest value between 0 and 1 exists, so it should be checked on < 1 instead of < 0
-    if (elemScrollPosition < 1 && onLaneScroll && !this.state.loading) {
-      const { currentPage } = this.state;
+    if (elementScrollPosition < 1 && this.props.onLaneScroll && !this.state.loading) {
       this.setState({ loading: true });
-      const nextPage = currentPage + 1;
-      onLaneScroll(nextPage, this.props.id).then((moreCards) => {
-        if ((moreCards || []).length > 0) {
-          this.props.actions.paginateLane({
-            laneId: this.props.id,
-            newCards: moreCards,
-            nextPage
-          });
+
+      const nextPage = this.state.currentPage + 1;
+
+      this.props.onLaneScroll(nextPage, this.props.id).then((newCards = []) => {
+        if (newCards.length) {
+          this.props.actions.paginateLane({ laneId: this.props.id, newCards, nextPage });
         }
+
         this.setState({ loading: false });
       });
     }
   };
 
-  sortCards(cards, sortFunction) {
-    if (!cards) {
-      return [];
-    }
-    if (!sortFunction) {
-      return cards;
-    }
-    return cards.concat().sort((card1, card2) => sortFunction(card1, card2));
-  }
-
-  laneDidMount = (node) => {
-    if (node) {
-      node.addEventListener('scroll', this.handleScroll);
-    }
-  };
+  laneDidMount = (/** @type {EventTarget | null} */ ref) =>
+    ref?.addEventListener('scroll', this.scrollEventListener);
 
   // apply patch
   componentDidUpdate(prevProps) {
     if (!isEqual(prevProps.cards, this.props.cards)) {
-      this.setState({
-        currentPage: this.props.currentPage
-      });
+      this.setState({ currentPage: this.props.currentPage });
     }
   }
 
-  removeCard = (cardId) => {
-    if (this.props.onBeforeCardDelete && typeof this.props.onBeforeCardDelete === 'function') {
-      this.props.onBeforeCardDelete(() => {
-        this.props.onCardDelete && this.props.onCardDelete(cardId, this.props.id);
-        this.props.actions.removeCard({
-          laneId: this.props.id,
-          cardId
-        });
-      });
-    } else {
-      this.props.onCardDelete && this.props.onCardDelete(cardId, this.props.id);
+  removeCard = (cardId) => () => {
+    const cardDelete = () => {
+      this.props.onCardDelete?.(cardId, this.props.id);
       this.props.actions.removeCard({ laneId: this.props.id, cardId });
+    };
+
+    if (this.props.onBeforeCardDelete) {
+      this.props.onBeforeCardDelete(cardDelete);
+    } else {
+      cardDelete();
     }
   };
 
-  handleCardClick = (e, card) => {
-    const { onCardClick } = this.props;
-    onCardClick && onCardClick(card.id, card.metadata, card.laneId);
-    e.stopPropagation();
+  handleCardClick = ({ id, metadata, laneId }) => (event) => {
+    this.props.onCardClick?.(id, metadata, laneId);
+    event.stopPropagation();
   };
 
-  showEditableCard = () => {
-    this.setState({ addCardMode: true });
-  };
+  showEditableCard = () => this.setState({ addCardMode: true });
 
-  hideEditableCard = () => {
-    this.setState({ addCardMode: false });
-  };
+  hideEditableCard = () => this.setState({ addCardMode: false });
 
   addNewCard = (params) => {
     const laneId = this.props.id;
-    const id = uuidv1();
     this.hideEditableCard();
-    const card = { id, ...params };
+    const card = { id: uuidv4(), ...params };
     this.props.actions.addCard({ laneId, card });
     this.props.onCardAdd(card, laneId);
   };
 
   onDragStart = ({ payload }) => {
-    const { handleDragStart } = this.props;
-    handleDragStart && handleDragStart(payload.id, payload.laneId);
+    this.props.handleDragStart?.(payload.id, payload.laneId);
   };
 
-  shouldAcceptDrop = (sourceContainerOptions) =>
-    this.props.droppable && sourceContainerOptions.groupName === this.groupName;
+  shouldAcceptDrop = ({ groupName }) => this.props.droppable && groupName === this.groupName;
 
   get groupName() {
-    const { boardId } = this.props;
-    return `TrelloBoard${boardId}Lane`;
+    return `TrelloBoard${this.props.boardId}Lane`;
   }
 
-  onDragEnd = (laneId, result) => {
-    const { handleDragEnd } = this.props;
-    const { addedIndex, payload } = result;
-
+  onDragEnd = (toLaneId) => ({ addedIndex: index, payload }) => {
     if (this.state.isDraggingOver) {
-      this.setState({ isDraggingOver: false });
+      this.onDragLeave();
     }
 
-    if (addedIndex != null) {
-      const newCard = { ...cloneDeep(payload), laneId };
-      const response = handleDragEnd
-        ? handleDragEnd(payload.id, payload.laneId, laneId, addedIndex, newCard)
-        : true;
-      if (response === undefined || !!response) {
-        this.props.actions.moveCardAcrossLanes({
-          fromLaneId: payload.laneId,
-          toLaneId: laneId,
-          cardId: payload.id,
-          index: addedIndex
-        });
-        this.props.onCardMoveAcrossLanes(payload.laneId, laneId, payload.id, addedIndex);
-      }
-      return response;
+    if (index == null) {
+      return;
+    }
+
+    const cardId = payload.id;
+    const fromLaneId = payload.laneId;
+
+    const response = this.props.handleDragEnd
+      ? this.props.handleDragEnd(cardId, fromLaneId, toLaneId, index, {
+          ...structuredClone(payload),
+          laneId: toLaneId
+        })
+      : true;
+
+    if (response === undefined || Boolean(response)) {
+      this.props.actions.moveCardAcrossLanes({ fromLaneId, toLaneId, cardId, index });
+      this.props.onCardMoveAcrossLanes(fromLaneId, toLaneId, cardId, index);
+    }
+
+    return response;
+  };
+
+  updateCard = (card) => {
+    this.props.actions.updateCard({ laneId: this.props.id, card });
+    this.props.onCardUpdate(this.props.id, card);
+  };
+
+  onDragEnter = () => this.setState({ isDraggingOver: true });
+
+  onDragLeave = () => this.setState({ isDraggingOver: false });
+
+  getCardDetails = (id) => (index) => this.props.getCardDetails(id, index);
+
+  removeLane = () => {
+    const { id: laneId } = this.props;
+    this.props.actions.removeLane({ laneId });
+    this.props.onLaneDelete(laneId);
+  };
+
+  updateTitle = (title) => {
+    const { id } = this.props;
+    this.props.actions.updateLane({ id, title });
+    this.props.onLaneUpdate(id, { title });
+  };
+
+  toggleLaneCollapsed = () => {
+    if (this.props.collapsibleLanes) {
+      this.setState((state) => ({ collapsed: !state.collapsed }));
     }
   };
 
-  updateCard = (updatedCard) => {
-    this.props.actions.updateCard({ laneId: this.props.id, card: updatedCard });
-    this.props.onCardUpdate(this.props.id, updatedCard);
-  };
+  onLaneClick = () => this.props.onLaneClick?.(this.props.id);
 
-  renderDragContainer = (isDraggingOver) => {
+  forwardProps = () =>
+    Object.fromEntries(
+      Object.entries(this.props).filter(
+        ([key]) =>
+          ![
+            'id',
+            'cards',
+            'collapsibleLanes',
+            'components',
+            'onLaneClick',
+            'onLaneScroll',
+            'onCardClick',
+            'onCardAdd',
+            'onBeforeCardDelete',
+            'onCardDelete',
+            'onLaneDelete',
+            'onLaneUpdate',
+            'onCardUpdate',
+            'onCardMoveAcrossLanes'
+          ].includes(key)
+      )
+    );
+
+  render() {
     const {
       id,
       cards,
+      collapsibleLanes,
+      components,
       laneSortFunction,
       editable,
       hideCardDeleteIcon,
@@ -162,133 +198,84 @@ class Lane extends Component {
       cardDropClass,
       tagStyle,
       cardStyle,
-      components,
-      t
+      t,
+      className
     } = this.props;
-    const { addCardMode, collapsed } = this.state;
 
-    const showableCards = collapsed ? [] : cards;
+    const { loading, isDraggingOver, addCardMode, collapsed } = this.state;
 
-    const cardList = this.sortCards(showableCards, laneSortFunction).map((card, idx) => {
-      const onDeleteCard = () => this.removeCard(card.id);
-      const cardToRender = (
-        <components.Card
-          key={card.id}
-          index={idx}
-          style={card.style || cardStyle}
-          className="react-trello-card"
-          onDelete={onDeleteCard}
-          onClick={(e) => this.handleCardClick(e, card)}
-          onChange={(updatedCard) => this.updateCard(updatedCard)}
-          showDeleteButton={!hideCardDeleteIcon}
-          tagStyle={tagStyle}
-          cardDraggable={cardDraggable}
-          editable={editable}
-          t={t}
-          {...card}
-        />
-      );
-      return cardDraggable && (!Object.hasOwn(card, 'draggable') || card.draggable) ? (
-        <Draggable key={card.id}>{cardToRender}</Draggable>
-      ) : (
-        <span key={card.id}>{cardToRender}</span>
-      );
-    });
+    const forwardedProps = this.forwardProps();
 
-    return (
-      <components.ScrollableLane ref={this.laneDidMount} isDraggingOver={isDraggingOver}>
-        <Container
-          orientation="vertical"
-          groupName={this.groupName}
-          dragClass={cardDragClass}
-          dropClass={cardDropClass}
-          onDragStart={this.onDragStart}
-          onDrop={(e) => this.onDragEnd(id, e)}
-          onDragEnter={() => this.setState({ isDraggingOver: true })}
-          onDragLeave={() => this.setState({ isDraggingOver: false })}
-          shouldAcceptDrop={this.shouldAcceptDrop}
-          getChildPayload={(index) => this.props.getCardDetails(id, index)}
-        >
-          {cardList}
-        </Container>
-        {editable &&
-          !addCardMode && (
-            <components.AddCardLink onClick={this.showEditableCard} t={t} laneId={id} />
-          )}
-        {addCardMode && (
-          <components.NewCardForm
-            onCancel={this.hideEditableCard}
-            t={t}
-            laneId={id}
-            onAdd={this.addNewCard}
-          />
-        )}
-      </components.ScrollableLane>
-    );
-  };
-
-  removeLane = () => {
-    const { id } = this.props;
-    this.props.actions.removeLane({ laneId: id });
-    this.props.onLaneDelete(id);
-  };
-
-  updateTitle = (value) => {
-    this.props.actions.updateLane({ id: this.props.id, title: value });
-    this.props.onLaneUpdate(this.props.id, { title: value });
-  };
-
-  renderHeader = (pickedProps) => {
-    const { components } = this.props;
-    return (
-      <components.LaneHeader
-        {...pickedProps}
-        onDelete={this.removeLane}
-        onDoubleClick={this.toggleLaneCollapsed}
-        updateTitle={this.updateTitle}
-      />
-    );
-  };
-
-  toggleLaneCollapsed = () => {
-    this.props.collapsibleLanes && this.setState((state) => ({ collapsed: !state.collapsed }));
-  };
-
-  render() {
-    const { loading, isDraggingOver, collapsed } = this.state;
-    const {
-      id,
-      cards,
-      collapsibleLanes,
-      components,
-      onLaneClick,
-      onLaneScroll,
-      onCardClick,
-      onCardAdd,
-      onBeforeCardDelete,
-      onCardDelete,
-      onLaneDelete,
-      onLaneUpdate,
-      onCardUpdate,
-      onCardMoveAcrossLanes,
-      ...otherProps
-    } = this.props;
-    const allClassNames = classNames('react-trello-lane', this.props.className || '');
-    const showFooter = collapsibleLanes && cards.length > 0;
     return (
       <components.Section
-        {...otherProps}
+        {...forwardedProps}
         key={id}
-        onClick={() => onLaneClick && onLaneClick(id)}
+        onClick={this.onLaneClick}
         draggable={false}
-        className={allClassNames}
+        className={['react-trello-lane', className].filter(Boolean).join(' ')}
       >
-        {this.renderHeader({ id, cards, ...otherProps })}
-        {this.renderDragContainer(isDraggingOver)}
+        <components.LaneHeader
+          {...{ id, cards, ...forwardedProps }}
+          onDelete={this.removeLane}
+          onDoubleClick={this.toggleLaneCollapsed}
+          updateTitle={this.updateTitle}
+        />
+        <components.ScrollableLane ref={this.laneDidMount} isDraggingOver={isDraggingOver}>
+          <Container
+            orientation="vertical"
+            groupName={this.groupName}
+            dragClass={cardDragClass}
+            dropClass={cardDropClass}
+            onDragStart={this.onDragStart}
+            onDrop={this.onDragEnd(id)}
+            onDragEnter={this.onDragEnter}
+            onDragLeave={this.onDragLeave}
+            shouldAcceptDrop={this.shouldAcceptDrop}
+            getChildPayload={this.getCardDetails(id)}
+          >
+            {sortCards(collapsed, cards, laneSortFunction).map((cardProps, index) => {
+              const { id, draggable = true } = cardProps;
+
+              const card = (
+                <components.Card
+                  key={id}
+                  index={index}
+                  style={cardProps.style || cardStyle}
+                  className="react-trello-card"
+                  onDelete={this.removeCard(id)}
+                  onClick={this.handleCardClick(cardProps)}
+                  onChange={this.updateCard}
+                  showDeleteButton={!hideCardDeleteIcon}
+                  tagStyle={tagStyle}
+                  cardDraggable={cardDraggable}
+                  editable={editable}
+                  t={t}
+                  {...cardProps}
+                />
+              );
+
+              return cardDraggable && draggable ? (
+                <Draggable key={id}>{card}</Draggable>
+              ) : (
+                <span key={id}>{card}</span>
+              );
+            })}
+          </Container>
+          {addCardMode ? (
+            <components.NewCardForm
+              onCancel={this.hideEditableCard}
+              t={t}
+              laneId={id}
+              onAdd={this.addNewCard}
+            />
+          ) : editable ? (
+            <components.AddCardLink onClick={this.showEditableCard} t={t} laneId={id} />
+          ) : null}
+        </components.ScrollableLane>
         {loading && <components.Loader />}
-        {showFooter && (
+        {collapsibleLanes && cards.length ? (
           <components.LaneFooter onClick={this.toggleLaneCollapsed} collapsed={collapsed} />
-        )}
+        ) : null}
       </components.Section>
     );
   }
@@ -332,9 +319,19 @@ Lane.propTypes = {
   handleDragStart: PropTypes.func,
   handleDragEnd: PropTypes.func,
   hideCardDeleteIcon: PropTypes.bool,
-  components: PropTypes.object,
+  components: PropTypes.shape({
+    AddCardLink: PropTypes.elementType.isRequired,
+    Card: PropTypes.elementType.isRequired,
+    LaneFooter: PropTypes.elementType.isRequired,
+    LaneHeader: PropTypes.elementType.isRequired,
+    Loader: PropTypes.elementType.isRequired,
+    NewCardForm: PropTypes.elementType.isRequired,
+    ScrollableLane: PropTypes.elementType.isRequired,
+    Section: PropTypes.elementType.isRequired
+  }),
   getCardDetails: PropTypes.func,
-  className: PropTypes.string
+  className: PropTypes.string,
+  editLaneTitle: PropTypes.bool
 };
 
 Lane.defaultProps = {

@@ -1,71 +1,72 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { InlineInput } from 'rt/styles/Base';
+import * as S from 'rt/styles/Base';
 import autosize from 'autosize';
 
-class InlineInputController extends React.Component {
+class InlineInput extends React.Component {
+  /** @type {HTMLTextAreaElement | null} */ refInput = null;
+
   // apply patch
-  onFocus = (e) => {
-    e.target.select();
+  onFocus = (event) => {
+    event.target.select();
   };
 
   // This is the way to select all text if mouse clicked
-  onMouseDown = (e) => {
-    if (document.activeElement !== e.target) {
-      e.preventDefault();
-      this.refInput.focus();
+  onMouseDown = (event) => {
+    if (document.activeElement !== event.target) {
+      event.preventDefault();
+      this.refInput?.focus();
     }
   };
 
   onBlur = () => {
-    this.updateValue();
+    if (this.refInput?.value !== this.props.value) {
+      this.props.onSave(this.refInput?.value);
+    }
   };
 
-  onKeyDown = (e) => {
-    if (e.keyCode === 13) {
-      this.refInput.blur();
-      e.preventDefault();
+  onKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      this.refInput?.blur();
+      event.preventDefault();
     }
-    if (e.keyCode === 27) {
-      this.setValue(this.props.value);
-      this.refInput.blur();
-      e.preventDefault();
+
+    if (event.keyCode === 27) {
+      if (this.refInput) {
+        this.refInput.value = this.props.value;
+      }
+      this.refInput?.blur();
+      event.preventDefault();
     }
-    if (e.keyCode === 9) {
-      if (this.getValue().length === 0) {
+
+    if (event.keyCode === 9) {
+      if (this.refInput?.value.length === 0) {
         this.props.onCancel();
       }
-      this.refInput.blur();
-      e.preventDefault();
+      this.refInput?.blur();
+      event.preventDefault();
     }
   };
 
-  getValue = () => this.refInput.value;
-  setValue = (value) => (this.refInput.value = value);
-
-  updateValue = () => {
-    if (this.getValue() !== this.props.value) {
-      this.props.onSave(this.getValue());
-    }
-  };
-
-  setRef = (ref) => {
+  setRef = (/** @type {HTMLTextAreaElement | null} */ ref) => {
     this.refInput = ref;
-    if (this.props.resize !== 'none') {
+    if (this.props.resize !== 'none' && this.refInput) {
       autosize(this.refInput);
     }
   };
 
   // apply patch
   componentDidUpdate() {
-    this.setValue(this.props.value);
+    if (this.refInput) {
+      this.refInput.value = this.props.value;
+    }
   }
 
   render() {
     const { autoFocus, border, value, placeholder, className } = this.props;
 
     return (
-      <InlineInput
+      <S.InlineInput
         ref={this.setRef}
         border={border}
         onMouseDown={this.onMouseDown}
@@ -86,7 +87,7 @@ class InlineInputController extends React.Component {
   }
 }
 
-InlineInputController.propTypes = {
+InlineInput.propTypes = {
   onSave: PropTypes.func,
   onCancel: PropTypes.func,
   border: PropTypes.bool,
@@ -97,7 +98,7 @@ InlineInputController.propTypes = {
   resize: PropTypes.oneOf(['none', 'vertical', 'horizontal'])
 };
 
-InlineInputController.defaultProps = {
+InlineInput.defaultProps = {
   onSave: () => {},
   placeholder: '',
   value: '',
@@ -106,4 +107,4 @@ InlineInputController.defaultProps = {
   resize: 'none'
 };
 
-export default InlineInputController;
+export default InlineInput;

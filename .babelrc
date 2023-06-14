@@ -1,19 +1,11 @@
 {
   "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "targets": {
-          "esmodules": true
-        }
-      }
-    ],
-    "@babel/preset-react"
+    ["@babel/preset-react", { "useSpread": true }],
+    ["@babel/preset-env", { "targets": { "esmodules": true } }]
   ],
   "plugins": [
-    "@babel/plugin-transform-template-literals",
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-transform-async-to-generator",
+    "@babel/plugin-transform-optional-chaining",
+    "@babel/plugin-transform-class-properties",
     "@babel/plugin-transform-runtime",
     [
       "module-resolver",
