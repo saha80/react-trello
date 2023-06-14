@@ -1,37 +1,24 @@
 import Lh from 'rt/helpers/LaneHelper';
 
-const boardReducer = (state = { lanes: [] }, action) => {
-  const { payload, type } = action;
-  switch (type) {
-    case 'LOAD_BOARD':
-      return Lh.initialiseLanes(state, payload);
-    case 'UNLOAD_BOARD':
-      return Lh.deinitialiseLanes(state, payload);
-    case 'ADD_CARD':
-      return Lh.appendCardToLane(state, payload);
-    case 'REMOVE_CARD':
-      return Lh.removeCardFromLane(state, payload);
-    case 'MOVE_CARD':
-      return Lh.moveCardAcrossLanes(state, payload);
-    case 'UPDATE_CARDS':
-      return Lh.updateCardsForLane(state, payload);
-    case 'UPDATE_CARD':
-      return Lh.updateCardForLane(state, payload);
-    case 'UPDATE_LANES':
-      return Lh.updateLanes(state, payload);
-    case 'UPDATE_LANE':
-      return Lh.updateLane(state, payload);
-    case 'PAGINATE_LANE':
-      return Lh.paginateLane(state, payload);
-    case 'MOVE_LANE':
-      return Lh.moveLane(state, payload);
-    case 'REMOVE_LANE':
-      return Lh.removeLane(state, payload);
-    case 'ADD_LANE':
-      return Lh.addLane(state, payload);
-    default:
-      return state;
-  }
+const mapLaneAction = {
+  LOAD_BOARD: Lh.initialiseLanes,
+  UNLOAD_BOARD: Lh.deinitialiseLanes,
+  ADD_CARD: Lh.appendCardToLane,
+  REMOVE_CARD: Lh.removeCardFromLane,
+  MOVE_CARD: Lh.moveCardAcrossLanes,
+  UPDATE_CARDS: Lh.updateCardsForLane,
+  UPDATE_CARD: Lh.updateCardForLane,
+  UPDATE_LANES: Lh.updateLanes,
+  UPDATE_LANE: Lh.updateLane,
+  PAGINATE_LANE: Lh.paginateLane,
+  MOVE_LANE: Lh.moveLane,
+  REMOVE_LANE: Lh.removeLane,
+  ADD_LANE: Lh.addLane
+};
+
+const boardReducer = (state = { lanes: [] }, { payload, type }) => {
+  const laneAction = mapLaneAction[type];
+  return laneAction ? laneAction(state, payload) : state;
 };
 
 export default boardReducer;

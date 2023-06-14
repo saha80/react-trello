@@ -25,9 +25,12 @@ export const GlobalStyle = createGlobalStyle`
   .icon-overflow-menu-horizontal:before {
     content: "\\E91F";
   }
-  .icon-lg, .icon-sm {
+
+  .icon-lg,
+  .icon-sm {
     color: #798d99;
   }
+
   .icon-lg {
     height: 32px;
     font-size: 16px;
@@ -58,20 +61,23 @@ export const CustomPopoverContent = styled(PopoverContent)`
   padding: 5px;
   left: 50%;
   transform: translateX(-50%);
+
   ${(props) =>
     props.active &&
-    `
-    visibility: visible;
-    opacity: 1;
-    transition-delay: 100ms;
-  `} &::before {
+    css`
+      visibility: visible;
+      opacity: 1;
+      transition-delay: 100ms;
+    `} &::before {
     visibility: hidden;
   }
+
   a {
     color: rgba(255, 255, 255, 0.56);
     padding: 0.5em 1em;
     margin: 0;
     text-decoration: none;
+
     &:hover {
       background-color: #00bcd4 !important;
       color: #37474f;
@@ -110,18 +116,17 @@ export const Section = styled.section`
 `;
 
 export const LaneHeader = styled(Header)`
-  margin-bottom: 0px;
+  margin-bottom: 0;
+
   ${(/** @type {{editLaneTitle: boolean;}} */ props) =>
-    props.editLaneTitle &&
-    css`
-      padding: 0px;
-      line-height: 30px;
-    `};
-  ${(props) =>
-    !props.editLaneTitle &&
-    css`
-      padding: 0px 5px;
-    `};
+    props.editLaneTitle
+      ? css`
+          padding: 0;
+          line-height: 30px;
+        `
+      : css`
+          padding: 0 5px;
+        `};
 `;
 
 export const LaneFooter = styled.div`
@@ -149,7 +154,7 @@ export const Title = styled.span`
   font-weight: bold;
   font-size: 15px;
   line-height: 18px;
-  cursor: ${(props) => (props.draggable ? 'grab' : `auto`)};
+  cursor: ${(props) => (props.draggable ? 'grab' : 'auto')};
   width: 70%;
 `;
 
@@ -227,7 +232,6 @@ export const AddCardLink = styled.a`
   cursor: pointer;
 
   &:hover {
-    //background-color: #cdd2d4;
     color: #4d4d4d;
     text-decoration: underline;
   }

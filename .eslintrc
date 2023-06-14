@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "rules": {
     "strict": 1,
     "no-undef": 1,
@@ -8,8 +8,28 @@
     "arrow-body-style": [1, "as-needed"],
     "no-fallthrough": 1,
     "react/prop-types": 2,
+    "react/jsx-indent": 0,
     "react/jsx-handler-names": 0,
-    "react/jsx-curly-newline": 0
+    "react/jsx-curly-newline": 0,
+    "react/jsx-no-constructed-context-values": 1,
+    "react/jsx-no-useless-fragment": 2,
+    "react/no-multi-comp": 1,
+    "react/no-array-index-key": 2,
+    "react/self-closing-comp": 1,
+    "react/no-invalid-html-attribute": 1,
+    "react/void-dom-elements-no-children": 1,
+    "react/hook-use-state": 1,
+    "react/jsx-no-bind": [
+      1,
+      {
+        "ignoreDOMComponents": false,
+        "ignoreRefs": false,
+        "allowArrowFunctions": false,
+        "allowFunctions": false,
+        "allowBind": false
+      }
+    ],
+    "react/state-in-constructor": [1, "never"]
   },
   "extends": ["standard", "standard-jsx", "standard-react", "plugin:prettier/recommended"],
   "env": {

@@ -8,17 +8,13 @@ const REPLACE_TABLE = {
   addCardLink: '`t` function with key "Click to add card"'
 };
 
-const warn = (prop) => {
-  const use = REPLACE_TABLE[prop];
-  console.warn(
-    `react-trello property '${prop}' is removed. Use '${use}' instead. More - https://github.com/rcdexta/react-trello/blob/master/UPGRADE.md`
-  );
-};
-
-export default (props) => {
-  Object.keys(REPLACE_TABLE).forEach((key) => {
-    if (Object.hasOwn(props, key)) {
-      warn(key);
+const deprecationWarnings = (/** @type {Record<string, any>} */ props) =>
+  Object.entries(REPLACE_TABLE).forEach(([prop, use]) => {
+    if (Object.hasOwn(props, prop)) {
+      console.warn(
+        `react-trello property '${prop}' is removed. Use '${use}' instead. More - https://github.com/rcdexta/react-trello/blob/master/UPGRADE.md`
+      );
     }
   });
-};
+
+export default deprecationWarnings;

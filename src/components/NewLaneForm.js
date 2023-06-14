@@ -1,37 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { LaneTitle, NewLaneButtons, Section } from 'rt/styles/Base';
 import { AddButton, CancelButton } from 'rt/styles/Elements';
 import NewLaneTitleEditor from 'rt/widgets/NewLaneTitleEditor';
-import uuidv1 from 'uuid/v1';
+import { v4 as uuidv4 } from 'uuid';
 
-class NewLane extends Component {
+class NewLaneForm extends React.Component {
+  /** @type {React.RefObject<NewLaneTitleEditor>} */ ref = React.createRef();
+
   handleSubmit = () => {
     this.props.onAdd({
-      id: uuidv1(),
-      title: this.getValue()
+      id: uuidv4(),
+      title: this.ref.current?.value
     });
-  };
-
-  getValue = () => this.refInput.getValue();
-
-  onClickOutside = () => {
-    if (this.getValue().length > 0) {
-      this.handleSubmit();
-    } else {
-      this.props.onCancel();
-    }
   };
 
   render() {
     const { onCancel, t } = this.props;
+
     return (
       <Section>
         <LaneTitle>
           <NewLaneTitleEditor
-            ref={(ref) => (this.refInput = ref)}
+            ref={this.ref}
             placeholder={t('placeholder.title')}
-            onCancel={this.props.onCancel}
+            onCancel={onCancel}
             onSave={this.handleSubmit}
             resize="vertical"
             border
@@ -47,12 +40,10 @@ class NewLane extends Component {
   }
 }
 
-NewLane.propTypes = {
+NewLaneForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onAdd: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired
 };
 
-NewLane.defaultProps = {};
-
-export default NewLane;
+export default NewLaneForm;

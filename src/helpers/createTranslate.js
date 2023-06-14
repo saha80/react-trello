@@ -1,3 +1,6 @@
-import get from 'lodash/get';
+const get = (/** @type {object} */ obj, /** @type {string} */ path) =>
+  path.split('.').reduce((value, currentPath) => value[currentPath], obj);
 
-export default (TABLE) => (key) => get(TABLE, key);
+const createTranslate = (TABLE) => (key) => get(TABLE, key);
+
+export default createTranslate;

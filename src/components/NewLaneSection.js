@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NewLaneSection } from 'rt/styles/Base';
+import * as S from 'rt/styles/Base';
 import { AddLaneLink } from 'rt/styles/Elements';
 
-const NewLaneSection_ = ({ t, onClick }) => (
-  <NewLaneSection>
+const NewLaneSection = ({ t, onClick }) => (
+  <S.NewLaneSection>
     <AddLaneLink onClick={onClick}>{t('Add another lane')}</AddLaneLink>
-  </NewLaneSection>
+  </S.NewLaneSection>
 );
 
-NewLaneSection_.propTypes = {
+NewLaneSection.propTypes = {
   t: PropTypes.func,
   onClick: PropTypes.func
 };
 
-export default NewLaneSection_;
+export default NewLaneSection;

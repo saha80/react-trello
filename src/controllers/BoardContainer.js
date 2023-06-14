@@ -1,40 +1,73 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Container from 'rt/dnd/Container';
 import Draggable from 'rt/dnd/Draggable';
 import PropTypes from 'prop-types';
-import pick from 'lodash/pick';
-import isEqual from 'lodash/isEqual';
-import Lane from './Lane';
+import isEqual from 'react-fast-compare';
 import { PopoverWrapper } from 'react-popopo';
 
 import * as boardActions from 'rt/actions/BoardActions';
 import * as laneActions from 'rt/actions/LaneActions';
 
-class BoardContainer extends Component {
+import Lane from './Lane';
+
+class BoardContainer extends React.Component {
   state = {
     addLaneMode: false
   };
 
   componentDidMount() {
     this.props.actions.loadBoard(this.props.data);
-    if (this.props.eventBusHandle) {
-      this.wireEventBus();
-    }
+
+    this.props.eventBusHandle?.({ publish: this.publish });
   }
 
+  publish = ({
+    type,
+    card,
+    cardId,
+    cards,
+    data,
+    fromLaneId,
+    index,
+    lane,
+    laneId,
+    lanes,
+    toLaneId
+  }) => {
+    switch (type) {
+      case 'ADD_CARD':
+        return this.props.actions.addCard({ laneId, card });
+      case 'UPDATE_CARD':
+        return this.props.actions.updateCard({ laneId, card });
+      case 'REMOVE_CARD':
+        return this.props.actions.removeCard({ laneId, cardId });
+      case 'REFRESH_BOARD':
+        return this.props.actions.loadBoard(data);
+      case 'MOVE_CARD':
+        return this.props.actions.moveCardAcrossLanes({ fromLaneId, toLaneId, cardId, index });
+      case 'UPDATE_CARDS':
+        return this.props.actions.updateCards({ laneId, cards });
+      case 'UPDATE_LANES':
+        return this.props.actions.updateLanes(lanes);
+      case 'UPDATE_LANE':
+        return this.props.actions.updateLane(lane);
+    }
+  };
+
   componentWillUnmount() {
-    this.props.actions.unloadBoard();
+    this.props.actions.unloadBoard(this.props.data);
   }
 
   // apply patch
-  componentDidUpdate(prevProps) {
+  componentDidUpdate({ data, reducerData, onDataChange }) {
     // this.props.data changes when external Board input props change and this.props.reducerData changes due to event bus or UI changes
-    const { data, reducerData, onDataChange } = prevProps;
+
     if (this.props.reducerData && !isEqual(reducerData, this.props.reducerData)) {
       onDataChange(this.props.reducerData);
     }
+
     if (this.props.data && !isEqual(this.props.data, data)) {
       this.props.actions.loadBoard(this.props.data);
       onDataChange(this.props.data);
@@ -57,53 +90,10 @@ class BoardContainer extends Component {
 
   getLaneDetails = (index) => this.props.reducerData.lanes[index];
 
-  wireEventBus = () => {
-    this.props.eventBusHandle({
-      publish: (event) => {
-        switch (event.type) {
-          case 'ADD_CARD':
-            return this.props.actions.addCard({ laneId: event.laneId, card: event.card });
-          case 'UPDATE_CARD':
-            return this.props.actions.updateCard({
-              laneId: event.laneId,
-              card: event.card
-            });
-          case 'REMOVE_CARD':
-            return this.props.actions.removeCard({
-              laneId: event.laneId,
-              cardId: event.cardId
-            });
-          case 'REFRESH_BOARD':
-            return this.props.actions.loadBoard(event.data);
-          case 'MOVE_CARD':
-            return this.props.actions.moveCardAcrossLanes({
-              fromLaneId: event.fromLaneId,
-              toLaneId: event.toLaneId,
-              cardId: event.cardId,
-              index: event.index
-            });
-          case 'UPDATE_CARDS':
-            return this.props.actions.updateCards({
-              laneId: event.laneId,
-              cards: event.cards
-            });
-          case 'UPDATE_LANES':
-            return this.props.actions.updateLanes(event.lanes);
-          case 'UPDATE_LANE':
-            return this.props.actions.updateLane(event.lane);
-        }
-      }
-    });
-  };
-
   // + add
-  hideEditableLane = () => {
-    this.setState({ addLaneMode: false });
-  };
+  hideEditableLane = () => this.setState({ addLaneMode: false });
 
-  showEditableLane = () => {
-    this.setState({ addLaneMode: true });
-  };
+  showEditableLane = () => this.setState({ addLaneMode: true });
 
   addNewLane = (params) => {
     this.hideEditableLane();
@@ -112,9 +102,40 @@ class BoardContainer extends Component {
   };
 
   get groupName() {
-    const { id } = this.props;
-    return `TrelloBoard${id}`;
+    return `TrelloBoard${this.props.id}`;
   }
+
+  // Stick to whitelisting attributes to segregate board and lane props
+  forwardLaneProps = () =>
+    Object.fromEntries(
+      Object.entries(this.props).filter(([key]) =>
+        [
+          'onCardMoveAcrossLanes',
+          'onLaneScroll',
+          'onLaneDelete',
+          'onLaneUpdate',
+          'onCardClick',
+          'onBeforeCardDelete',
+          'onCardDelete',
+          'onCardAdd',
+          'onCardUpdate',
+          'onLaneClick',
+          'laneSortFunction',
+          'draggable',
+          'laneDraggable',
+          'cardDraggable',
+          'collapsibleLanes',
+          'canAddLanes',
+          'hideCardDeleteIcon',
+          'tagStyle',
+          'handleDragStart',
+          'handleDragEnd',
+          'cardDragClass',
+          'editLaneTitle',
+          't'
+        ].includes(key)
+      )
+    );
 
   render() {
     const {
@@ -146,32 +167,8 @@ class BoardContainer extends Component {
     } = this.props;
 
     const { addLaneMode } = this.state;
-    // Stick to whitelisting attributes to segregate board and lane props
-    const passthroughProps = pick(this.props, [
-      'onCardMoveAcrossLanes',
-      'onLaneScroll',
-      'onLaneDelete',
-      'onLaneUpdate',
-      'onCardClick',
-      'onBeforeCardDelete',
-      'onCardDelete',
-      'onCardAdd',
-      'onCardUpdate',
-      'onLaneClick',
-      'laneSortFunction',
-      'draggable',
-      'laneDraggable',
-      'cardDraggable',
-      'collapsibleLanes',
-      'canAddLanes',
-      'hideCardDeleteIcon',
-      'tagStyle',
-      'handleDragStart',
-      'handleDragEnd',
-      'cardDragClass',
-      'editLaneTitle',
-      't'
-    ]);
+
+    const forwardedlaneProps = this.forwardLaneProps();
 
     return (
       <components.BoardWrapper style={style} {...otherProps} draggable={false}>
@@ -183,12 +180,12 @@ class BoardContainer extends Component {
             dropClass={laneDropClass}
             onDrop={this.onLaneDrop}
             lockAxis="x"
-            getChildPayload={(index) => this.getLaneDetails(index)}
+            getChildPayload={this.getLaneDetails}
             groupName={this.groupName}
           >
-            {reducerData.lanes.map((lane, index) => {
-              const { id, droppable, ...otherProps } = lane;
-              const laneToRender = (
+            {reducerData.lanes.map((laneProps, index) => {
+              const { id, droppable = true, ...otherProps } = laneProps;
+              const lane = (
                 <Lane
                   key={id}
                   boardId={this.groupName}
@@ -196,20 +193,16 @@ class BoardContainer extends Component {
                   id={id}
                   getCardDetails={this.getCardDetails}
                   index={index}
-                  droppable={droppable === undefined ? true : droppable}
-                  style={laneStyle || lane.style || {}}
-                  labelStyle={lane.labelStyle || {}}
-                  cardStyle={this.props.cardStyle || lane.cardStyle}
-                  editable={editable && !lane.disallowAddingCard}
+                  droppable={droppable}
+                  style={laneStyle || laneProps.style || {}}
+                  labelStyle={laneProps.labelStyle || {}}
+                  cardStyle={this.props.cardStyle || laneProps.cardStyle}
+                  editable={editable && !laneProps.disallowAddingCard}
                   {...otherProps}
-                  {...passthroughProps}
+                  {...forwardedlaneProps}
                 />
               );
-              return draggable && laneDraggable ? (
-                <Draggable key={lane.id}>{laneToRender}</Draggable>
-              ) : (
-                laneToRender
-              );
+              return draggable && laneDraggable ? <Draggable key={id}>{lane}</Draggable> : lane;
             })}
           </Container>
         </PopoverWrapper>
@@ -235,7 +228,11 @@ class BoardContainer extends Component {
 
 BoardContainer.propTypes = {
   id: PropTypes.string,
-  components: PropTypes.object,
+  components: PropTypes.shape({
+    BoardWrapper: PropTypes.elementType.isRequired,
+    NewLaneSection: PropTypes.elementType.isRequired,
+    NewLaneForm: PropTypes.elementType.isRequired
+  }),
   actions: PropTypes.shape({
     loadBoard: PropTypes.func,
     unloadBoard: PropTypes.func,
@@ -284,11 +281,12 @@ BoardContainer.propTypes = {
   onCardMoveAcrossLanes: PropTypes.func.isRequired,
   laneStyle: PropTypes.object,
   cardStyle: PropTypes.object,
+  editLaneTitle: PropTypes.bool,
   t: PropTypes.func.isRequired
 };
 
 BoardContainer.defaultProps = {
-  t: (v) => v,
+  t: (key) => key,
   onDataChange: () => {},
   handleDragStart: () => {},
   handleDragEnd: () => {},

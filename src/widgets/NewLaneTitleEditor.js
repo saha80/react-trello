@@ -1,50 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { InlineInput } from 'rt/styles/Base';
+import * as S from 'rt/styles/Base';
 import autosize from 'autosize';
 
 class NewLaneTitleEditor extends React.Component {
-  onKeyDown = (e) => {
-    if (e.keyCode === 13) {
-      this.refInput.blur();
+  /** @type {HTMLTextAreaElement | null} */ refInput = null;
+
+  onKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      this.refInput?.blur();
       this.props.onSave();
-      e.preventDefault();
-    }
-    if (e.keyCode === 27) {
-      this.cancel();
-      e.preventDefault();
+      event.preventDefault();
     }
 
-    if (e.keyCode === 9) {
-      if (this.getValue().length === 0) {
-        this.cancel();
-      } else {
+    if (event.keyCode === 27) {
+      this.cancel();
+      event.preventDefault();
+    }
+
+    if (event.keyCode === 9) {
+      if (this.value.length) {
         this.props.onSave();
+      } else {
+        this.cancel();
       }
-      e.preventDefault();
+      event.preventDefault();
     }
   };
 
   cancel = () => {
-    this.setValue('');
+    this.value = '';
     this.props.onCancel();
-    this.refInput.blur();
+    this.refInput?.blur();
   };
 
-  getValue = () => this.refInput.value;
-  setValue = (value) => (this.refInput.value = value);
+  get value() {
+    return this.refInput ? this.refInput.value : '';
+  }
 
-  saveValue = () => {
-    if (this.getValue() !== this.props.value) {
-      this.props.onSave(this.getValue());
+  set value(newValue) {
+    if (this.refInput) {
+      this.refInput.value = newValue;
     }
-  };
+  }
 
-  focus = () => this.refInput.focus();
-
-  setRef = (ref) => {
+  setRef = (/** @type {HTMLTextAreaElement | null} */ ref) => {
     this.refInput = ref;
-    if (this.props.resize !== 'none') {
+    if (this.props.resize !== 'none' && this.refInput) {
       autosize(this.refInput);
     }
   };
@@ -53,12 +55,12 @@ class NewLaneTitleEditor extends React.Component {
     const { autoFocus, resize, border, value, placeholder } = this.props;
 
     return (
-      <InlineInput
+      <S.InlineInput
         style={{ resize }}
         ref={this.setRef}
         border={border}
         onKeyDown={this.onKeyDown}
-        placeholder={!value.length ? undefined : placeholder}
+        placeholder={value.length ? placeholder : undefined}
         defaultValue={value}
         rows={3}
         autoFocus={autoFocus}
