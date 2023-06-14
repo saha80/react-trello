@@ -9,6 +9,7 @@ import Container from 'rt/dnd/Container';
 import Draggable from 'rt/dnd/Draggable';
 
 import * as laneActions from 'rt/actions/LaneActions';
+import Card from 'rt/components/Card';
 
 const sortCards = (
   /** @type {boolean} */ collapsed,
@@ -293,7 +294,7 @@ Lane.propTypes = {
   tagStyle: PropTypes.object,
   titleStyle: PropTypes.object,
   labelStyle: PropTypes.object,
-  cards: PropTypes.array,
+  cards: PropTypes.arrayOf(PropTypes.shape(Card.propTypes)),
   label: PropTypes.string,
   currentPage: PropTypes.number,
   draggable: PropTypes.bool,

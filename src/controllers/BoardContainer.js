@@ -12,6 +12,12 @@ import * as laneActions from 'rt/actions/LaneActions';
 
 import Lane from './Lane';
 
+const isBoardLoaded = ({ lanes }) =>
+  lanes.every(
+    (lane) =>
+      typeof lane.currentPage === 'number' && lane.cards?.every((card) => card.laneId === lane.id)
+  );
+
 class BoardContainer extends React.Component {
   state = {
     addLaneMode: false
@@ -60,16 +66,15 @@ class BoardContainer extends React.Component {
     this.props.actions.unloadBoard(this.props.data);
   }
 
-  // apply patch
   componentDidUpdate({ data, reducerData, onDataChange }) {
-    // this.props.data changes when external Board input props change and this.props.reducerData changes due to event bus or UI changes
-
     if (this.props.reducerData && !isEqual(reducerData, this.props.reducerData)) {
       onDataChange(this.props.reducerData);
     }
 
     if (this.props.data && !isEqual(this.props.data, data)) {
-      this.props.actions.loadBoard(this.props.data);
+      if (!isBoardLoaded(this.props.data)) {
+        this.props.actions.loadBoard(this.props.data);
+      }
       onDataChange(this.props.data);
     }
   }
