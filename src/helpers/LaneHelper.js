@@ -10,7 +10,21 @@ const LaneHelper = {
     return update(state, { lanes: { $set: newLanes } });
   },
 
-  deinitialiseLanes: (state, _) => update(state, { lanes: { $set: [] } }),
+  deinitialiseLanes: (state, { lanes }) => {
+    const newLanes = lanes.map((lane) => {
+      if (lane.currentPage) {
+        delete lane.currentPage;
+      }
+      lane.cards?.forEach((card) => {
+        if (card.laneId) {
+          delete card.laneId;
+        }
+      });
+      return lane;
+    });
+
+    return update(state, { lanes: { $set: newLanes } });
+  },
 
   paginateLane: (state, { laneId, newCards, nextPage }) => {
     const updatedLanes = LaneHelper.appendCardsToLane(state, {
