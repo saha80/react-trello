@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { constants } from 'trello-smooth-dnd';
+import { constants } from 'react-smooth-dnd';
 
 const Draggable = (
   /** @type {{ render?: () => React.ReactNode | any; className?: string; children: React.ReactChild; [x: string]: any; }} */

@@ -42,10 +42,10 @@
     "react-fast-compare": "^3.2.2",
     "react-popopo": "^2.1.9",
     "react-redux": "^7.2.2",
+    "react-smooth-dnd": "^0.11.1",
     "redux": "^4.0.0",
     "redux-actions": "^2.6.1",
     "redux-logger": "^3.0.6",
-    "trello-smooth-dnd": "1.0.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

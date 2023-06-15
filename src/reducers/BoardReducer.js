@@ -2,7 +2,6 @@ import Lh from 'rt/helpers/LaneHelper';
 
 const mapLaneAction = {
   LOAD_BOARD: Lh.initialiseLanes,
-  UNLOAD_BOARD: Lh.deinitialiseLanes,
   ADD_CARD: Lh.appendCardToLane,
   REMOVE_CARD: Lh.removeCardFromLane,
   MOVE_CARD: Lh.moveCardAcrossLanes,

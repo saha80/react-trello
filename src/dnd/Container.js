@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import container, { dropHandlers } from 'trello-smooth-dnd';
+import { smoothDnD, dropHandlers } from 'react-smooth-dnd';
 
-container.dropHandler = dropHandlers.reactDropHandler().handler;
-container.wrapChild = (child) => child; // dont wrap children they will already be wrapped
+smoothDnD.dropHandler = dropHandlers.reactDropHandler().handler;
+smoothDnD.wrapChild = false; // dont wrap children they will already be wrapped
 
 class Container extends React.Component {
   /** @type {HTMLDivElement | null} */ containerDiv = null;
@@ -13,7 +13,7 @@ class Container extends React.Component {
   componentDidMount() {
     this.prevContainer = this.containerDiv;
     if (this.containerDiv) {
-      this.container = container(this.containerDiv, this.getContainerOptions());
+      this.container = smoothDnD(this.containerDiv, this.getContainerOptions());
     }
   }
 
@@ -25,7 +25,7 @@ class Container extends React.Component {
   componentDidUpdate() {
     if (this.containerDiv && this.prevContainer && this.prevContainer !== this.containerDiv) {
       this.container?.dispose();
-      this.container = container(this.containerDiv, this.getContainerOptions());
+      this.container = smoothDnD(this.containerDiv, this.getContainerOptions());
       this.prevContainer = this.containerDiv;
     }
   }
@@ -47,27 +47,28 @@ class Container extends React.Component {
   }
 
   getContainerOptions = () => ({
-    ...this.props,
-    ...Object.fromEntries(
-      Object.entries(this.props)
-        .filter(
-          ([key, value]) =>
-            [
-              'onDragStart',
-              'onDragEnd',
-              'onDrop',
-              'getChildPayload',
-              'shouldAnimateDrop',
-              'shouldAcceptDrop',
-              'onDragEnter',
-              'onDragLeave',
-              'render',
-              'onDropReady',
-              'getGhostParent'
-            ].includes(key) && value
-        )
-        .map(([key, callable]) => [key, (...args) => callable(...args)])
-    )
+    behaviour: this.props.behaviour,
+    groupName: this.props.groupName,
+    orientation: this.props.orientation,
+    dragHandleSelector: this.props.dragHandleSelector,
+    nonDragAreaSelector: this.props.nonDragAreaSelector,
+    dragBeginDelay: this.props.dragBeginDelay,
+    animationDuration: this.props.animationDuration,
+    autoScrollEnabled: this.props.autoScrollEnabled,
+    lockAxis: this.props.lockAxis,
+    dragClass: this.props.dragClass,
+    dropClass: this.props.dropClass,
+    onDragStart: this.props.onDragStart,
+    onDrop: this.props.onDrop,
+    getChildPayload: this.props.getChildPayload,
+    shouldAnimateDrop: this.props.shouldAnimateDrop,
+    shouldAcceptDrop: this.props.shouldAcceptDrop,
+    onDragEnter: this.props.onDragEnter,
+    onDragLeave: this.props.onDragLeave,
+    onDropReady: this.props.onDropReady,
+    removeOnDropOut: this.props.removeOnDropOut,
+    getGhostParent: this.props.getGhostParent,
+    onDragEnd: this.props.onDragEnd
   });
 }
 

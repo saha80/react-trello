@@ -12,12 +12,6 @@ import * as laneActions from 'rt/actions/LaneActions';
 
 import Lane from './Lane';
 
-const isBoardLoaded = ({ lanes }) =>
-  lanes.every(
-    (lane) =>
-      typeof lane.currentPage === 'number' && lane.cards?.every((card) => card.laneId === lane.id)
-  );
-
 class BoardContainer extends React.Component {
   state = {
     addLaneMode: false
@@ -62,19 +56,13 @@ class BoardContainer extends React.Component {
     }
   };
 
-  componentWillUnmount() {
-    this.props.actions.unloadBoard(this.props.data);
-  }
-
   componentDidUpdate({ data, reducerData, onDataChange }) {
     if (this.props.reducerData && !isEqual(reducerData, this.props.reducerData)) {
       onDataChange(this.props.reducerData);
     }
 
     if (this.props.data && !isEqual(this.props.data, data)) {
-      if (!isBoardLoaded(this.props.data)) {
-        this.props.actions.loadBoard(this.props.data);
-      }
+      this.props.actions.loadBoard(this.props.data);
       onDataChange(this.props.data);
     }
   }
